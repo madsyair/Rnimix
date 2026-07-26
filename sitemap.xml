@@ -45,6 +45,7 @@
 <url><loc>https://madsyair.github.io/nimix/reference/MSNBurrRegSpec-class.html</loc></url>
 <url><loc>https://madsyair.github.io/nimix/reference/MSNBurrUvSpec-class.html</loc></url>
 <url><loc>https://madsyair.github.io/nimix/reference/MixtureModel-class.html</loc></url>
+<url><loc>https://madsyair.github.io/nimix/reference/NeoNormalKernels.html</loc></url>
 <url><loc>https://madsyair.github.io/nimix/reference/NormalGammaMvRegSpec-class.html</loc></url>
 <url><loc>https://madsyair.github.io/nimix/reference/NormalGammaMvRegSpec.html</loc></url>
 <url><loc>https://madsyair.github.io/nimix/reference/NormalGammaMvSpec-class.html</loc></url>
@@ -65,6 +66,8 @@
 <url><loc>https://madsyair.github.io/nimix/reference/PoissonRegSpec.html</loc></url>
 <url><loc>https://madsyair.github.io/nimix/reference/PoissonSpec-class.html</loc></url>
 <url><loc>https://madsyair.github.io/nimix/reference/PoissonSpec.html</loc></url>
+<url><loc>https://madsyair.github.io/nimix/reference/PottsKernels.html</loc></url>
+<url><loc>https://madsyair.github.io/nimix/reference/RegimeHMMKernels.html</loc></url>
 <url><loc>https://madsyair.github.io/nimix/reference/RegressionMixModel-class.html</loc></url>
 <url><loc>https://madsyair.github.io/nimix/reference/RegressionMixModel.html</loc></url>
 <url><loc>https://madsyair.github.io/nimix/reference/SEPRegSpec-class.html</loc></url>

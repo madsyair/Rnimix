@@ -2,6 +2,91 @@
 
 ## nimix 1.5.0
 
+### Removing global-environment assignments (step 1: Gaussian HMM)
+
+- CRAN policy forbids packages writing to the global environment, and
+  nimix did so for every HMM kernel. The pattern was not gratuitous:
+  NIMBLE resolves a user-defined distribution by name three separate
+  times – at
+  [`registerDistributions()`](https://rdrr.io/pkg/nimble/man/registerDistributions.html),
+  at [`nimbleModel()`](https://rdrr.io/pkg/nimble/man/nimbleModel.html),
+  and again in the C++ code generator – and those happen in different
+  frames, so [`globalenv()`](https://rdrr.io/r/base/environment.html)
+  was the only scope surviving all three.
+- The replacement, verified end to end: define the kernels at build time
+  and them. A namespace-private kernel builds a model fine and then
+  fails to compile, because the code generator resolves names on the
+  search path; exporting fixes that, with `Depends: nimble` supplying
+  the attached package the serialised objects need.
+- All 34 static HMM kernels – Gaussian, Student-t, the neo-normal
+  clustering families, Poisson, Binomial and the regression variants –
+  now live at build time in `R/kernels-hmm.R`. The lazy registration
+  guard moved from probing a kernel name in
+  [`globalenv()`](https://rdrr.io/r/base/environment.html) to a
+  package-level flag (`.nimixState`), which the MSNBurr primitives
+  already used. Verified by fitting: Gaussian HMM recovers mu -1.93/2.11
+  and MSNBurr HMM -1.87/1.98, against a truth of -2/2. Under `--as-cran`
+  the reported global assignments fell from 34 to 2; the two that remain
+  generate the neo-normal regression kernels at run time and are the
+  next step.
+- The MSNBurr scalar primitives (`dMSNBurr_k`, `rMSNBurr_k`) moved to
+  build time in `R/kernels-neonormal.R` as well. These are the densities
+  the HMM forward kernels call per observation, so this exercises the
+  nested case: a build-time exported kernel calling a build-time
+  exported primitive. Verified by fitting – MSNBurr clustering recovers
+  mu -1.79/1.96, MSNBurr HMM -2.00/1.98, and Markov-switching MSNBurr
+  regression -1.50/1.43 against intercepts of -1.5/1.5. A note in the
+  old code claimed a namespace enclosure could not work for these scalar
+  densities; that holds only while they stay namespace-private, and
+  exporting them resolves it.
+- All 28 scalar neo-normal and skew-multivariate primitives now follow
+  the same build-time exported pattern, and the `makeIn`/`globalenv`
+  helper that used to construct them is gone. Verified across families:
+  MSNBurr2a -1.86/1.83, GMSNBurr -2.03/1.96, LEP -1.85/1.96 against a
+  truth of -2/2. SEP needed 1500 iterations rather than 400 to get there
+  (-1.86/1.96, ESS 659), consistent with the measured 3-6x iteration
+  budget for neo-normal families – a short chain, not a regression.
+- The nine neo-normal Markov-switching regression kernels are now
+  generated at build time too: the generator returns the pair instead of
+  assigning it, and `kernels-hmm.R` calls it once per family. All nine
+  were verified to compile and run – MSNBurr -1.41/1.57, GMSNBurr
+  -1.46/1.39, MSNBurr2a -1.50/1.43, FSSN -1.45/1.63, SEP -1.39/1.40, LEP
+  -1.43/1.44, FSST -1.26/1.46 against intercepts of -1.5/1.5; FOSSEP and
+  JFST need longer chains, as they did before (FOSSEP reaches -1.38/1.63
+  at 2000 iterations).
+- With that, `engine-hmm.R` writes nothing to the global environment,
+  and the `checking R code for possible problems` note – global
+  assignments and the `integer(0, default = 0)` finding alike – no
+  longer appears. Only the Potts d/r pair still uses the old pattern.
+- The Potts prior kernels moved to build time as well, and the
+  registration call no longer evaluates itself in
+  [`globalenv()`](https://rdrr.io/r/base/environment.html) – the
+  exported kernels are on the search path, so a plain call resolves
+  them. Two lazy guards that probed
+  [`globalenv()`](https://rdrr.io/r/base/environment.html) for a kernel
+  name (and would now always miss, re-registering on every call) were
+  switched to package-level flags. Verified: MRF/Potts clustering
+  recovers mu -1.96/1.99 against a truth of -2/2.
+- With that the package writes nothing to the global environment at all:
+  80 kernels are build-time exported objects, and only comments mention
+  [`globalenv()`](https://rdrr.io/r/base/environment.html). Under
+  `--as-cran` the three remaining notes are all environmental (new
+  submission, unavailable Suggests, unverifiable clock).
+- Added `nimDim`, `inverse` and `rbeta` to the `globalVariables` list:
+  NIMBLE rewrites [`dim()`](https://rdrr.io/r/base/dim.html) to `nimDim`
+  when it processes a nimbleFunction, and now that the kernels are
+  build-time objects the static checker sees it.
+
+### CI fix: spelling declared and wired up properly
+
+- The repository carried a `tests/spelling.R` without declaring
+  `spelling` in Suggests, so `R CMD check` on CI warned (undeclared `::`
+  import) and the workflow failed. `spelling` is now in Suggests, the
+  test file uses the standard guarded form (`error = FALSE`, skipped on
+  CRAN), `Language: en-US` is declared, and `inst/WORDLIST` covers the
+  package vocabulary (author names, statistical terms, function names)
+  so the spell check reports clean.
+
 ### Prior predictive check completes the Bayesian workflow
 
 - New `priorPredictive(data, K, distribution)` simulates whole datasets
