@@ -30,11 +30,11 @@ NULL
 
 # --- lazy kernel (globalenv; own guard -- see knowledge Sec 9.12) --------------
 # The forward-likelihood must be a nimbleFunction registered as a distribution
-# BEFORE nimbleModel() sees the code. Like every nimix kernel it is defined
-# lazily in globalenv(): namespace-frame definitions fail during NIMBLE
-# codegen once the package is installed. This guard is separate from
-# .nimixEnsureMSNBurr()'s so neither needs to know about the other's newest
-# kernel.
+# BEFORE nimbleModel() sees the code. The kernels themselves are defined at
+# build time in kernels-hmm.R and exported, which is what lets NIMBLE's code
+# generator resolve them; only the registration happens here. This guard is
+# separate from .nimixEnsureMSNBurr()'s so neither needs to know about the
+# other'''s newest kernel.
 # BUGSdist registration entries for the neo-normal regression HMM kernels,
 # generated from each family's kernel base name and shape list -- the same
 # facts .makeNeoHMMRegKernel() uses. Keeps the registration in step with the
@@ -67,9 +67,10 @@ NULL
 }
 
 .nimixEnsureHMM <- function() {
-  # Guard on the NEWEST kernel (Sec 9.12): adding a kernel means updating this.
-  if (exists("dRegimeHMMStudentTReg_k", envir = globalenv(), inherits = FALSE))
-    return(invisible())
+  # Guard on a package-level flag rather than on a kernel name in globalenv():
+  # the static kernels are now defined at build time in kernels-hmm.R, so
+  # probing globalenv() would always miss and re-register on every call.
+  if (isTRUE(.nimixState$hmmRegistered)) return(invisible())
 
   # The skewed forward kernels call the primitive neo-normal kernels
   # (dMSNBurr_k, dMSNBurr2a_k, dGMSNBurr_k), which are defined lazily by a
@@ -82,363 +83,56 @@ NULL
   # from it, so a plain rnorm placeholder is fine and avoids codegen clashes
   # with R-level r* functions such as rmsnburr).
   ## --- Normal --------------------------------------------------------------
-  assign("dRegimeHMMNorm_k", nimble::nimbleFunction(
-    run = function(x = double(1), mu = double(1), s2 = double(1),
-                   P = double(2), init = double(1),
-                   len = double(0),
-                   log = integer(0, default = 0)) {
-      returnType(double(0)); T <- length(x); S <- length(mu)
-      a <- numeric(S); an <- numeric(S); ll <- 0
-      for (s in 1:S) a[s] <- init[s] * dnorm(x[1], mu[s], sqrt(s2[s]))
-      c1 <- sum(a); if (c1 <= 0) { if (log) return(-Inf) else return(0) }
-      ll <- ll + log(c1); for (s in 1:S) a[s] <- a[s] / c1
-      if (T >= 2) for (t in 2:T) {
-        for (sp in 1:S) { acc <- 0
-          for (s in 1:S) acc <- acc + a[s] * P[s, sp]
-          an[sp] <- acc * dnorm(x[t], mu[sp], sqrt(s2[sp])) }
-        ct <- sum(an); if (ct <= 0) { if (log) return(-Inf) else return(0) }
-        ll <- ll + log(ct); for (s in 1:S) a[s] <- an[s] / ct }
-      if (log) return(ll) else return(exp(ll))
-    }), envir = globalenv())
-  assign("rRegimeHMMNorm_k", nimble::nimbleFunction(
-    run = function(n = integer(0), mu = double(1), s2 = double(1),
-                   P = double(2), init = double(1), len = double(0)) {
-      returnType(double(1)); Tlen <- len; out <- numeric(Tlen)
-      z <- rcat(1, init)
-      for (t in 1:Tlen) { out[t] <- rnorm(1, mu[z], sqrt(s2[z])); z <- rcat(1, P[z, ]) }
-      return(out) }), envir = globalenv())
+  # Normal kernels now live at build time in kernels-hmm.R (exported so that
+  # NIMBLE's code generator can resolve them); nothing to assign here.
 
   ## --- Student-t -----------------------------------------------------------
-  assign("dRegimeHMMT_k", nimble::nimbleFunction(
-    run = function(x = double(1), mu = double(1), tau = double(1),
-                   df = double(0), P = double(2), init = double(1),
-                   len = double(0),
-                   log = integer(0, default = 0)) {
-      returnType(double(0)); T <- length(x); S <- length(mu)
-      a <- numeric(S); an <- numeric(S); ll <- 0
-      for (s in 1:S) a[s] <- init[s] * dt_nonstandard(x[1], df, mu[s], 1/sqrt(tau[s]))
-      c1 <- sum(a); if (c1 <= 0) { if (log) return(-Inf) else return(0) }
-      ll <- ll + log(c1); for (s in 1:S) a[s] <- a[s] / c1
-      if (T >= 2) for (t in 2:T) {
-        for (sp in 1:S) { acc <- 0
-          for (s in 1:S) acc <- acc + a[s] * P[s, sp]
-          an[sp] <- acc * dt_nonstandard(x[t], df, mu[sp], 1/sqrt(tau[sp])) }
-        ct <- sum(an); if (ct <= 0) { if (log) return(-Inf) else return(0) }
-        ll <- ll + log(ct); for (s in 1:S) a[s] <- an[s] / ct }
-      if (log) return(ll) else return(exp(ll))
-    }), envir = globalenv())
-  assign("rRegimeHMMT_k", nimble::nimbleFunction(
-    run = function(n = integer(0), mu = double(1), tau = double(1),
-                   df = double(0), P = double(2), init = double(1), len = double(0)) {
-      returnType(double(1)); Tlen <- len; out <- numeric(Tlen)
-      z <- rcat(1, init)
-      for (t in 1:Tlen) { out[t] <- rt_nonstandard(1, df, mu[z], 1/sqrt(tau[z])); z <- rcat(1, P[z, ]) }
-      return(out) }), envir = globalenv())
+  # dRegimeHMMT_k: defined at build time in kernels-hmm.R
+  # rRegimeHMMT_k: defined at build time in kernels-hmm.R
 
   ## --- Poisson (count regimes; not location-scale) -------------------------
-  assign("dRegimeHMMPois_k", nimble::nimbleFunction(
-    run = function(x = double(1), lambda = double(1),
-                   P = double(2), init = double(1),
-                   len = double(0),
-                   log = integer(0, default = 0)) {
-      returnType(double(0)); T <- length(x); S <- length(lambda)
-      a <- numeric(S); an <- numeric(S); ll <- 0
-      for (s in 1:S) a[s] <- init[s] * dpois(x[1], lambda[s])
-      c1 <- sum(a); if (c1 <= 0) { if (log) return(-Inf) else return(0) }
-      ll <- ll + log(c1); for (s in 1:S) a[s] <- a[s] / c1
-      if (T >= 2) for (t in 2:T) {
-        for (sp in 1:S) { acc <- 0
-          for (s in 1:S) acc <- acc + a[s] * P[s, sp]
-          an[sp] <- acc * dpois(x[t], lambda[sp]) }
-        ct <- sum(an); if (ct <= 0) { if (log) return(-Inf) else return(0) }
-        ll <- ll + log(ct); for (s in 1:S) a[s] <- an[s] / ct }
-      if (log) return(ll) else return(exp(ll))
-    }), envir = globalenv())
-  assign("rRegimeHMMPois_k", nimble::nimbleFunction(
-    run = function(n = integer(0), lambda = double(1),
-                   P = double(2), init = double(1), len = double(0)) {
-      returnType(double(1)); Tlen <- len; out <- numeric(Tlen)
-      z <- rcat(1, init)
-      for (t in 1:Tlen) { out[t] <- rpois(1, lambda[z]); z <- rcat(1, P[z, ]) }
-      return(out) }), envir = globalenv())
+  # dRegimeHMMPois_k: defined at build time in kernels-hmm.R
+  # rRegimeHMMPois_k: defined at build time in kernels-hmm.R
 
   ## --- MSNBurr (skewed regimes) --------------------------------------------
-  assign("dRegimeHMMMSNB_k", nimble::nimbleFunction(
-    run = function(x = double(1), mu = double(1), sigma = double(1),
-                   alpha = double(1), P = double(2), init = double(1),
-                   len = double(0),
-                   log = integer(0, default = 0)) {
-      returnType(double(0)); T <- length(x); S <- length(mu)
-      a <- numeric(S); an <- numeric(S); ll <- 0
-      for (s in 1:S) a[s] <- init[s] * exp(dMSNBurr_k(x[1], mu[s], sigma[s], alpha[s], 1))
-      c1 <- sum(a); if (c1 <= 0) { if (log) return(-Inf) else return(0) }
-      ll <- ll + log(c1); for (s in 1:S) a[s] <- a[s] / c1
-      if (T >= 2) for (t in 2:T) {
-        for (sp in 1:S) { acc <- 0
-          for (s in 1:S) acc <- acc + a[s] * P[s, sp]
-          an[sp] <- acc * exp(dMSNBurr_k(x[t], mu[sp], sigma[sp], alpha[sp], 1)) }
-        ct <- sum(an); if (ct <= 0) { if (log) return(-Inf) else return(0) }
-        ll <- ll + log(ct); for (s in 1:S) a[s] <- an[s] / ct }
-      if (log) return(ll) else return(exp(ll))
-    }), envir = globalenv())
-  assign("rRegimeHMMMSNB_k", nimble::nimbleFunction(
-    run = function(n = integer(0), mu = double(1), sigma = double(1),
-                   alpha = double(1), P = double(2), init = double(1), len = double(0)) {
-      returnType(double(1)); Tlen <- len; out <- numeric(Tlen)
-      z <- rcat(1, init)
-      for (t in 1:Tlen) { out[t] <- rnorm(1, mu[z], sigma[z]); z <- rcat(1, P[z, ]) }
-      return(out) }), envir = globalenv())
+  # dRegimeHMMMSNB_k: defined at build time in kernels-hmm.R
+  # rRegimeHMMMSNB_k: defined at build time in kernels-hmm.R
 
   ## --- MSNBurr-IIa (mirror parameterisation, distinct kernel) --------------
-  assign("dRegimeHMMMSNB2a_k", nimble::nimbleFunction(
-    run = function(x = double(1), mu = double(1), sigma = double(1),
-                   alpha = double(1), P = double(2), init = double(1),
-                   len = double(0),
-                   log = integer(0, default = 0)) {
-      returnType(double(0)); T <- length(x); S <- length(mu)
-      a <- numeric(S); an <- numeric(S); ll <- 0
-      for (s in 1:S) a[s] <- init[s] * exp(dMSNBurr2a_k(x[1], mu[s], sigma[s], alpha[s], 1))
-      c1 <- sum(a); if (c1 <= 0) { if (log) return(-Inf) else return(0) }
-      ll <- ll + log(c1); for (s in 1:S) a[s] <- a[s] / c1
-      if (T >= 2) for (t in 2:T) {
-        for (sp in 1:S) { acc <- 0
-          for (s in 1:S) acc <- acc + a[s] * P[s, sp]
-          an[sp] <- acc * exp(dMSNBurr2a_k(x[t], mu[sp], sigma[sp], alpha[sp], 1)) }
-        ct <- sum(an); if (ct <= 0) { if (log) return(-Inf) else return(0) }
-        ll <- ll + log(ct); for (s in 1:S) a[s] <- an[s] / ct }
-      if (log) return(ll) else return(exp(ll))
-    }), envir = globalenv())
-  assign("rRegimeHMMMSNB2a_k", nimble::nimbleFunction(
-    run = function(n = integer(0), mu = double(1), sigma = double(1),
-                   alpha = double(1), P = double(2), init = double(1), len = double(0)) {
-      returnType(double(1)); Tlen <- len; out <- numeric(Tlen)
-      z <- rcat(1, init)
-      for (t in 1:Tlen) { out[t] <- rnorm(1, mu[z], sigma[z]); z <- rcat(1, P[z, ]) }
-      return(out) }), envir = globalenv())
+  # dRegimeHMMMSNB2a_k: defined at build time in kernels-hmm.R
+  # rRegimeHMMMSNB2a_k: defined at build time in kernels-hmm.R
 
   ## --- GMSNBurr (four-parameter skewed regimes) ----------------------------
-  assign("dRegimeHMMGMSNB_k", nimble::nimbleFunction(
-    run = function(x = double(1), mu = double(1), sigma = double(1),
-                   alpha = double(1), theta = double(1),
-                   P = double(2), init = double(1),
-                   len = double(0),
-                   log = integer(0, default = 0)) {
-      returnType(double(0)); T <- length(x); S <- length(mu)
-      a <- numeric(S); an <- numeric(S); ll <- 0
-      for (s in 1:S) a[s] <- init[s] * exp(dGMSNBurr_k(x[1], mu[s], sigma[s], alpha[s], theta[s], 1))
-      c1 <- sum(a); if (c1 <= 0) { if (log) return(-Inf) else return(0) }
-      ll <- ll + log(c1); for (s in 1:S) a[s] <- a[s] / c1
-      if (T >= 2) for (t in 2:T) {
-        for (sp in 1:S) { acc <- 0
-          for (s in 1:S) acc <- acc + a[s] * P[s, sp]
-          an[sp] <- acc * exp(dGMSNBurr_k(x[t], mu[sp], sigma[sp], alpha[sp], theta[sp], 1)) }
-        ct <- sum(an); if (ct <= 0) { if (log) return(-Inf) else return(0) }
-        ll <- ll + log(ct); for (s in 1:S) a[s] <- an[s] / ct }
-      if (log) return(ll) else return(exp(ll))
-    }), envir = globalenv())
-  assign("rRegimeHMMGMSNB_k", nimble::nimbleFunction(
-    run = function(n = integer(0), mu = double(1), sigma = double(1),
-                   alpha = double(1), theta = double(1),
-                   P = double(2), init = double(1), len = double(0)) {
-      returnType(double(1)); Tlen <- len; out <- numeric(Tlen)
-      z <- rcat(1, init)
-      for (t in 1:Tlen) { out[t] <- rnorm(1, mu[z], sigma[z]); z <- rcat(1, P[z, ]) }
-      return(out) }), envir = globalenv())
+  # dRegimeHMMGMSNB_k: defined at build time in kernels-hmm.R
+  # rRegimeHMMGMSNB_k: defined at build time in kernels-hmm.R
 
   ## --- FSSN (Ferreira-Steel skew normal) ------------------------------------
-  assign("dRegimeHMMFSSN_k", nimble::nimbleFunction(
-    run = function(x = double(1), mu = double(1), sigma = double(1),
-                   alpha = double(1), P = double(2), init = double(1),
-                   len = double(0),
-                   log = integer(0, default = 0)) {
-      returnType(double(0)); T <- length(x); S <- length(mu)
-      a <- numeric(S); an <- numeric(S); ll <- 0
-      for (s in 1:S) a[s] <- init[s] * exp(dFSSN_k(x[1], mu[s], sigma[s], alpha[s], 1))
-      c1 <- sum(a); if (c1 <= 0) { if (log) return(-Inf) else return(0) }
-      ll <- ll + log(c1); for (s in 1:S) a[s] <- a[s] / c1
-      if (T >= 2) for (t in 2:T) {
-        for (sp in 1:S) { acc <- 0
-          for (s in 1:S) acc <- acc + a[s] * P[s, sp]
-          an[sp] <- acc * exp(dFSSN_k(x[t], mu[sp], sigma[sp], alpha[sp], 1)) }
-        ct <- sum(an); if (ct <= 0) { if (log) return(-Inf) else return(0) }
-        ll <- ll + log(ct); for (s in 1:S) a[s] <- an[s] / ct }
-      if (log) return(ll) else return(exp(ll))
-    }), envir = globalenv())
-  assign("rRegimeHMMFSSN_k", nimble::nimbleFunction(
-    run = function(n = integer(0), mu = double(1), sigma = double(1),
-                   alpha = double(1), P = double(2), init = double(1), len = double(0)) {
-      returnType(double(1)); Tlen <- len; out <- numeric(Tlen)
-      z <- rcat(1, init)
-      for (t in 1:Tlen) { out[t] <- rnorm(1, mu[z], sigma[z]); z <- rcat(1, P[z, ]) }
-      return(out) }), envir = globalenv())
+  # dRegimeHMMFSSN_k: defined at build time in kernels-hmm.R
+  # rRegimeHMMFSSN_k: defined at build time in kernels-hmm.R
 
   ## --- FSST (Ferreira-Steel skew t: heavy-tailed AND skewed) ----------------
-  assign("dRegimeHMMFSST_k", nimble::nimbleFunction(
-    run = function(x = double(1), mu = double(1), sigma = double(1),
-                   alpha = double(1), nu = double(1),
-                   P = double(2), init = double(1),
-                   len = double(0),
-                   log = integer(0, default = 0)) {
-      returnType(double(0)); T <- length(x); S <- length(mu)
-      a <- numeric(S); an <- numeric(S); ll <- 0
-      for (s in 1:S) a[s] <- init[s] * exp(dFSST_k(x[1], mu[s], sigma[s], alpha[s], nu[s], 1))
-      c1 <- sum(a); if (c1 <= 0) { if (log) return(-Inf) else return(0) }
-      ll <- ll + log(c1); for (s in 1:S) a[s] <- a[s] / c1
-      if (T >= 2) for (t in 2:T) {
-        for (sp in 1:S) { acc <- 0
-          for (s in 1:S) acc <- acc + a[s] * P[s, sp]
-          an[sp] <- acc * exp(dFSST_k(x[t], mu[sp], sigma[sp], alpha[sp], nu[sp], 1)) }
-        ct <- sum(an); if (ct <= 0) { if (log) return(-Inf) else return(0) }
-        ll <- ll + log(ct); for (s in 1:S) a[s] <- an[s] / ct }
-      if (log) return(ll) else return(exp(ll))
-    }), envir = globalenv())
-  assign("rRegimeHMMFSST_k", nimble::nimbleFunction(
-    run = function(n = integer(0), mu = double(1), sigma = double(1),
-                   alpha = double(1), nu = double(1),
-                   P = double(2), init = double(1), len = double(0)) {
-      returnType(double(1)); Tlen <- len; out <- numeric(Tlen)
-      z <- rcat(1, init)
-      for (t in 1:Tlen) { out[t] <- rnorm(1, mu[z], sigma[z]); z <- rcat(1, P[z, ]) }
-      return(out) }), envir = globalenv())
+  # dRegimeHMMFSST_k: defined at build time in kernels-hmm.R
+  # rRegimeHMMFSST_k: defined at build time in kernels-hmm.R
 
   ## --- SEP ------------------------------------------------------------
-  assign("dRegimeHMMSEP_k", nimble::nimbleFunction(
-    run = function(x = double(1), mu = double(1), sigma = double(1),
-                   nu = double(1), P = double(2), init = double(1),
-                   len = double(0),
-                   log = integer(0, default = 0)) {
-      returnType(double(0)); T <- length(x); S <- length(mu)
-      a <- numeric(S); an <- numeric(S); ll <- 0
-      for (s in 1:S) a[s] <- init[s] * exp(dSEP_k(x[1], mu[s], sigma[s], nu[s], 1))
-      c1 <- sum(a); if (c1 <= 0) { if (log) return(-Inf) else return(0) }
-      ll <- ll + log(c1); for (s in 1:S) a[s] <- a[s] / c1
-      if (T >= 2) for (t in 2:T) {
-        for (sp in 1:S) { acc <- 0
-          for (s in 1:S) acc <- acc + a[s] * P[s, sp]
-          an[sp] <- acc * exp(dSEP_k(x[t], mu[sp], sigma[sp], nu[sp], 1)) }
-        ct <- sum(an); if (ct <= 0) { if (log) return(-Inf) else return(0) }
-        ll <- ll + log(ct); for (s in 1:S) a[s] <- an[s] / ct }
-      if (log) return(ll) else return(exp(ll))
-    }), envir = globalenv())
-  assign("rRegimeHMMSEP_k", nimble::nimbleFunction(
-    run = function(n = integer(0), mu = double(1), sigma = double(1),
-                   nu = double(1), P = double(2), init = double(1), len = double(0)) {
-      returnType(double(1)); Tlen <- len; out <- numeric(Tlen)
-      z <- rcat(1, init)
-      for (t in 1:Tlen) { out[t] <- rnorm(1, mu[z], sigma[z]); z <- rcat(1, P[z, ]) }
-      return(out) }), envir = globalenv())
+  # dRegimeHMMSEP_k: defined at build time in kernels-hmm.R
+  # rRegimeHMMSEP_k: defined at build time in kernels-hmm.R
 
   ## --- LEP ------------------------------------------------------------
-  assign("dRegimeHMMLEP_k", nimble::nimbleFunction(
-    run = function(x = double(1), mu = double(1), sigma = double(1),
-                   nu = double(1), P = double(2), init = double(1),
-                   len = double(0),
-                   log = integer(0, default = 0)) {
-      returnType(double(0)); T <- length(x); S <- length(mu)
-      a <- numeric(S); an <- numeric(S); ll <- 0
-      for (s in 1:S) a[s] <- init[s] * exp(dLEP_k(x[1], mu[s], sigma[s], nu[s], 1))
-      c1 <- sum(a); if (c1 <= 0) { if (log) return(-Inf) else return(0) }
-      ll <- ll + log(c1); for (s in 1:S) a[s] <- a[s] / c1
-      if (T >= 2) for (t in 2:T) {
-        for (sp in 1:S) { acc <- 0
-          for (s in 1:S) acc <- acc + a[s] * P[s, sp]
-          an[sp] <- acc * exp(dLEP_k(x[t], mu[sp], sigma[sp], nu[sp], 1)) }
-        ct <- sum(an); if (ct <= 0) { if (log) return(-Inf) else return(0) }
-        ll <- ll + log(ct); for (s in 1:S) a[s] <- an[s] / ct }
-      if (log) return(ll) else return(exp(ll))
-    }), envir = globalenv())
-  assign("rRegimeHMMLEP_k", nimble::nimbleFunction(
-    run = function(n = integer(0), mu = double(1), sigma = double(1),
-                   nu = double(1), P = double(2), init = double(1), len = double(0)) {
-      returnType(double(1)); Tlen <- len; out <- numeric(Tlen)
-      z <- rcat(1, init)
-      for (t in 1:Tlen) { out[t] <- rnorm(1, mu[z], sigma[z]); z <- rcat(1, P[z, ]) }
-      return(out) }), envir = globalenv())
+  # dRegimeHMMLEP_k: defined at build time in kernels-hmm.R
+  # rRegimeHMMLEP_k: defined at build time in kernels-hmm.R
 
   ## --- FOSSEP ------------------------------------------------------------
-  assign("dRegimeHMMFOSSEP_k", nimble::nimbleFunction(
-    run = function(x = double(1), mu = double(1), sigma = double(1),
-                   alpha = double(1), theta = double(1),
-                   P = double(2), init = double(1),
-                   len = double(0),
-                   log = integer(0, default = 0)) {
-      returnType(double(0)); T <- length(x); S <- length(mu)
-      a <- numeric(S); an <- numeric(S); ll <- 0
-      for (s in 1:S) a[s] <- init[s] * exp(dFOSSEP_k(x[1], mu[s], sigma[s], alpha[s], theta[s], 1))
-      c1 <- sum(a); if (c1 <= 0) { if (log) return(-Inf) else return(0) }
-      ll <- ll + log(c1); for (s in 1:S) a[s] <- a[s] / c1
-      if (T >= 2) for (t in 2:T) {
-        for (sp in 1:S) { acc <- 0
-          for (s in 1:S) acc <- acc + a[s] * P[s, sp]
-          an[sp] <- acc * exp(dFOSSEP_k(x[t], mu[sp], sigma[sp], alpha[sp], theta[sp], 1)) }
-        ct <- sum(an); if (ct <= 0) { if (log) return(-Inf) else return(0) }
-        ll <- ll + log(ct); for (s in 1:S) a[s] <- an[s] / ct }
-      if (log) return(ll) else return(exp(ll))
-    }), envir = globalenv())
-  assign("rRegimeHMMFOSSEP_k", nimble::nimbleFunction(
-    run = function(n = integer(0), mu = double(1), sigma = double(1),
-                   alpha = double(1), theta = double(1),
-                   P = double(2), init = double(1), len = double(0)) {
-      returnType(double(1)); Tlen <- len; out <- numeric(Tlen)
-      z <- rcat(1, init)
-      for (t in 1:Tlen) { out[t] <- rnorm(1, mu[z], sigma[z]); z <- rcat(1, P[z, ]) }
-      return(out) }), envir = globalenv())
+  # dRegimeHMMFOSSEP_k: defined at build time in kernels-hmm.R
+  # rRegimeHMMFOSSEP_k: defined at build time in kernels-hmm.R
 
   ## --- JFST ------------------------------------------------------------
-  assign("dRegimeHMMJFST_k", nimble::nimbleFunction(
-    run = function(x = double(1), mu = double(1), sigma = double(1),
-                   alpha = double(1), theta = double(1),
-                   P = double(2), init = double(1),
-                   len = double(0),
-                   log = integer(0, default = 0)) {
-      returnType(double(0)); T <- length(x); S <- length(mu)
-      a <- numeric(S); an <- numeric(S); ll <- 0
-      for (s in 1:S) a[s] <- init[s] * exp(dJFST_k(x[1], mu[s], sigma[s], alpha[s], theta[s], 1))
-      c1 <- sum(a); if (c1 <= 0) { if (log) return(-Inf) else return(0) }
-      ll <- ll + log(c1); for (s in 1:S) a[s] <- a[s] / c1
-      if (T >= 2) for (t in 2:T) {
-        for (sp in 1:S) { acc <- 0
-          for (s in 1:S) acc <- acc + a[s] * P[s, sp]
-          an[sp] <- acc * exp(dJFST_k(x[t], mu[sp], sigma[sp], alpha[sp], theta[sp], 1)) }
-        ct <- sum(an); if (ct <= 0) { if (log) return(-Inf) else return(0) }
-        ll <- ll + log(ct); for (s in 1:S) a[s] <- an[s] / ct }
-      if (log) return(ll) else return(exp(ll))
-    }), envir = globalenv())
-  assign("rRegimeHMMJFST_k", nimble::nimbleFunction(
-    run = function(n = integer(0), mu = double(1), sigma = double(1),
-                   alpha = double(1), theta = double(1),
-                   P = double(2), init = double(1), len = double(0)) {
-      returnType(double(1)); Tlen <- len; out <- numeric(Tlen)
-      z <- rcat(1, init)
-      for (t in 1:Tlen) { out[t] <- rnorm(1, mu[z], sigma[z]); z <- rcat(1, P[z, ]) }
-      return(out) }), envir = globalenv())
+  # dRegimeHMMJFST_k: defined at build time in kernels-hmm.R
+  # rRegimeHMMJFST_k: defined at build time in kernels-hmm.R
 
   ## --- Binomial (regime-switching proportions; size known) ------------------
-  assign("dRegimeHMMBinom_k", nimble::nimbleFunction(
-    run = function(x = double(1), prob = double(1), size = double(0),
-                   P = double(2), init = double(1),
-                   len = double(0),
-                   log = integer(0, default = 0)) {
-      returnType(double(0)); T <- length(x); S <- length(prob)
-      a <- numeric(S); an <- numeric(S); ll <- 0
-      for (s in 1:S) a[s] <- init[s] * exp(dbinom(x[1], size, prob[s], 1))
-      c1 <- sum(a); if (c1 <= 0) { if (log) return(-Inf) else return(0) }
-      ll <- ll + log(c1); for (s in 1:S) a[s] <- a[s] / c1
-      if (T >= 2) for (t in 2:T) {
-        for (sp in 1:S) { acc <- 0
-          for (s in 1:S) acc <- acc + a[s] * P[s, sp]
-          an[sp] <- acc * exp(dbinom(x[t], size, prob[sp], 1)) }
-        ct <- sum(an); if (ct <= 0) { if (log) return(-Inf) else return(0) }
-        ll <- ll + log(ct); for (s in 1:S) a[s] <- an[s] / ct }
-      if (log) return(ll) else return(exp(ll))
-    }), envir = globalenv())
-  assign("rRegimeHMMBinom_k", nimble::nimbleFunction(
-    run = function(n = integer(0), prob = double(1), size = double(0),
-                   P = double(2), init = double(1), len = double(0)) {
-      returnType(double(1)); Tlen <- len; out <- numeric(Tlen)
-      z <- rcat(1, init)
-      for (t in 1:Tlen) { out[t] <- rbinom(1, size, prob[z]); z <- rcat(1, P[z, ]) }
-      return(out) }), envir = globalenv())
+  # dRegimeHMMBinom_k: defined at build time in kernels-hmm.R
+  # rRegimeHMMBinom_k: defined at build time in kernels-hmm.R
 
   ## --- Student-t regression (Markov-switching heavy-tail regression) --------
   ## Same shape as the Gaussian regression kernel, but the emission is a
@@ -446,35 +140,8 @@ NULL
   ## Covers both the direct Student-t and Normal-Gamma reg specs (same t
   ## marginal); the guard refuses the Gaussian inheritance so this OWN kernel
   ## is always the one that runs.
-  assign("dRegimeHMMStudentTReg_k", nimble::nimbleFunction(
-    run = function(x = double(1), X = double(2), beta = double(2),
-                   s2 = double(1), df = double(0), P = double(2),
-                   init = double(1), log = integer(0, default = 0)) {
-      returnType(double(0))
-      T <- length(x); S <- length(s2); p <- dim(X)[2]
-      a <- numeric(S); an <- numeric(S); ll <- 0
-      for (s in 1:S)
-        a[s] <- init[s] * dt_nonstandard(x[1], df,
-                   sum(X[1, 1:p] * beta[s, 1:p]), sqrt(s2[s]))
-      c1 <- sum(a); if (c1 <= 0) { if (log) return(-Inf) else return(0) }
-      ll <- ll + log(c1); for (s in 1:S) a[s] <- a[s] / c1
-      if (T >= 2) for (t in 2:T) {
-        for (sp in 1:S) { acc <- 0
-          for (s in 1:S) acc <- acc + a[s] * P[s, sp]
-          an[sp] <- acc * dt_nonstandard(x[t], df,
-                      sum(X[t, 1:p] * beta[sp, 1:p]), sqrt(s2[sp])) }
-        ct <- sum(an); if (ct <= 0) { if (log) return(-Inf) else return(0) }
-        ll <- ll + log(ct); for (s in 1:S) a[s] <- an[s] / ct }
-      if (log) return(ll) else return(exp(ll))
-    }), envir = globalenv())
-  assign("rRegimeHMMStudentTReg_k", nimble::nimbleFunction(
-    run = function(n = integer(0), X = double(2), beta = double(2),
-                   s2 = double(1), df = double(0), P = double(2),
-                   init = double(1)) {
-      returnType(double(1)); Tlen <- dim(X)[1]; out <- numeric(Tlen)
-      z <- rcat(1, init)
-      for (t in 1:Tlen) { out[t] <- rnorm(1, 0, 1); z <- rcat(1, P[z, ]) }
-      return(out) }), envir = globalenv())
+  # dRegimeHMMStudentTReg_k: defined at build time in kernels-hmm.R
+  # rRegimeHMMStudentTReg_k: defined at build time in kernels-hmm.R
   ## --- Neo-normal regression HMM kernels (generated) ------------------------
   ## Each family's forward kernel is the same FFBS marginalisation, differing
   ## only in the primitive density name and the list of per-state shape
@@ -483,150 +150,28 @@ NULL
   ## arguments are woven into the run() signature and the density call; the
   ## r-kernel is a placeholder (rnorm) because the marginalised model never
   ## simulates from the emission (cf. the other -Reg kernels).
-  .makeNeoHMMRegKernel <- function(kernelBase, densName, shapeNames) {
-    shapeSig <- paste(sprintf("%s = double(1)", shapeNames), collapse = ", ")
-    shapeArg1 <- paste(sprintf("%s[s]", shapeNames), collapse = ", ")
-    shapeArgT <- paste(sprintf("%s[sp]", shapeNames), collapse = ", ")
-    firstShape <- shapeNames[1]
-    dSrc <- sprintf('
-      nimble::nimbleFunction(run = function(x = double(1), X = double(2),
-          beta = double(2), %s, P = double(2), init = double(1),
-          log = integer(0, default = 0)) {
-        returnType(double(0))
-        T <- length(x); S <- length(%s); p <- dim(X)[2]
-        a <- numeric(S); an <- numeric(S); ll <- 0
-        for (s in 1:S)
-          a[s] <- init[s] * exp(%s(x[1],
-                    sum(X[1, 1:p] * beta[s, 1:p]), %s, 1))
-        c1 <- sum(a); if (c1 <= 0) { if (log) return(-Inf) else return(0) }
-        ll <- ll + log(c1); for (s in 1:S) a[s] <- a[s] / c1
-        if (T >= 2) for (t in 2:T) {
-          for (sp in 1:S) { acc <- 0
-            for (s in 1:S) acc <- acc + a[s] * P[s, sp]
-            an[sp] <- acc * exp(%s(x[t],
-                        sum(X[t, 1:p] * beta[sp, 1:p]), %s, 1)) }
-          ct <- sum(an); if (ct <= 0) { if (log) return(-Inf) else return(0) }
-          ll <- ll + log(ct); for (s in 1:S) a[s] <- an[s] / ct }
-        if (log) return(ll) else return(exp(ll))
-      })',
-      shapeSig, firstShape, densName, shapeArg1, densName, shapeArgT)
-    assign(paste0("dRegimeHMM", kernelBase, "_k"),
-           eval(parse(text = dSrc)), envir = globalenv())
-    rSrc <- sprintf('
-      nimble::nimbleFunction(run = function(n = integer(0), X = double(2),
-          beta = double(2), %s, P = double(2), init = double(1)) {
-        returnType(double(1)); Tlen <- dim(X)[1]; out <- numeric(Tlen)
-        z <- rcat(1, init)
-        for (t in 1:Tlen) { out[t] <- rnorm(1, 0, 1); z <- rcat(1, P[z, ]) }
-        return(out) })', shapeSig)
-    assign(paste0("rRegimeHMM", kernelBase, "_k"),
-           eval(parse(text = rSrc)), envir = globalenv())
-  }
+  # The nine neo-normal Markov-switching regression kernels are generated at
+  # build time in kernels-hmm.R (exported), so nothing is created here.
 
-  .makeNeoHMMRegKernel("MSNBReg", "dMSNBurr_k", c("sigma", "alpha"))
-  .makeNeoHMMRegKernel("MSNB2aReg", "dMSNBurr2a_k", c("sigma", "alpha"))
-  .makeNeoHMMRegKernel("FSSNReg", "dFSSN_k", c("sigma", "alpha"))
-  .makeNeoHMMRegKernel("SEPReg", "dSEP_k", c("sigma", "nu"))
-  .makeNeoHMMRegKernel("LEPReg", "dLEP_k", c("sigma", "nu"))
-  .makeNeoHMMRegKernel("GMSNBReg", "dGMSNBurr_k", c("sigma", "alpha", "theta"))
-  .makeNeoHMMRegKernel("FSSTReg", "dFSST_k", c("sigma", "alpha", "nu"))
-  .makeNeoHMMRegKernel("FOSSEPReg", "dFOSSEP_k", c("sigma", "alpha", "theta"))
-  .makeNeoHMMRegKernel("JFSTReg", "dJFST_k", c("sigma", "alpha", "theta"))
   ## --- Binomial regression (Markov-switching proportion regression) ---------
   ## Logit link: p = plogis(X beta_s), known size. Same shape as the Poisson
   ## regression kernel with dbinom in place of dpois.
-  assign("dRegimeHMMBinomReg_k", nimble::nimbleFunction(
-    run = function(x = double(1), X = double(2), beta = double(2),
-                   size = double(0), P = double(2), init = double(1),
-                   log = integer(0, default = 0)) {
-      returnType(double(0))
-      T <- length(x); S <- dim(beta)[1]; p <- dim(X)[2]
-      a <- numeric(S); an <- numeric(S); ll <- 0
-      for (s in 1:S)
-        a[s] <- init[s] * dbinom(x[1], size,
-                                 ilogit(sum(X[1, 1:p] * beta[s, 1:p])))
-      c1 <- sum(a); if (c1 <= 0) { if (log) return(-Inf) else return(0) }
-      ll <- ll + log(c1); for (s in 1:S) a[s] <- a[s] / c1
-      if (T >= 2) for (t in 2:T) {
-        for (sp in 1:S) { acc <- 0
-          for (s in 1:S) acc <- acc + a[s] * P[s, sp]
-          an[sp] <- acc * dbinom(x[t], size,
-                                 ilogit(sum(X[t, 1:p] * beta[sp, 1:p]))) }
-        ct <- sum(an); if (ct <= 0) { if (log) return(-Inf) else return(0) }
-        ll <- ll + log(ct); for (s in 1:S) a[s] <- an[s] / ct }
-      if (log) return(ll) else return(exp(ll))
-    }), envir = globalenv())
-  assign("rRegimeHMMBinomReg_k", nimble::nimbleFunction(
-    run = function(n = integer(0), X = double(2), beta = double(2),
-                   size = double(0), P = double(2), init = double(1)) {
-      returnType(double(1)); Tlen <- dim(X)[1]; out <- numeric(Tlen)
-      z <- rcat(1, init)
-      for (t in 1:Tlen) { out[t] <- rbinom(1, size, 0.5); z <- rcat(1, P[z, ]) }
-      return(out) }), envir = globalenv())
+  # dRegimeHMMBinomReg_k: defined at build time in kernels-hmm.R
+  # rRegimeHMMBinomReg_k: defined at build time in kernels-hmm.R
 
   ## --- Poisson regression (Markov-switching count regression) ---------------
   ## Same shape as the Gaussian regression kernel, but the emission is a
   ## Poisson with a log link: mu = exp(X beta_s). No error-variance parameter.
-  assign("dRegimeHMMPoisReg_k", nimble::nimbleFunction(
-    run = function(x = double(1), X = double(2), beta = double(2),
-                   P = double(2), init = double(1),
-                   log = integer(0, default = 0)) {
-      returnType(double(0))
-      T <- length(x); S <- dim(beta)[1]; p <- dim(X)[2]
-      a <- numeric(S); an <- numeric(S); ll <- 0
-      for (s in 1:S)
-        a[s] <- init[s] * dpois(x[1], exp(sum(X[1, 1:p] * beta[s, 1:p])))
-      c1 <- sum(a); if (c1 <= 0) { if (log) return(-Inf) else return(0) }
-      ll <- ll + log(c1); for (s in 1:S) a[s] <- a[s] / c1
-      if (T >= 2) for (t in 2:T) {
-        for (sp in 1:S) { acc <- 0
-          for (s in 1:S) acc <- acc + a[s] * P[s, sp]
-          an[sp] <- acc * dpois(x[t], exp(sum(X[t, 1:p] * beta[sp, 1:p]))) }
-        ct <- sum(an); if (ct <= 0) { if (log) return(-Inf) else return(0) }
-        ll <- ll + log(ct); for (s in 1:S) a[s] <- an[s] / ct }
-      if (log) return(ll) else return(exp(ll))
-    }), envir = globalenv())
-  assign("rRegimeHMMPoisReg_k", nimble::nimbleFunction(
-    run = function(n = integer(0), X = double(2), beta = double(2),
-                   P = double(2), init = double(1)) {
-      returnType(double(1)); Tlen <- dim(X)[1]; out <- numeric(Tlen)
-      z <- rcat(1, init)
-      for (t in 1:Tlen) { out[t] <- rpois(1, 1); z <- rcat(1, P[z, ]) }
-      return(out) }), envir = globalenv())
+  # dRegimeHMMPoisReg_k: defined at build time in kernels-hmm.R
+  # rRegimeHMMPoisReg_k: defined at build time in kernels-hmm.R
 
   ## --- Normal regression (Markov-switching regression, Hamilton 1989) -------
   ## The emission mean is X[t, ] %*% beta[s, ], so unlike every other kernel
   ## here the density at t depends on t through the design matrix, not only
   ## through y[t]. Everything else -- the scaled forward pass, the state
   ## marginalisation -- is unchanged.
-  assign("dRegimeHMMNormReg_k", nimble::nimbleFunction(
-    run = function(x = double(1), X = double(2), beta = double(2),
-                   s2 = double(1), P = double(2), init = double(1),
-                   log = integer(0, default = 0)) {
-      returnType(double(0))
-      T <- length(x); S <- length(s2); p <- dim(X)[2]
-      a <- numeric(S); an <- numeric(S); ll <- 0
-      for (s in 1:S)
-        a[s] <- init[s] * dnorm(x[1], sum(X[1, 1:p] * beta[s, 1:p]),
-                                sqrt(s2[s]))
-      c1 <- sum(a); if (c1 <= 0) { if (log) return(-Inf) else return(0) }
-      ll <- ll + log(c1); for (s in 1:S) a[s] <- a[s] / c1
-      if (T >= 2) for (t in 2:T) {
-        for (sp in 1:S) { acc <- 0
-          for (s in 1:S) acc <- acc + a[s] * P[s, sp]
-          an[sp] <- acc * dnorm(x[t], sum(X[t, 1:p] * beta[sp, 1:p]),
-                                sqrt(s2[sp])) }
-        ct <- sum(an); if (ct <= 0) { if (log) return(-Inf) else return(0) }
-        ll <- ll + log(ct); for (s in 1:S) a[s] <- an[s] / ct }
-      if (log) return(ll) else return(exp(ll))
-    }), envir = globalenv())
-  assign("rRegimeHMMNormReg_k", nimble::nimbleFunction(
-    run = function(n = integer(0), X = double(2), beta = double(2),
-                   s2 = double(1), P = double(2), init = double(1)) {
-      returnType(double(1)); Tlen <- dim(X)[1]; out <- numeric(Tlen)
-      z <- rcat(1, init)
-      for (t in 1:Tlen) { out[t] <- rnorm(1, 0, 1); z <- rcat(1, P[z, ]) }
-      return(out) }), envir = globalenv())
+  # dRegimeHMMNormReg_k: defined at build time in kernels-hmm.R
+  # rRegimeHMMNormReg_k: defined at build time in kernels-hmm.R
 
   hmmDists <- list(
     dRegimeHMMNorm_k = list(
@@ -709,6 +254,7 @@ NULL
                 "init = double(1)"), discrete = FALSE))
   nimble::registerDistributions(c(hmmDists, .neoHMMRegBUGS()),
                                 verbose = FALSE)
+  .nimixState$hmmRegistered <- TRUE
   invisible()
 }
 

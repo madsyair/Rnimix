@@ -73,591 +73,70 @@ listDistributions <- function() sort(ls(envir = .distRegistry))
 
 #' @keywords internal
 .nimixDefineMSNBurr <- function() {
-  if (exists("dSkewMvITOG_k", envir = globalenv(), inherits = FALSE)) return(invisible())
-  ge <- globalenv()
-  softlomega <- quote(if (alpha < 1e-300) {
-    lomega <- -(alpha + 1) * log(alpha) - 0.9189385332046727
-  } else {
-    lomega <- (alpha + 1) * log1p(1 / alpha) - 0.9189385332046727
-  })
-  # Build each density with nimbleFunction() evaluated so its enclosure is the
-  # global environment, then assign it there explicitly. (A namespace-frame
-  # enclosure fails NIMBLE C++ codegen for these scalar densities.)
-  makeIn <- function(expr) eval(expr, envir = ge)
-  assign("dMSNBurr_k", makeIn(quote(nimble::nimbleFunction(
-    run = function(x = double(0), mu = double(0), sigma = double(0),
-                   alpha = double(0), log = integer(0, default = 0)) {
-      returnType(double(0))
-      if (alpha < 1e-300) {
-        lomega <- -(alpha + 1) * log(alpha) - 0.9189385332046727
-      } else {
-        lomega <- (alpha + 1) * log1p(1 / alpha) - 0.9189385332046727
-      }
-      omega <- exp(lomega); zo <- -omega * ((x - mu) / sigma)
-      u <- zo - log(alpha); sp <- max(u, 0) + log1p(exp(-abs(u)))
-      lp <- lomega - log(sigma) + zo - (alpha + 1) * sp
-      if (log) return(lp) else return(exp(lp))
-    }))), envir = ge)
-  assign("rMSNBurr_k", makeIn(quote(nimble::nimbleFunction(
-    run = function(n = integer(0), mu = double(0), sigma = double(0),
-                   alpha = double(0)) {
-      returnType(double(0))
-      if (alpha < 1e-300) {
-        lomega <- -(alpha + 1) * log(alpha) - 0.9189385332046727
-      } else {
-        lomega <- (alpha + 1) * log1p(1 / alpha) - 0.9189385332046727
-      }
-      omega <- exp(lomega); p <- runif(1)
-      lt <- log(exp(-log(p) / alpha) - 1)
-      return(mu - (sigma / omega) * (log(alpha) + lt))
-    }))), envir = ge)
-  assign("dMSNBurr2a_k", makeIn(quote(nimble::nimbleFunction(
-    run = function(x = double(0), mu = double(0), sigma = double(0),
-                   alpha = double(0), log = integer(0, default = 0)) {
-      returnType(double(0))
-      if (alpha < 1e-300) {
-        lomega <- -(alpha + 1) * log(alpha) - 0.9189385332046727
-      } else {
-        lomega <- (alpha + 1) * log1p(1 / alpha) - 0.9189385332046727
-      }
-      omega <- exp(lomega); zt <- omega * ((x - mu) / sigma)
-      u <- log(alpha) - zt; sp <- max(u, 0) + log1p(exp(-abs(u)))
-      lp <- lomega - log(sigma) + (alpha + 1) * log(alpha) - alpha * zt -
-        (alpha + 1) * sp
-      if (log) return(lp) else return(exp(lp))
-    }))), envir = ge)
-  assign("dGMSNBurr_k", makeIn(quote(nimble::nimbleFunction(
-    run = function(x = double(0), mu = double(0), sigma = double(0),
-                   alpha = double(0), theta = double(0),
-                   log = integer(0, default = 0)) {
-      returnType(double(0))
-      lbeta_at <- lgamma(alpha) + lgamma(theta) - lgamma(alpha + theta)
-      if (alpha < 1e-300) {
-        lomega <- -0.9189385332046727 + lbeta_at +
-          alpha * (log(theta) - log(alpha))
-      } else {
-        lomega <- -0.9189385332046727 + lbeta_at -
-          theta * (log(theta) - log(alpha)) +
-          (alpha + theta) * log1p(theta / alpha)
-      }
-      omega <- exp(lomega)
-      zo <- -omega * ((x - mu) / sigma)
-      zoa <- zo + log(theta) - log(alpha)
-      sp <- max(zoa, 0) + log1p(exp(-abs(zoa)))
-      lp <- lomega - log(sigma) + theta * (log(theta) - log(alpha)) +
-        theta * zo - (alpha + theta) * sp - lbeta_at
-      if (log) return(lp) else return(exp(lp))
-    }))), envir = ge)
-  assign("rGMSNBurr_k", makeIn(quote(nimble::nimbleFunction(
-    run = function(n = integer(0), mu = double(0), sigma = double(0),
-                   alpha = double(0), theta = double(0)) {
-      returnType(double(0))
-      lbeta_at <- lgamma(alpha) + lgamma(theta) - lgamma(alpha + theta)
-      if (alpha < 1e-300) {
-        lomega <- -0.9189385332046727 + lbeta_at +
-          alpha * (log(theta) - log(alpha))
-      } else {
-        lomega <- -0.9189385332046727 + lbeta_at -
-          theta * (log(theta) - log(alpha)) +
-          (alpha + theta) * log1p(theta / alpha)
-      }
-      omega <- exp(lomega)
-      Xg <- rgamma(1, shape = alpha, rate = 1)
-      Yg <- rgamma(1, shape = theta, rate = 1)
-      log_ratio <- log(Yg) - log(Xg) + log(alpha) - log(theta)
-      return(mu - (sigma / omega) * log_ratio)
-    }))), envir = ge)
+  # Kernels are build-time objects now, so probing globalenv() would always
+  # miss; the package-level flag is the reliable guard.
+  if (isTRUE(.nimixState$msnburrDefined)) return(invisible())
+  .nimixState$msnburrDefined <- TRUE
+  # The scalar densities themselves are defined at build time in
+  # kernels-neonormal.R and exported; only their registration happens here.
+  # dMSNBurr_k / rMSNBurr_k: defined at build time in kernels-neonormal.R
+  # (exported, so NIMBLE's code generator can resolve them without a global
+  # assignment).
+
+  # dMSNBurr2a_k: build time, kernels-neonormal.R
+  # dGMSNBurr_k: build time, kernels-neonormal.R
+  # rGMSNBurr_k: build time, kernels-neonormal.R
   # --- Batch B: SEP (symmetric exponential power) ---
-  assign("dSEP_k", makeIn(quote(nimble::nimbleFunction(
-    run = function(x = double(0), mu = double(0), sigma = double(0),
-                   nu = double(0), log = integer(0, default = 0)) {
-      returnType(double(0))
-      z <- abs(x - mu) / sigma
-      lp <- -log(2) - (1 / nu) * log(2) - lgamma(1 + 1 / nu) -
-        log(sigma) - 0.5 * z^nu
-      if (log) return(lp) else return(exp(lp))
-    }))), envir = ge)
-  assign("rSEP_k", makeIn(quote(nimble::nimbleFunction(
-    run = function(n = integer(0), mu = double(0), sigma = double(0),
-                   nu = double(0)) {
-      returnType(double(0))
-      W <- rgamma(1, shape = 1 / nu, rate = 0.5)
-      za <- W^(1 / nu)
-      s <- 2 * (runif(1, 0, 1) < 0.5) - 1
-      return(mu + sigma * s * za)
-    }))), envir = ge)
+  # dSEP_k: build time, kernels-neonormal.R
+  # rSEP_k: build time, kernels-neonormal.R
   # --- Batch B: LEP (exponential power, alternative parameterisation) ---
-  assign("dLEP_k", makeIn(quote(nimble::nimbleFunction(
-    run = function(x = double(0), mu = double(0), sigma = double(0),
-                   nu = double(0), log = integer(0, default = 0)) {
-      returnType(double(0))
-      z <- abs(x - mu) / sigma
-      lp <- -log(2) - (1 / nu) * log(nu) - lgamma(1 + 1 / nu) -
-        log(sigma) - z^nu / nu
-      if (log) return(lp) else return(exp(lp))
-    }))), envir = ge)
-  assign("rLEP_k", makeIn(quote(nimble::nimbleFunction(
-    run = function(n = integer(0), mu = double(0), sigma = double(0),
-                   nu = double(0)) {
-      returnType(double(0))
-      W <- rgamma(1, shape = 1 / nu, rate = 1 / nu)
-      za <- W^(1 / nu)
-      s <- 2 * (runif(1, 0, 1) < 0.5) - 1
-      return(mu + sigma * s * za)
-    }))), envir = ge)
+  # dLEP_k: build time, kernels-neonormal.R
+  # rLEP_k: build time, kernels-neonormal.R
   # --- Batch B: FSSN (Fernandez-Steel skew Normal) ---
-  assign("dFSSN_k", makeIn(quote(nimble::nimbleFunction(
-    run = function(x = double(0), mu = double(0), sigma = double(0),
-                   alpha = double(0), log = integer(0, default = 0)) {
-      returnType(double(0))
-      z <- (x - mu) / sigma
-      lc <- log(2) - log(sigma) - log(alpha + 1 / alpha) - 0.9189385332046727
-      # FS convention: alpha == gamma, so alpha > 1 skews right.
-      scale <- 1 / alpha
-      if (z < 0) scale <- alpha
-      lp <- lc - 0.5 * (z * scale)^2
-      if (log) return(lp) else return(exp(lp))
-    }))), envir = ge)
-  assign("rFSSN_k", makeIn(quote(nimble::nimbleFunction(
-    run = function(n = integer(0), mu = double(0), sigma = double(0),
-                   alpha = double(0)) {
-      returnType(double(0))
-      a2 <- alpha * alpha
-      W <- abs(rnorm(1, 0, 1))
-      if (runif(1, 0, 1) < a2 / (1 + a2)) {
-        z <- W * alpha        # positive side, sd alpha
-      } else {
-        z <- -W / alpha       # negative side, sd 1/alpha
-      }
-      return(mu + sigma * z)
-    }))), envir = ge)
+  # dFSSN_k: build time, kernels-neonormal.R
+  # rFSSN_k: build time, kernels-neonormal.R
   # --- Batch B: FOSSEP (Fernandez-Steel skew exponential power) ---
-  assign("dFOSSEP_k", makeIn(quote(nimble::nimbleFunction(
-    run = function(x = double(0), mu = double(0), sigma = double(0),
-                   alpha = double(0), theta = double(0),
-                   log = integer(0, default = 0)) {
-      returnType(double(0))
-      z <- (x - mu) / sigma
-      az <- abs(z)
-      if (z < 0) {
-        base <- -0.5 * (alpha * az)^theta
-      } else {
-        base <- -0.5 * (az / alpha)^theta
-      }
-      lp <- base - log(sigma) + log(alpha) - log1p(alpha^2) -
-        (1 / theta) * log(2) - lgamma(1 + 1 / theta)
-      if (log) return(lp) else return(exp(lp))
-    }))), envir = ge)
-  assign("rFOSSEP_k", makeIn(quote(nimble::nimbleFunction(
-    run = function(n = integer(0), mu = double(0), sigma = double(0),
-                   alpha = double(0), theta = double(0)) {
-      returnType(double(0))
-      a2 <- alpha * alpha
-      W <- rgamma(1, shape = 1 / theta, rate = 1)
-      mag <- (2 * W)^(1 / theta)
-      if (runif(1, 0, 1) < a2 / (1 + a2)) {
-        z <- alpha * mag
-      } else {
-        z <- -mag / alpha
-      }
-      return(mu + sigma * z)
-    }))), envir = ge)
+  # dFOSSEP_k: build time, kernels-neonormal.R
+  # rFOSSEP_k: build time, kernels-neonormal.R
   # --- Batch B: FSST (Fernandez-Steel skew Student-t; t-kernel inlined) ---
-  assign("dFSST_k", makeIn(quote(nimble::nimbleFunction(
-    run = function(x = double(0), mu = double(0), sigma = double(0),
-                   alpha = double(0), nu = double(0),
-                   log = integer(0, default = 0)) {
-      returnType(double(0))
-      z <- (x - mu) / sigma
-      # FS convention: alpha == gamma, so alpha > 1 skews right.
-      tscale <- 1 / alpha
-      if (z < 0) tscale <- alpha
-      t <- z * tscale
-      tlp <- lgamma((nu + 1) / 2) - lgamma(nu / 2) -
-        0.5 * (log(nu) + 1.1447298858494002) -
-        ((nu + 1) / 2) * log1p(t * t / nu)
-      lp <- log(2) - log(sigma) - log(alpha + 1 / alpha) + tlp
-      if (log) return(lp) else return(exp(lp))
-    }))), envir = ge)
-  assign("rFSST_k", makeIn(quote(nimble::nimbleFunction(
-    run = function(n = integer(0), mu = double(0), sigma = double(0),
-                   alpha = double(0), nu = double(0)) {
-      returnType(double(0))
-      a2 <- alpha * alpha
-      Zt <- rnorm(1, 0, 1)
-      Wt <- rgamma(1, shape = nu / 2, rate = 0.5)
-      Tt <- abs(Zt * sqrt(nu / Wt))
-      if (runif(1, 0, 1) < a2 / (1 + a2)) {
-        z <- Tt * alpha
-      } else {
-        z <- -Tt / alpha
-      }
-      return(mu + sigma * z)
-    }))), envir = ge)
+  # dFSST_k: build time, kernels-neonormal.R
+  # rFSST_k: build time, kernels-neonormal.R
   # --- Batch B: JFST (Jones-Faddy skew-t; branch-free rz) ---
-  assign("dJFST_k", makeIn(quote(nimble::nimbleFunction(
-    run = function(x = double(0), mu = double(0), sigma = double(0),
-                   alpha = double(0), theta = double(0),
-                   log = integer(0, default = 0)) {
-      returnType(double(0))
-      z <- (x - mu) / sigma
-      rz <- z / sqrt(alpha + theta + z * z)
-      lbeta_at <- lgamma(alpha) + lgamma(theta) - lgamma(alpha + theta)
-      lp <- (alpha + 0.5) * log1p(rz) + (theta + 0.5) * log1p(-rz) -
-        (alpha + theta - 1) * log(2) - 0.5 * log(alpha + theta) -
-        lbeta_at - log(sigma)
-      if (log) return(lp) else return(exp(lp))
-    }))), envir = ge)
-  assign("rJFST_k", makeIn(quote(nimble::nimbleFunction(
-    run = function(n = integer(0), mu = double(0), sigma = double(0),
-                   alpha = double(0), theta = double(0)) {
-      returnType(double(0))
-      B <- rbeta(1, alpha, theta)
-      rz <- 2 * B - 1
-      z <- rz * sqrt((alpha + theta) / (1 - rz * rz))
-      return(mu + sigma * z)
-    }))), envir = ge)
+  # dJFST_k: build time, kernels-neonormal.R
+  # rJFST_k: build time, kernels-neonormal.R
   # --- Batch C: Ferreira-Steel skew multivariate Normal (A = chol(Sigma)) ---
-  assign("dSkewMvN_k", makeIn(quote(nimble::nimbleFunction(
-    run = function(x = double(1), mu = double(1), Sigma = double(2),
-                   gam = double(1), log = integer(0, default = 0)) {
-      returnType(double(0))
-      m <- length(x)
-      U <- chol(Sigma)
-      Ui <- inverse(U)
-      d <- x - mu
-      lp <- 0
-      for (j in 1:m) {
-        s <- 0
-        for (i in 1:m) s <- s + d[i] * Ui[i, j]
-        sc <- 1 / gam[j]
-        if (s < 0) sc <- gam[j]
-        lp <- lp + log(2) - log(gam[j] + 1 / gam[j]) - 0.9189385332046727 -
-          0.5 * (s * sc)^2 - log(U[j, j])
-      }
-      if (log) return(lp) else return(exp(lp))
-    }))), envir = ge)
-  assign("rSkewMvN_k", makeIn(quote(nimble::nimbleFunction(
-    run = function(n = integer(0), mu = double(1), Sigma = double(2),
-                   gam = double(1)) {
-      returnType(double(1))
-      m <- length(mu)
-      U <- chol(Sigma)
-      eps <- numeric(m)
-      for (j in 1:m) {
-        a2 <- gam[j] * gam[j]
-        W <- abs(rnorm(1, 0, 1))
-        if (runif(1, 0, 1) < a2 / (1 + a2)) eps[j] <- W * gam[j]
-        else eps[j] <- -W / gam[j]
-      }
-      out <- numeric(m)
-      for (c in 1:m) {
-        s <- 0
-        for (r in 1:m) s <- s + U[r, c] * eps[r]
-        out[c] <- mu[c] + s
-      }
-      return(out)
-    }))), envir = ge)
+  # dSkewMvN_k: build time, kernels-neonormal.R
+  # rSkewMvN_k: build time, kernels-neonormal.R
   # --- Batch C: FS skew mv Normal with estimated orthogonal factor O (m = 2) ---
   # A = O U, U = chol(Sigma), O = I - 2 v v' the Householder reflection with
   # v = (sin theta, cos theta) (FS 2007 Appendix A). Note |O| = -1 always, so
   # O = I is NOT in the FS restricted set O_2; theta = 0 gives O = diag(1, -1),
   # which equals the O = I family with gamma_2 replaced by 1/gamma_2.
-  assign("dSkewMvNO_k", makeIn(quote(nimble::nimbleFunction(
-    run = function(x = double(1), mu = double(1), Sigma = double(2),
-                   gam = double(1), theta = double(0),
-                   log = integer(0, default = 0)) {
-      returnType(double(0))
-      m <- length(x)
-      U <- chol(Sigma)
-      Ui <- inverse(U)
-      dv <- x - mu
-      w <- numeric(m)
-      for (j in 1:m) {
-        s <- 0
-        for (i in 1:m) s <- s + dv[i] * Ui[i, j]
-        w[j] <- s
-      }
-      s1 <- sin(theta)
-      c1 <- cos(theta)
-      vw <- s1 * w[1] + c1 * w[2]
-      eps <- numeric(2)
-      eps[1] <- w[1] - 2 * s1 * vw
-      eps[2] <- w[2] - 2 * c1 * vw
-      lp <- 0
-      for (j in 1:m) {
-        sc <- 1 / gam[j]
-        if (eps[j] < 0) sc <- gam[j]
-        lp <- lp + log(2) - log(gam[j] + 1 / gam[j]) - 0.9189385332046727 -
-          0.5 * (eps[j] * sc)^2 - log(U[j, j])
-      }
-      if (log) return(lp) else return(exp(lp))
-    }))), envir = ge)
-  assign("rSkewMvNO_k", makeIn(quote(nimble::nimbleFunction(
-    run = function(n = integer(0), mu = double(1), Sigma = double(2),
-                   gam = double(1), theta = double(0)) {
-      returnType(double(1))
-      m <- length(mu)
-      U <- chol(Sigma)
-      eps <- numeric(m)
-      for (j in 1:m) {
-        a2 <- gam[j] * gam[j]
-        W <- abs(rnorm(1, 0, 1))
-        if (runif(1, 0, 1) < a2 / (1 + a2)) eps[j] <- W * gam[j]
-        else eps[j] <- -W / gam[j]
-      }
-      # eta = A' eps + mu = U' O' eps + mu ; O symmetric so O' = O
-      s1 <- sin(theta)
-      c1 <- cos(theta)
-      ve <- s1 * eps[1] + c1 * eps[2]
-      oe <- numeric(2)
-      oe[1] <- eps[1] - 2 * s1 * ve
-      oe[2] <- eps[2] - 2 * c1 * ve
-      out <- numeric(m)
-      for (c in 1:m) {
-        s <- 0
-        for (r in 1:m) s <- s + U[r, c] * oe[r]
-        out[c] <- mu[c] + s
-      }
-      return(out)
-    }))), envir = ge)
+  # dSkewMvNO_k: build time, kernels-neonormal.R
+  # rSkewMvNO_k: build time, kernels-neonormal.R
   # --- Batch C: FS skew mv Normal with estimated O, general m ---
   # O = O_{th^m} ... O_{th^2} applied to w = (U')^{-1}(x - mu); the blocks are
   # applied j = 2, ..., m, which reproduces the matrix product (verified against
   # the R reference and against the m = 2 kernel).
-  assign("dSkewMvNOG_k", makeIn(quote(nimble::nimbleFunction(
-    run = function(x = double(1), mu = double(1), Sigma = double(2),
-                   gam = double(1), theta = double(1),
-                   log = integer(0, default = 0)) {
-      returnType(double(0))
-      m <- length(x)
-      U <- chol(Sigma)
-      Ui <- inverse(U)
-      dv <- x - mu
-      w <- numeric(m)
-      for (j in 1:m) {
-        s <- 0
-        for (i in 1:m) s <- s + dv[i] * Ui[i, j]
-        w[j] <- s
-      }
-      eps <- numeric(m)
-      for (i in 1:m) eps[i] <- w[i]
-      for (j in 2:m) {
-        start <- 1 + (j - 2) * (j - 1) / 2
-        v <- numeric(j)
-        cp <- 1
-        v[1] <- sin(theta[start])
-        if (j > 2) {
-          for (i in 2:(j - 1)) {
-            cp <- cp * cos(theta[start + i - 2])
-            v[i] <- cp * sin(theta[start + i - 1])
-          }
-          cp <- cp * cos(theta[start + j - 2])
-        } else {
-          cp <- cos(theta[start])
-        }
-        v[j] <- cp
-        off <- m - j
-        ve <- 0
-        for (i in 1:j) ve <- ve + v[i] * eps[off + i]
-        vv <- 0
-        for (i in 1:j) vv <- vv + v[i] * v[i]
-        for (i in 1:j) eps[off + i] <- eps[off + i] - 2 * v[i] * ve / vv
-      }
-      lp <- 0
-      for (j in 1:m) {
-        sc <- 1 / gam[j]
-        if (eps[j] < 0) sc <- gam[j]
-        lp <- lp + log(2) - log(gam[j] + 1 / gam[j]) - 0.9189385332046727 -
-          0.5 * (eps[j] * sc)^2 - log(U[j, j])
-      }
-      if (log) return(lp) else return(exp(lp))
-    }))), envir = ge)
+  # dSkewMvNOG_k: build time, kernels-neonormal.R
   # --- Batch C: FS skew mv independent-Student, estimated O, general m ---
-  assign("dSkewMvITOG_k", makeIn(quote(nimble::nimbleFunction(
-    run = function(x = double(1), mu = double(1), Sigma = double(2),
-                   gam = double(1), nu = double(1), theta = double(1),
-                   log = integer(0, default = 0)) {
-      returnType(double(0))
-      m <- length(x)
-      U <- chol(Sigma)
-      Ui <- inverse(U)
-      dv <- x - mu
-      w <- numeric(m)
-      for (j in 1:m) {
-        s <- 0
-        for (i in 1:m) s <- s + dv[i] * Ui[i, j]
-        w[j] <- s
-      }
-      eps <- numeric(m)
-      for (i in 1:m) eps[i] <- w[i]
-      for (j in 2:m) {
-        start <- 1 + (j - 2) * (j - 1) / 2
-        v <- numeric(j)
-        cp <- 1
-        v[1] <- sin(theta[start])
-        if (j > 2) {
-          for (i in 2:(j - 1)) {
-            cp <- cp * cos(theta[start + i - 2])
-            v[i] <- cp * sin(theta[start + i - 1])
-          }
-          cp <- cp * cos(theta[start + j - 2])
-        } else {
-          cp <- cos(theta[start])
-        }
-        v[j] <- cp
-        off <- m - j
-        ve <- 0
-        for (i in 1:j) ve <- ve + v[i] * eps[off + i]
-        vv <- 0
-        for (i in 1:j) vv <- vv + v[i] * v[i]
-        for (i in 1:j) eps[off + i] <- eps[off + i] - 2 * v[i] * ve / vv
-      }
-      lp <- 0
-      for (j in 1:m) {
-        sc <- 1 / gam[j]
-        if (eps[j] < 0) sc <- gam[j]
-        t <- eps[j] * sc
-        tlp <- lgamma((nu[j] + 1) / 2) - lgamma(nu[j] / 2) -
-          0.5 * (log(nu[j]) + 1.1447298858494002) -
-          ((nu[j] + 1) / 2) * log1p(t * t / nu[j])
-        lp <- lp + log(2) - log(gam[j] + 1 / gam[j]) + tlp - log(U[j, j])
-      }
-      if (log) return(lp) else return(exp(lp))
-    }))), envir = ge)
+  # dSkewMvITOG_k: build time, kernels-neonormal.R
   # --- Batch C: FS skew mv independent-Student with estimated O (m = 2) ---
-  assign("dSkewMvITO_k", makeIn(quote(nimble::nimbleFunction(
-    run = function(x = double(1), mu = double(1), Sigma = double(2),
-                   gam = double(1), nu = double(1), theta = double(0),
-                   log = integer(0, default = 0)) {
-      returnType(double(0))
-      m <- length(x)
-      U <- chol(Sigma)
-      Ui <- inverse(U)
-      dv <- x - mu
-      w <- numeric(m)
-      for (j in 1:m) {
-        s <- 0
-        for (i in 1:m) s <- s + dv[i] * Ui[i, j]
-        w[j] <- s
-      }
-      s1 <- sin(theta)
-      c1 <- cos(theta)
-      vw <- s1 * w[1] + c1 * w[2]
-      eps <- numeric(2)
-      eps[1] <- w[1] - 2 * s1 * vw
-      eps[2] <- w[2] - 2 * c1 * vw
-      lp <- 0
-      for (j in 1:m) {
-        sc <- 1 / gam[j]
-        if (eps[j] < 0) sc <- gam[j]
-        t <- eps[j] * sc
-        tlp <- lgamma((nu[j] + 1) / 2) - lgamma(nu[j] / 2) -
-          0.5 * (log(nu[j]) + 1.1447298858494002) -
-          ((nu[j] + 1) / 2) * log1p(t * t / nu[j])
-        lp <- lp + log(2) - log(gam[j] + 1 / gam[j]) + tlp - log(U[j, j])
-      }
-      if (log) return(lp) else return(exp(lp))
-    }))), envir = ge)
-  assign("rSkewMvITO_k", makeIn(quote(nimble::nimbleFunction(
-    run = function(n = integer(0), mu = double(1), Sigma = double(2),
-                   gam = double(1), nu = double(1), theta = double(0)) {
-      returnType(double(1))
-      m <- length(mu)
-      U <- chol(Sigma)
-      eps <- numeric(m)
-      for (j in 1:m) {
-        a2 <- gam[j] * gam[j]
-        Zt <- rnorm(1, 0, 1)
-        Wt <- rgamma(1, shape = nu[j] / 2, rate = 0.5)
-        Tt <- abs(Zt * sqrt(nu[j] / Wt))
-        if (runif(1, 0, 1) < a2 / (1 + a2)) eps[j] <- Tt * gam[j]
-        else eps[j] <- -Tt / gam[j]
-      }
-      s1 <- sin(theta)
-      c1 <- cos(theta)
-      ve <- s1 * eps[1] + c1 * eps[2]
-      oe <- numeric(2)
-      oe[1] <- eps[1] - 2 * s1 * ve
-      oe[2] <- eps[2] - 2 * c1 * ve
-      out <- numeric(m)
-      for (c in 1:m) {
-        s <- 0
-        for (r in 1:m) s <- s + U[r, c] * oe[r]
-        out[c] <- mu[c] + s
-      }
-      return(out)
-    }))), envir = ge)
+  # dSkewMvITO_k: build time, kernels-neonormal.R
+  # rSkewMvITO_k: build time, kernels-neonormal.R
   # --- Batch C: FS skew multivariate independent-Student (t-kernel inlined) ---
-  assign("dSkewMvIT_k", makeIn(quote(nimble::nimbleFunction(
-    run = function(x = double(1), mu = double(1), Sigma = double(2),
-                   gam = double(1), nu = double(1),
-                   log = integer(0, default = 0)) {
-      returnType(double(0))
-      m <- length(x)
-      U <- chol(Sigma)
-      Ui <- inverse(U)
-      d <- x - mu
-      lp <- 0
-      for (j in 1:m) {
-        s <- 0
-        for (i in 1:m) s <- s + d[i] * Ui[i, j]
-        sc <- 1 / gam[j]
-        if (s < 0) sc <- gam[j]
-        t <- s * sc
-        tlp <- lgamma((nu[j] + 1) / 2) - lgamma(nu[j] / 2) -
-          0.5 * (log(nu[j]) + 1.1447298858494002) -
-          ((nu[j] + 1) / 2) * log1p(t * t / nu[j])
-        lp <- lp + log(2) - log(gam[j] + 1 / gam[j]) + tlp - log(U[j, j])
-      }
-      if (log) return(lp) else return(exp(lp))
-    }))), envir = ge)
-  assign("rSkewMvIT_k", makeIn(quote(nimble::nimbleFunction(
-    run = function(n = integer(0), mu = double(1), Sigma = double(2),
-                   gam = double(1), nu = double(1)) {
-      returnType(double(1))
-      m <- length(mu)
-      U <- chol(Sigma)
-      eps <- numeric(m)
-      for (j in 1:m) {
-        a2 <- gam[j] * gam[j]
-        Zt <- rnorm(1, 0, 1)
-        Wt <- rgamma(1, shape = nu[j] / 2, rate = 0.5)
-        Tt <- abs(Zt * sqrt(nu[j] / Wt))
-        if (runif(1, 0, 1) < a2 / (1 + a2)) eps[j] <- Tt * gam[j]
-        else eps[j] <- -Tt / gam[j]
-      }
-      out <- numeric(m)
-      for (c in 1:m) {
-        s <- 0
-        for (r in 1:m) s <- s + U[r, c] * eps[r]
-        out[c] <- mu[c] + s
-      }
-      return(out)
-    }))), envir = ge)
-  assign("rMSNBurr2a_k", makeIn(quote(nimble::nimbleFunction(
-    run = function(n = integer(0), mu = double(0), sigma = double(0),
-                   alpha = double(0)) {
-      returnType(double(0))
-      if (alpha < 1e-300) {
-        lomega <- -(alpha + 1) * log(alpha) - 0.9189385332046727
-      } else {
-        lomega <- (alpha + 1) * log1p(1 / alpha) - 0.9189385332046727
-      }
-      omega <- exp(lomega); q <- 1 - runif(1)
-      lt <- log(exp(-log(q) / alpha) - 1)
-      return(mu + (sigma / omega) * (log(alpha) + lt))
-    }))), envir = ge)
+  # dSkewMvIT_k: build time, kernels-neonormal.R
+  # rSkewMvIT_k: build time, kernels-neonormal.R
+  # rMSNBurr2a_k: build time, kernels-neonormal.R
   invisible()
 }
 
 .onLoad <- function(libname, pkgname) {
-  # The MSNBurr / MSNBurr-IIa NIMBLE densities MUST be created in the global
-  # environment, not as namespace objects. A nimbleFunction created inside a
-  # non-global frame (a package namespace, or any enclosing function) fails
-  # NIMBLE C++ code generation for scalar user-defined distributions with
-  # "argument is of length zero"; the same body created at top level compiles.
-  # We therefore build them once here via eval() in globalenv(). Branch-free
+  # The scalar densities are defined at build time in kernels-neonormal.R and
+  # exported. A nimbleFunction that is merely a namespace object fails NIMBLE's
+  # C++ code generation, which resolves names on the search path -- exporting
+  # them is what makes the build-time definition work, with no global
+  # assignment. Branch-free
   # softplus for stability. Iriawan (2000); Choir (2020).
   # Register built-ins. nimixClust() resolves "normal" to the univariate or
   # multivariate spec by data shape (see .selectClusterSpec); the "normal"
@@ -728,7 +207,10 @@ listDistributions <- function() sort(ls(envir = .distRegistry))
   .nimixDefineMSNBurr()
   .nimixDefinePotts()
   if (isTRUE(.nimixState$msnburrRegistered)) return(invisible())
-  eval(quote(suppressMessages(suppressWarnings(try(nimble::registerDistributions(list(
+  # Registration used to be evaluated in globalenv() so that it could see the
+  # kernels; they are exported now, so the search path resolves them and a
+  # plain call suffices.
+  suppressMessages(suppressWarnings(try(nimble::registerDistributions(list(
     dMSNBurr_k = list(
       BUGSdist = "dMSNBurr_k(mu, sigma, alpha)",
       types = c("value = double(0)", "mu = double(0)",
@@ -803,8 +285,7 @@ listDistributions <- function() sort(ls(envir = .distRegistry))
       BUGSdist = "dSkewMvITOG_k(mu, Sigma, gam, nu, theta)",
       types = c("value = double(1)", "mu = double(1)", "Sigma = double(2)",
                 "gam = double(1)", "nu = double(1)", "theta = double(1)"),
-      discrete = FALSE))), silent = TRUE)))),
-    envir = globalenv())
+      discrete = FALSE))), silent = TRUE)))
   .nimixState$msnburrRegistered <- TRUE
   invisible()
 }
@@ -814,31 +295,9 @@ listDistributions <- function() sort(ls(envir = .distRegistry))
 # generation for the latent label node (it is invoked to simulate z), the same
 # class of failure that affects the scalar neo-normal densities. Building here,
 # in globalenv, resolves it.
-.nimixDefinePotts <- function() {
-  if (exists("rPottsNimix", envir = globalenv(), inherits = FALSE))
-    return(invisible())
-  ge <- globalenv()
-  assign("dPottsNimix", eval(quote(nimble::nimbleFunction(
-    run = function(x = double(1), beta = double(0),
-                   e1 = double(1), e2 = double(1),
-                   log = integer(0, default = 0)) {
-      returnType(double(0))
-      s <- 0
-      nE <- length(e1)
-      for (m in 1:nE) if (x[e1[m]] == x[e2[m]]) s <- s + 1
-      lp <- beta * s
-      if (log) return(lp) else return(exp(lp))
-    })), envir = ge), envir = ge)
-  assign("rPottsNimix", eval(quote(nimble::nimbleFunction(
-    run = function(n = integer(0), beta = double(0),
-                   e1 = double(1), e2 = double(1)) {
-      returnType(double(1))
-      ## Labels are always supplied as inits and updated by the Gibbs sweep;
-      ## exact Potts simulation is not needed for inference.
-      out <- numeric(length = 1)
-      return(out)
-    })), envir = ge), envir = ge)
-  invisible()
-}
+# The Potts d/r pair is defined at build time in kernels-neonormal.R (exported,
+# so NIMBLE's code generator can resolve it). Kept as a no-op so existing call
+# sites stay valid.
+.nimixDefinePotts <- function() invisible()
 
 .nimixState <- new.env(parent = emptyenv())
