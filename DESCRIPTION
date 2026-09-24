@@ -1,6 +1,6 @@
 Package: Rnimix
 Type: Package
-Title: Bayesian Mixture Clustering and Regression with NIMBLE 
+Title: Bayesian Mixture Clustering and Regression with NIMBLE
 Version: 1.5.0
 Authors@R: 
     person("Achmad Syahrul", "Choir", email = "madsyair@stis.ac.id",
