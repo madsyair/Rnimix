@@ -21,7 +21,7 @@ binderPartition(fit, S = NULL)
 - S:
 
   Optional precomputed
-  [`psm`](https://madsyair.github.io/nimix/reference/psm.md) matrix.
+  [`psm`](https://madsyair.github.io/Rnimix/reference/psm.md) matrix.
 
 ## Value
 
@@ -37,5 +37,5 @@ University Press, 201–218.
 
 ## See also
 
-[`psm`](https://madsyair.github.io/nimix/reference/psm.md),
-[`relabel`](https://madsyair.github.io/nimix/reference/relabel.md).
+[`psm`](https://madsyair.github.io/Rnimix/reference/psm.md),
+[`relabel`](https://madsyair.github.io/Rnimix/reference/relabel.md).

@@ -21,9 +21,9 @@ posteriorEpred(object, newdata = NULL, draws = 500L)
 - object:
 
   A
-  [`FitResult`](https://madsyair.github.io/nimix/reference/FitResult-class.md)
+  [`FitResult`](https://madsyair.github.io/Rnimix/reference/FitResult-class.md)
   from
-  [`nimixReg`](https://madsyair.github.io/nimix/reference/nimixReg.md).
+  [`nimixReg`](https://madsyair.github.io/Rnimix/reference/nimixReg.md).
 
 - newdata:
 
@@ -45,9 +45,9 @@ mean – measured on such a fit, the expectation came back at 0.009,
 -0.017 and -0.043 for x = -1, 0, 1, for data whose components have
 slopes +1.5 and -1.5. Nothing is wrong with the number; it is simply not
 a summary anyone wants.
-[`posteriorLinpred`](https://madsyair.github.io/nimix/reference/posteriorLinpred.md)
+[`posteriorLinpred`](https://madsyair.github.io/Rnimix/reference/posteriorLinpred.md)
 is usually the right question, and for a regime-switching fit
-[`nimixForecast`](https://madsyair.github.io/nimix/reference/nimixForecast.md)'s
+[`nimixForecast`](https://madsyair.github.io/Rnimix/reference/nimixForecast.md)'s
 `$regime` is another.
 
 The weights are the posterior allocation probabilities of the fitted
@@ -55,9 +55,9 @@ rows. With `newdata` they become the mixture weights instead, since a
 new row's component is unknown – and for `method = "hmm"` that is
 refused outright, because a regime weight is a function of time and a
 future row has no decoded regime. Project it with
-[`nimixForecast`](https://madsyair.github.io/nimix/reference/nimixForecast.md).
+[`nimixForecast`](https://madsyair.github.io/Rnimix/reference/nimixForecast.md).
 
 ## See also
 
-[`posteriorLinpred`](https://madsyair.github.io/nimix/reference/posteriorLinpred.md),
-[`posteriorPredictive`](https://madsyair.github.io/nimix/reference/posteriorPredictive.md)
+[`posteriorLinpred`](https://madsyair.github.io/Rnimix/reference/posteriorLinpred.md),
+[`posteriorPredictive`](https://madsyair.github.io/Rnimix/reference/posteriorPredictive.md)

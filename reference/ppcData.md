@@ -27,7 +27,7 @@ ppcData(fit, ndraws = 100, margin = 1L, seed = 1L)
 - seed:
 
   RNG seed passed to
-  [`posteriorPredict`](https://madsyair.github.io/nimix/reference/posteriorPredict.md).
+  [`posteriorPredict`](https://madsyair.github.io/Rnimix/reference/posteriorPredict.md).
 
 ## Value
 
@@ -35,5 +35,5 @@ A list with `y` (numeric vector) and `yrep` (`ndraws x n` matrix).
 
 ## See also
 
-[`posteriorPredict`](https://madsyair.github.io/nimix/reference/posteriorPredict.md),
-[`ppCheck`](https://madsyair.github.io/nimix/reference/ppCheck.md).
+[`posteriorPredict`](https://madsyair.github.io/Rnimix/reference/posteriorPredict.md),
+[`ppCheck`](https://madsyair.github.io/Rnimix/reference/ppCheck.md).

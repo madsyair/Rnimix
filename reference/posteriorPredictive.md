@@ -1,7 +1,7 @@
 # Draws from the posterior predictive distribution
 
 Like
-[`posteriorEpred`](https://madsyair.github.io/nimix/reference/posteriorEpred.md)
+[`posteriorEpred`](https://madsyair.github.io/Rnimix/reference/posteriorEpred.md)
 but with the residual noise added: what a new observation would actually
 look like, not merely its expectation. For a mixture this is the
 well-behaved one of the three – it is genuinely bimodal where the
@@ -19,9 +19,9 @@ posteriorPredictive(object, newdata = NULL, draws = 500L)
 - object:
 
   A
-  [`FitResult`](https://madsyair.github.io/nimix/reference/FitResult-class.md)
+  [`FitResult`](https://madsyair.github.io/Rnimix/reference/FitResult-class.md)
   from
-  [`nimixReg`](https://madsyair.github.io/nimix/reference/nimixReg.md).
+  [`nimixReg`](https://madsyair.github.io/Rnimix/reference/nimixReg.md).
 
 - newdata:
 
@@ -37,7 +37,7 @@ A `draws` x `n` matrix.
 
 ## See also
 
-[`posteriorLinpred`](https://madsyair.github.io/nimix/reference/posteriorLinpred.md),
-[`posteriorEpred`](https://madsyair.github.io/nimix/reference/posteriorEpred.md),
-[`nimixForecast`](https://madsyair.github.io/nimix/reference/nimixForecast.md)
+[`posteriorLinpred`](https://madsyair.github.io/Rnimix/reference/posteriorLinpred.md),
+[`posteriorEpred`](https://madsyair.github.io/Rnimix/reference/posteriorEpred.md),
+[`nimixForecast`](https://madsyair.github.io/Rnimix/reference/nimixForecast.md)
 for projecting a regime forward in time.

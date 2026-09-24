@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Diagnostics, partitions, and bayesplot interoperability • nimix</title>
+<title>Diagnostics, partitions, and bayesplot interoperability • Rnimix</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -23,7 +23,7 @@
 
     <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
 
-    <a class="navbar-brand me-2" href="../index.html">nimix</a>
+    <a class="navbar-brand me-2" href="../index.html">Rnimix</a>
 
     <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.0</small>
 
@@ -49,7 +49,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/madsyair/nimix/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/madsyair/Rnimix/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -65,7 +65,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Diagnostics, partitions, and bayesplot interoperability</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/madsyair/nimix/blob/main/vignettes/articles/diagnostics-interop.Rmd" class="external-link"><code>vignettes/articles/diagnostics-interop.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/madsyair/Rnimix/blob/main/vignettes/articles/diagnostics-interop.Rmd" class="external-link"><code>vignettes/articles/diagnostics-interop.Rmd</code></a></small>
       <div class="d-none name"><code>diagnostics-interop.Rmd</code></div>
     </div>
 
@@ -76,14 +76,14 @@ other half, and mixtures make it subtle. The component labels are
 exchangeable, so “component 1” means nothing across draws until you
 condition on something, and under a Dirichlet process the
 <em>number</em> of components moves too. This article shows the tools
-<code>nimix</code> provides for that, and how to hand a fit to <a href="https://mc-stan.org/bayesplot/" class="external-link"><code>bayesplot</code></a> without
+<code>Rnimix</code> provides for that, and how to hand a fit to <a href="https://mc-stan.org/bayesplot/" class="external-link"><code>bayesplot</code></a> without
 taking it on as a dependency.</p>
 <blockquote>
 <p>MCMC chunks use <code>eval = FALSE</code> (CRAN time limits); the
 printed results are from an actual run.</p>
 </blockquote>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/madsyair/nimix" class="external-link">nimix</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/madsyair/Rnimix" class="external-link">Rnimix</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">120</span>, <span class="op">-</span><span class="fl">3</span>, <span class="fl">0.8</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">90</span>, <span class="fl">0</span>, <span class="fl">0.6</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">3</span>, <span class="fl">0.8</span><span class="op">)</span><span class="op">)</span></span>
@@ -141,7 +141,7 @@ uncertainty (entries near 0.5) instead of forcing a hard assignment.</p>
 </h2>
 <p>Reaching for R-hat on <code>muTilde[1]</code> is a trap: under label
 switching that trace refers to different components in different chains,
-so the number looks plausible and means nothing. <code>nimix</code>
+so the number looks plausible and means nothing. <code>Rnimix</code>
 steers you to <strong>label-invariant functionals</strong> – the number
 of occupied clusters, the allocation entropy, and (for DPM fits) the
 concentration <code>alpha</code> – which are meaningful on raw draws and
@@ -206,7 +206,7 @@ interior.</p>
 <p>The built-in <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> methods draw with base graphics but
 return, invisibly, the tidy data frame they plotted – so you can
 reproduce or restyle any of them with ggplot2, lattice, or plotly
-without <code>nimix</code> depending on those packages.</p>
+without <code>Rnimix</code> depending on those packages.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit</span>, type <span class="op">=</span> <span class="st">"density"</span><span class="op">)</span>      <span class="co"># draws the base plot</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span>                               <span class="co"># ... and returns x / density</span></span>

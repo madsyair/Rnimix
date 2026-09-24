@@ -68,7 +68,7 @@ nimixClust(
 - prior:
 
   A named list of prior overrides passed to
-  [`defaultPrior`](https://madsyair.github.io/nimix/reference/defaultPrior.md)
+  [`defaultPrior`](https://madsyair.github.io/Rnimix/reference/defaultPrior.md)
   (univariate: `cLoc`, `nu0`; multivariate: `cLoc`, `df0`, `sigmaGuess`)
   plus, for the DPM, optional `concPrior = c(shape, rate)` for the
   concentration, or, for the finite mixture, `dirichletConc` for the
@@ -87,7 +87,7 @@ nimixClust(
   family), resetting only data and initial values. This skips
   recompilation for repeated fits (multiple seeds, multiple chains) and
   is bit-for-bit identical to a fresh compile. See
-  [`nimixClearCache`](https://madsyair.github.io/nimix/reference/nimixClearCache.md).
+  [`nimixClearCache`](https://madsyair.github.io/Rnimix/reference/nimixClearCache.md).
   Also `nchains` (default 1): run this many chains from dispersed,
   separately seeded starts (reusing the compiled model, so only the
   first chain compiles) and report multi-chain split-Rhat and effective
@@ -115,21 +115,21 @@ nimixClust(
 
   Logical; print NIMBLE's configuration and progress output. Defaults to
   `FALSE` (quiet): NIMBLE's compilation notes and the benign dCRP
-  truncation note are silenced, while nimix's own diagnostics (e.g. a
+  truncation note are silenced, while Rnimix's own diagnostics (e.g. a
   censored-posterior warning) and any error still surface. Set `TRUE` to
   see NIMBLE's configuration and a progress bar.
 
 - spatialWeights:
 
   Optional
-  [`SpatialWeightSpec`](https://madsyair.github.io/nimix/reference/SpatialWeightSpec-class.md)
+  [`SpatialWeightSpec`](https://madsyair.github.io/Rnimix/reference/SpatialWeightSpec-class.md)
   describing a neighbourhood graph on the observations (one region per
   observation). Required by, and only used with, `method = "mrf"`.
 
 ## Value
 
 A
-[`FitResult`](https://madsyair.github.io/nimix/reference/FitResult-class.md).
+[`FitResult`](https://madsyair.github.io/Rnimix/reference/FitResult-class.md).
 Call [`summary()`](https://rdrr.io/r/base/summary.html) for relabelled
 estimates, [`plot()`](https://rdrr.io/r/graphics/plot.default.html) for
 diagnostics, and [`predict()`](https://rdrr.io/r/stats/predict.html) for
@@ -161,7 +161,7 @@ fit <- nimixClust(y, K_max = 8,
                   verbose = FALSE)
 summary(fit)
 #> Relabelling MCMC output before summarising (label switching)...
-#> nimix mixture summary (engine: dpm, distribution: normal-uv)
+#> Rnimix mixture summary (engine: dpm, distribution: normal-uv)
 #> Observations: 200 (dimension d = 1)
 #> Relabelling: ECR-ITERATIVE-1 conditioned on modal K = 2 (718 draws)
 #> 
@@ -187,7 +187,7 @@ fit2 <- nimixClust(y, K = 2, method = "fixedk",
 summary(fit2)
 #> Relabelling MCMC output before summarising (label switching)...
 #> Warning: Low effective sample size for the cluster count (ESS = 0 of 1000 draws): the chain may be mixing poorly across partitions. Consider a longer run or k-means initialisation.
-#> nimix mixture summary (engine: fixedk, distribution: normal-uv)
+#> Rnimix mixture summary (engine: fixedk, distribution: normal-uv)
 #> Observations: 200 (dimension d = 1)
 #> Relabelling: ECR-ITERATIVE-1 conditioned on modal K = 2 (1000 draws)
 #> 
@@ -212,7 +212,7 @@ fitMv <- nimixClust(Y, K_max = 8,
                     verbose = FALSE)
 summary(fitMv)
 #> Relabelling MCMC output before summarising (label switching)...
-#> nimix mixture summary (engine: dpm, distribution: normal-mv)
+#> Rnimix mixture summary (engine: dpm, distribution: normal-mv)
 #> Observations: 200 (dimension d = 2)
 #> Relabelling: ECR-ITERATIVE-1 conditioned on modal K = 3 (303 draws)
 #> 

@@ -2,7 +2,7 @@
 
 Conjugate scale-mixture representation of a multivariate Student-t
 component: identical marginal to
-[`StudentTMvSpec`](https://madsyair.github.io/nimix/reference/StudentTMvSpec-class.md),
+[`StudentTMvSpec`](https://madsyair.github.io/Rnimix/reference/StudentTMvSpec-class.md),
 with conjugate Normal-Inverse-Wishart cluster updates. `df` is a fixed
 hyperparameter.
 
@@ -28,5 +28,5 @@ conjugate Normal-Inverse-Wishart prior.\]
 
 ## See also
 
-[`StudentTMvSpec`](https://madsyair.github.io/nimix/reference/StudentTMvSpec.md)
+[`StudentTMvSpec`](https://madsyair.github.io/Rnimix/reference/StudentTMvSpec.md)
 for the direct (non-conjugate) path.

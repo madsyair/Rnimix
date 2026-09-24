@@ -11,8 +11,8 @@ other with interaction strength `beta`.
 This vignette analyses **official statistics**: 2023 SAIPE state poverty
 rates (U.S. Census Bureau) on the official state contiguity graph, both
 shipped with the package
-([`?usStates2023`](https://madsyair.github.io/nimix/reference/usStates2023.md),
-[`?usStateAdj`](https://madsyair.github.io/nimix/reference/usStateAdj.md)).
+([`?usStates2023`](https://madsyair.github.io/Rnimix/reference/usStates2023.md),
+[`?usStateAdj`](https://madsyair.github.io/Rnimix/reference/usStateAdj.md)).
 The identical workflow applies to any regional official statistics –
 e.g. BPS indicators on a kabupaten/kota contiguity graph.
 
@@ -23,9 +23,9 @@ e.g. BPS indicators on a kabupaten/kota contiguity graph.
 
 ``` r
 
-library(nimix)
+library(Rnimix)
 #> Loading required package: nimble
-#> nimble version 1.4.2 is loaded.
+#> nimble version 1.4.3 is loaded.
 #> For more information on NIMBLE and a User Manual,
 #> please visit https://R-nimble.org.
 #> 
@@ -105,7 +105,7 @@ split(usStates2023$postal, zMap)
 ## Spatially clustered regressions
 
 The same field applies to
-[`nimixReg()`](https://madsyair.github.io/nimix/reference/nimixReg.md):
+[`nimixReg()`](https://madsyair.github.io/Rnimix/reference/nimixReg.md):
 regression coefficients that cluster across adjacent regions
 (e.g. growth patterns across neighbouring areas).
 

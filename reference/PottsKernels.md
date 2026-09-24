@@ -6,7 +6,7 @@ normalising constant is intractable but depends only on \\\beta\\, so
 with \\\beta\\ fixed it cancels and the unnormalised density gives exact
 MCMC for the labels; when \\\beta\\ is estimated, a pseudo-likelihood
 sampler is used instead (see
-[`MRFEngine`](https://madsyair.github.io/nimix/reference/MRFEngine-class.md)).
+[`MRFEngine`](https://madsyair.github.io/Rnimix/reference/MRFEngine-class.md)).
 
 ## Usage
 

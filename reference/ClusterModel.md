@@ -18,12 +18,12 @@ ClusterModel(data, distSpec, engine, Kmax, prior)
 - distSpec:
 
   A
-  [`DistributionSpec`](https://madsyair.github.io/nimix/reference/DistributionSpec-class.md).
+  [`DistributionSpec`](https://madsyair.github.io/Rnimix/reference/DistributionSpec-class.md).
 
 - engine:
 
   An
-  [`EngineConfig`](https://madsyair.github.io/nimix/reference/EngineConfig-class.md).
+  [`EngineConfig`](https://madsyair.github.io/Rnimix/reference/EngineConfig-class.md).
 
 - Kmax:
 

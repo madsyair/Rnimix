@@ -137,7 +137,7 @@ defaultPrior(spec, data, control = list(), ...)
 - spec:
 
   A
-  [`DistributionSpec`](https://madsyair.github.io/nimix/reference/DistributionSpec-class.md).
+  [`DistributionSpec`](https://madsyair.github.io/Rnimix/reference/DistributionSpec-class.md).
 
 - data:
 
@@ -211,7 +211,7 @@ A named list of prior hyperparameters.
   residuals, which carry the between-component variation as well as the
   within-component one. This is the multivariate face of the univariate
   problem behind
-  [`nimixReg`](https://madsyair.github.io/nimix/reference/nimixReg.md)'s
+  [`nimixReg`](https://madsyair.github.io/Rnimix/reference/nimixReg.md)'s
   `s2Guess`. Measured on two components differing only in their
   coefficients, with isotropic within-covariance: the prior mean of
   Sigma was 22.4x the truth in trace, with condition number 40 where the

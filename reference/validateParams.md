@@ -2,7 +2,7 @@
 
 Checks that a candidate parameter / prior list is internally consistent
 for a given
-[`DistributionSpec`](https://madsyair.github.io/nimix/reference/DistributionSpec-class.md).
+[`DistributionSpec`](https://madsyair.github.io/Rnimix/reference/DistributionSpec-class.md).
 Each concrete distribution must implement this.
 
 ## Usage
@@ -124,7 +124,7 @@ validateParams(spec, params, ...)
 - spec:
 
   A
-  [`DistributionSpec`](https://madsyair.github.io/nimix/reference/DistributionSpec-class.md).
+  [`DistributionSpec`](https://madsyair.github.io/Rnimix/reference/DistributionSpec-class.md).
 
 - params:
 

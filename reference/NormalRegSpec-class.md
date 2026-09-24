@@ -25,4 +25,4 @@ regressions. *Journal of Computational and Graphical Statistics*, 12(1),
 
 ## See also
 
-[`nimixReg`](https://madsyair.github.io/nimix/reference/nimixReg.md)
+[`nimixReg`](https://madsyair.github.io/Rnimix/reference/nimixReg.md)

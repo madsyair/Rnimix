@@ -2,7 +2,7 @@
 
 A conjugate scale-mixture representation of a univariate Student-t
 component: identical marginal to
-[`StudentTUvSpec`](https://madsyair.github.io/nimix/reference/StudentTUvSpec-class.md),
+[`StudentTUvSpec`](https://madsyair.github.io/Rnimix/reference/StudentTUvSpec-class.md),
 but with conjugate cluster updates because the kernel is Gaussian
 conditional on a latent per-observation precision multiplier. The
 degrees of freedom `df` are a fixed hyperparameter.
@@ -33,5 +33,5 @@ modeling using the t distribution. *JASA*, 84(408), 881–896.
 
 ## See also
 
-[`StudentTUvSpec`](https://madsyair.github.io/nimix/reference/StudentTUvSpec.md)
+[`StudentTUvSpec`](https://madsyair.github.io/Rnimix/reference/StudentTUvSpec.md)
 for the direct (non-conjugate) path to the same marginal.

@@ -46,7 +46,7 @@ spatialWeights(
 ## Value
 
 A validated
-[`SpatialWeightSpec`](https://madsyair.github.io/nimix/reference/SpatialWeightSpec-class.md).
+[`SpatialWeightSpec`](https://madsyair.github.io/Rnimix/reference/SpatialWeightSpec-class.md).
 
 ## Examples
 

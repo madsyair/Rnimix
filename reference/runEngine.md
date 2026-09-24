@@ -1,12 +1,12 @@
 # Run a mixture engine on a model (internal generic)
 
 Dispatches on the engine:
-[`DPMEngine`](https://madsyair.github.io/nimix/reference/DPMEngine-class.md)
+[`DPMEngine`](https://madsyair.github.io/Rnimix/reference/DPMEngine-class.md)
 builds a CRP model,
-[`FixedKEngine`](https://madsyair.github.io/nimix/reference/FixedKEngine-class.md)
+[`FixedKEngine`](https://madsyair.github.io/Rnimix/reference/FixedKEngine-class.md)
 builds a finite-mixture model. Returns the raw pieces used to construct
 a
-[`FitResult`](https://madsyair.github.io/nimix/reference/FitResult-class.md).
+[`FitResult`](https://madsyair.github.io/Rnimix/reference/FitResult-class.md).
 
 ## Usage
 
@@ -71,12 +71,12 @@ runEngine(
 - engine:
 
   An
-  [`EngineConfig`](https://madsyair.github.io/nimix/reference/EngineConfig-class.md).
+  [`EngineConfig`](https://madsyair.github.io/Rnimix/reference/EngineConfig-class.md).
 
 - model:
 
   A
-  [`MixtureModel`](https://madsyair.github.io/nimix/reference/MixtureModel-class.md).
+  [`MixtureModel`](https://madsyair.github.io/Rnimix/reference/MixtureModel-class.md).
 
 - mcmcControl, initMethod, seed, verbose:
 

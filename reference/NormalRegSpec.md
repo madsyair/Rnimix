@@ -11,7 +11,7 @@ NormalRegSpec()
 ## Value
 
 A
-[`NormalRegSpec`](https://madsyair.github.io/nimix/reference/NormalRegSpec-class.md).
+[`NormalRegSpec`](https://madsyair.github.io/Rnimix/reference/NormalRegSpec-class.md).
 
 ## Examples
 

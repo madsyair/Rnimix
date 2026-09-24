@@ -16,7 +16,7 @@ modelSelect(..., maxDraws = 1000L)
 - ...:
 
   Two or more clustering
-  [`FitResult`](https://madsyair.github.io/nimix/reference/FitResult-class.md)
+  [`FitResult`](https://madsyair.github.io/Rnimix/reference/FitResult-class.md)
   objects, or a single named list of them.
 
 - maxDraws:

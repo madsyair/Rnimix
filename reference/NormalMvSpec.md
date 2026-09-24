@@ -11,7 +11,7 @@ NormalMvSpec()
 ## Value
 
 A
-[`NormalMvSpec`](https://madsyair.github.io/nimix/reference/NormalMvSpec-class.md).
+[`NormalMvSpec`](https://madsyair.github.io/Rnimix/reference/NormalMvSpec-class.md).
 
 ## Examples
 

@@ -85,7 +85,7 @@ extractParamTraces(spec, samples, L, ...)
 - spec:
 
   A
-  [`DistributionSpec`](https://madsyair.github.io/nimix/reference/DistributionSpec-class.md).
+  [`DistributionSpec`](https://madsyair.github.io/Rnimix/reference/DistributionSpec-class.md).
 
 - samples:
 

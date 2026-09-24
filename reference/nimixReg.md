@@ -95,7 +95,7 @@ nimixReg(
   nowhere else in `nimixReg`. Give `K` for the number of regimes, as for
   `"fixedk"`; the regime path is marginalised out of the likelihood and
   decoded afterwards, so
-  [`viterbiPath`](https://madsyair.github.io/nimix/reference/viterbiPath.md)
+  [`viterbiPath`](https://madsyair.github.io/Rnimix/reference/viterbiPath.md)
   gives the most probable regime sequence. Currently
   `distribution = "normal"` (Gaussian) or `"poisson"` (log-link counts),
   or `"studentt"` / `"normalgamma"` (heavy-tailed), or `"binomial"`
@@ -120,7 +120,7 @@ nimixReg(
 - prior:
 
   A named list of prior overrides passed to
-  [`defaultPrior`](https://madsyair.github.io/nimix/reference/defaultPrior.md)
+  [`defaultPrior`](https://madsyair.github.io/Rnimix/reference/defaultPrior.md)
   (e.g. `g` for the g-prior factor, `nu0` for the InvGamma shape, and
   `s2Guess` for its scale – see ‘Reading the error variance’ below; with
   a multivariate response, `sigmaGuess` plays the same role for the
@@ -149,21 +149,21 @@ nimixReg(
 
   Logical; print NIMBLE's configuration and progress output. Defaults to
   `FALSE` (quiet): NIMBLE's compilation notes and the benign dCRP
-  truncation note are silenced, while nimix's own diagnostics (e.g. a
+  truncation note are silenced, while Rnimix's own diagnostics (e.g. a
   censored-posterior warning) and any error still surface. Set `TRUE` to
   see NIMBLE's configuration and a progress bar.
 
 - spatialWeights:
 
   Optional
-  [`SpatialWeightSpec`](https://madsyair.github.io/nimix/reference/SpatialWeightSpec-class.md)
+  [`SpatialWeightSpec`](https://madsyair.github.io/Rnimix/reference/SpatialWeightSpec-class.md)
   (one region per observation). Required by, and only used with,
   `method = "mrf"`.
 
 ## Value
 
 A
-[`FitResult`](https://madsyair.github.io/nimix/reference/FitResult-class.md).
+[`FitResult`](https://madsyair.github.io/Rnimix/reference/FitResult-class.md).
 [`summary()`](https://rdrr.io/r/base/summary.html) reports relabelled
 per-component regression coefficients and residual variances;
 `predict(fit, newdata)` returns the posterior predictive mean;
@@ -254,7 +254,7 @@ fit <- nimixReg(y ~ x, df, K_max = 8,
                 verbose = FALSE)
 summary(fit)
 #> Relabelling MCMC output before summarising (label switching)...
-#> nimix mixture summary (engine: dpm, distribution: normal-reg)
+#> Rnimix mixture summary (engine: dpm, distribution: normal-reg)
 #> Observations: 200 (dimension d = 1)
 #> Relabelling: ECR-ITERATIVE-1 conditioned on modal K = 2 (834 draws)
 #> 
@@ -283,7 +283,7 @@ fit2 <- nimixReg(y ~ x, df, K = 2, method = "fixedk",
 summary(fit2)
 #> Relabelling MCMC output before summarising (label switching)...
 #> Warning: Low effective sample size for the cluster count (ESS = 0 of 1000 draws): the chain may be mixing poorly across partitions. Consider a longer run or k-means initialisation.
-#> nimix mixture summary (engine: fixedk, distribution: normal-reg)
+#> Rnimix mixture summary (engine: fixedk, distribution: normal-reg)
 #> Observations: 200 (dimension d = 1)
 #> Relabelling: ECR-ITERATIVE-1 conditioned on modal K = 2 (1000 draws)
 #> 

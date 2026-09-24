@@ -4,7 +4,7 @@ For each posterior draw and each row of data, the linear predictor
 \\\eta_k = x'\beta_k\\ of *every* component – no mixing, no noise. This
 is usually the object you want from a mixture of regressions: it is what
 each regime or cluster actually predicts, which
-[`posteriorEpred`](https://madsyair.github.io/nimix/reference/posteriorEpred.md)
+[`posteriorEpred`](https://madsyair.github.io/Rnimix/reference/posteriorEpred.md)
 averages away.
 
 ## Usage
@@ -18,9 +18,9 @@ posteriorLinpred(object, newdata = NULL, transform = FALSE, draws = 500L)
 - object:
 
   A
-  [`FitResult`](https://madsyair.github.io/nimix/reference/FitResult-class.md)
+  [`FitResult`](https://madsyair.github.io/Rnimix/reference/FitResult-class.md)
   from
-  [`nimixReg`](https://madsyair.github.io/nimix/reference/nimixReg.md).
+  [`nimixReg`](https://madsyair.github.io/Rnimix/reference/nimixReg.md).
 
 - newdata:
 
@@ -52,8 +52,8 @@ coincide.
 
 ## See also
 
-[`posteriorEpred`](https://madsyair.github.io/nimix/reference/posteriorEpred.md),
-[`posteriorPredictive`](https://madsyair.github.io/nimix/reference/posteriorPredictive.md)
+[`posteriorEpred`](https://madsyair.github.io/Rnimix/reference/posteriorEpred.md),
+[`posteriorPredictive`](https://madsyair.github.io/Rnimix/reference/posteriorPredictive.md)
 
 ## Examples
 

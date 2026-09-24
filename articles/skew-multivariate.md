@@ -1,7 +1,7 @@
 # Skew multivariate clustering with an estimated orthogonal factor
 
 Real multivariate clusters are often skewed, and not along the
-coordinate axes. `nimix` implements the Ferreira & Steel (2007) skew
+coordinate axes. `Rnimix` implements the Ferreira & Steel (2007) skew
 multivariate construction, in which each component is
 
 ``` math
@@ -25,7 +25,7 @@ article uses the estimated-$`O`$ skew-Normal in three dimensions.
 
 ``` r
 
-library(nimix)
+library(Rnimix)
 
 rgen <- function(n, mu, Sigma, gamma, theta) {
   m <- length(mu)
@@ -74,7 +74,7 @@ sort(c(s$mu_1_mean))
 Here is the one thing that trips people up. The rows of $`A`$ can be
 permuted and sign-flipped without changing the density – this is label
 switching, but in the *dimension* index rather than the component index.
-`nimix` resolves it by mapping every posterior draw to a unique
+`Rnimix` resolves it by mapping every posterior draw to a unique
 canonical representative (Ferreira & Steel’s identifiability
 restriction, applied *post hoc* rather than as a sampling constraint).
 So the reported `gamma` and `O` are **canonicalised**, and to compare
@@ -110,7 +110,7 @@ shrinks fast with dimension:
 
 frac <- mean(replicate(500, {
   th <- runif(3, -pi/2, pi/2)
-  nimix:::.restriction8(orthogonalFactor(th, 3))
+  Rnimix:::.restriction8(orthogonalFactor(th, 3))
 }))
 frac
 #> [1] 0.068                   # ~7% at m = 3; ~0.7% at m = 4

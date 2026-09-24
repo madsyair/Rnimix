@@ -2,7 +2,7 @@
 
 Returns a plain 3-D array in the layout `bayesplot`'s `mcmc_*` functions
 accept natively (`iterations x chains x parameters`), so no extra
-packages are required to hand a nimix fit to
+packages are required to hand a Rnimix fit to
 [`bayesplot::mcmc_trace()`](https://mc-stan.org/bayesplot/reference/MCMC-traces.html),
 `mcmc_rhat_hist()` and friends.
 
@@ -42,9 +42,9 @@ cosmetic:
 - `"components"`:
 
   Per-component parameters *after*
-  [`relabel`](https://madsyair.github.io/nimix/reference/relabel.md).
+  [`relabel`](https://madsyair.github.io/Rnimix/reference/relabel.md).
   Refused if
-  [`relabel()`](https://madsyair.github.io/nimix/reference/relabel.md)
+  [`relabel()`](https://madsyair.github.io/Rnimix/reference/relabel.md)
   has not been run: under label switching, `muTilde[1]` names different
   components in different chains, and an R-hat computed on it looks
   valid while meaning nothing. Because relabelling conditions on the
@@ -54,6 +54,6 @@ cosmetic:
 
 ## See also
 
-[`ppcData`](https://madsyair.github.io/nimix/reference/ppcData.md),
-[`relabel`](https://madsyair.github.io/nimix/reference/relabel.md),
-[`psm`](https://madsyair.github.io/nimix/reference/psm.md).
+[`ppcData`](https://madsyair.github.io/Rnimix/reference/ppcData.md),
+[`relabel`](https://madsyair.github.io/Rnimix/reference/relabel.md),
+[`psm`](https://madsyair.github.io/Rnimix/reference/psm.md).

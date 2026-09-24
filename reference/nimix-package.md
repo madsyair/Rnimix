@@ -6,7 +6,7 @@ mixture-of-regressions through two inference engines: a Dirichlet
 Process Mixture (DPM) engine based on the Chinese Restaurant Process
 (which estimates the number of occupied components) and a fixed-K
 finite-mixture engine. It is organised around an extensible S4
-[`DistributionSpec`](https://madsyair.github.io/nimix/reference/DistributionSpec-class.md)
+[`DistributionSpec`](https://madsyair.github.io/Rnimix/reference/DistributionSpec-class.md)
 contract so that new component distributions and engines can be added
 without rewriting existing code.
 
@@ -23,9 +23,9 @@ without rewriting existing code.
 Gaussian (univariate and multivariate), Student-t and Normal-Gamma
 (heavy-tailed, univariate and multivariate), and Poisson / Binomial
 counts, for both clustering
-([`nimixClust`](https://madsyair.github.io/nimix/reference/nimixClust.md))
+([`nimixClust`](https://madsyair.github.io/Rnimix/reference/nimixClust.md))
 and regression
-([`nimixReg`](https://madsyair.github.io/nimix/reference/nimixReg.md),
+([`nimixReg`](https://madsyair.github.io/Rnimix/reference/nimixReg.md),
 including multivariate responses).
 
 ## References

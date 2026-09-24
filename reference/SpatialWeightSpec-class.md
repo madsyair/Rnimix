@@ -24,7 +24,7 @@ show(object)
 ## Details
 
 A `SpatialWeightSpec` is intentionally independent of
-[`DistributionSpec`](https://madsyair.github.io/nimix/reference/DistributionSpec-class.md):
+[`DistributionSpec`](https://madsyair.github.io/Rnimix/reference/DistributionSpec-class.md):
 the same neighbourhood structure can be paired with any registered
 component distribution.
 
@@ -39,7 +39,7 @@ component distribution.
 
   Integer matrix, one row per undirected edge with endpoints `i < j`, in
   canonical column-major order (see
-  [`getEdges`](https://madsyair.github.io/nimix/reference/getEdges.md)).
+  [`getEdges`](https://madsyair.github.io/Rnimix/reference/getEdges.md)).
   This is the canonical representation since v1.5.0; the dense matrix is
   derived on demand and refused for large graphs.
 
@@ -72,6 +72,6 @@ Dordrecht. (Queen/rook contiguity conventions, Ch. 3.)
 
 ## See also
 
-[`spatialWeights`](https://madsyair.github.io/nimix/reference/spatialWeights.md),
-[`gridAdjacency`](https://madsyair.github.io/nimix/reference/gridAdjacency.md),
-[`neighborsOf`](https://madsyair.github.io/nimix/reference/neighborsOf.md)
+[`spatialWeights`](https://madsyair.github.io/Rnimix/reference/spatialWeights.md),
+[`gridAdjacency`](https://madsyair.github.io/Rnimix/reference/gridAdjacency.md),
+[`neighborsOf`](https://madsyair.github.io/Rnimix/reference/neighborsOf.md)

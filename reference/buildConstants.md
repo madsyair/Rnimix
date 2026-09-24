@@ -133,12 +133,12 @@ buildConstants(spec, prior, n, ...)
 - spec:
 
   A
-  [`DistributionSpec`](https://madsyair.github.io/nimix/reference/DistributionSpec-class.md).
+  [`DistributionSpec`](https://madsyair.github.io/Rnimix/reference/DistributionSpec-class.md).
 
 - prior:
 
   The prior list (from
-  [`defaultPrior`](https://madsyair.github.io/nimix/reference/defaultPrior.md)).
+  [`defaultPrior`](https://madsyair.github.io/Rnimix/reference/defaultPrior.md)).
 
 - n:
 

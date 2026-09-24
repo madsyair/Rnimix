@@ -1,6 +1,6 @@
-# nimix
+# Rnimix
 
-**nimix** is a Bayesian mixture-modelling package built on top of
+**Rnimix** is a Bayesian mixture-modelling package built on top of
 [NIMBLE](https://r-nimble.org/). It provides mixture *clustering*
 (univariate and multivariate), mixtures *of regressions* (univariate and
 multivariate response), and *spatially coupled* mixtures, through an
@@ -30,7 +30,7 @@ registry currently holds **32 component distributions**.
   robust, but individual angles are large-sample quantities and the
   reported `gamma`/`O` are canonicalised (compare against canonicalised
   truth; see
-  [`?canonicaliseO`](https://madsyair.github.io/nimix/reference/canonicaliseO.md)).
+  [`?canonicaliseO`](https://madsyair.github.io/Rnimix/reference/canonicaliseO.md)).
 
 ## Inference engines
 
@@ -42,7 +42,7 @@ Selected with `method`:
   baseline for model comparison).
 - `"mrf"` — spatially coupled allocations via a Potts prior over a
   user-supplied adjacency (`spatialWeights`;
-  [`gridAdjacency()`](https://madsyair.github.io/nimix/reference/gridAdjacency.md)
+  [`gridAdjacency()`](https://madsyair.github.io/Rnimix/reference/gridAdjacency.md)
   builds regular grids). `spacetimeAdjacency(W, nTime)` expands that
   graph over time, giving **spatio-temporal** mixtures with no other
   change: on a 5x5 grid over 8 times with overlapping components, a
@@ -52,9 +52,9 @@ Selected with `method`:
   chain, the state path is marginalised out by the forward algorithm
   (measured: min ESS/sec 456 vs 144 for naive latent-state sampling),
   and exact allocation draws are recovered post hoc by FFBS – so
-  [`relabel()`](https://madsyair.github.io/nimix/reference/relabel.md),
-  [`psm()`](https://madsyair.github.io/nimix/reference/psm.md),
-  [`binderPartition()`](https://madsyair.github.io/nimix/reference/binderPartition.md)
+  [`relabel()`](https://madsyair.github.io/Rnimix/reference/relabel.md),
+  [`psm()`](https://madsyair.github.io/Rnimix/reference/psm.md),
+  [`binderPartition()`](https://madsyair.github.io/Rnimix/reference/binderPartition.md)
   and the plots work unchanged. `viterbiPath(fit)` decodes the jointly
   most probable state sequence. Emissions (univariate, complete at 13):
   Gaussian, Student-t (heavy tails), Poisson (count regimes), Binomial
@@ -88,7 +88,7 @@ All 32 families run under the dpm, fixedk and mrf engines.
 ## Post-processing and interoperability
 
 - **Component parameters:**
-  [`relabel()`](https://madsyair.github.io/nimix/reference/relabel.md)
+  [`relabel()`](https://madsyair.github.io/Rnimix/reference/relabel.md)
   (post-hoc label-switching correction via the
   [`label.switching`](https://CRAN.R-project.org/package=label.switching)
   package, conditioning on the modal number of clusters), then
@@ -96,12 +96,12 @@ All 32 families run under the dpm, fixedk and mrf engines.
   [`plot()`](https://rdrr.io/r/graphics/plot.default.html),
   [`predict()`](https://rdrr.io/r/stats/predict.html).
 - **Partitions, label-free:**
-  [`psm()`](https://madsyair.github.io/nimix/reference/psm.md)
+  [`psm()`](https://madsyair.github.io/Rnimix/reference/psm.md)
   (posterior similarity matrix) and
-  [`binderPartition()`](https://madsyair.github.io/nimix/reference/binderPartition.md)
+  [`binderPartition()`](https://madsyair.github.io/Rnimix/reference/binderPartition.md)
   (Dahl’s least-squares / expected-Binder-loss point partition) use
   *every* draw — no relabelling, no fixed `K` required. They complement
-  [`relabel()`](https://madsyair.github.io/nimix/reference/relabel.md):
+  [`relabel()`](https://madsyair.github.io/Rnimix/reference/relabel.md):
   it answers “what are the component parameters”, these answer “which
   observations belong together”.
 - **Internal validity, with an honest caveat:** `clusterValidity(fit)`
@@ -111,9 +111,9 @@ All 32 families run under the dpm, fixedk and mrf engines.
   components can be exactly the right model and still score low – use
   them to compare partitions, not to judge model adequacy.
 - **Predictive checking:**
-  [`ppCheck()`](https://madsyair.github.io/nimix/reference/ppCheck.md)
+  [`ppCheck()`](https://madsyair.github.io/Rnimix/reference/ppCheck.md)
   for tail-probability summaries;
-  [`posteriorPredict()`](https://madsyair.github.io/nimix/reference/posteriorPredict.md)
+  [`posteriorPredict()`](https://madsyair.github.io/Rnimix/reference/posteriorPredict.md)
   (or `ppCheck(..., store_yrep = TRUE)`) for the replicates themselves.
 - **bayesplot, without the dependency:** `drawsArray(fit)` returns a
   plain `iterations × chains × parameters` array that
@@ -122,35 +122,35 @@ All 32 families run under the dpm, fixedk and mrf engines.
   [`bayesplot::ppc_dens_overlay()`](https://mc-stan.org/bayesplot/reference/PPC-distributions.html)
   and friends. bayesplot sits in `Suggests` only. The adaptors enforce
   one statistical guard: per-component draws are refused before
-  [`relabel()`](https://madsyair.github.io/nimix/reference/relabel.md),
+  [`relabel()`](https://madsyair.github.io/Rnimix/reference/relabel.md),
   because under label switching an R-hat on a raw `muTilde` trace looks
   valid and means nothing — the default `"invariant"` view (cluster
   count, allocation entropy, `alpha`) is what is safe on raw draws.
 - Every `plot(fit, type = ...)` invisibly returns the tidy data frame it
-  drew, so you can replot with ggplot2/lattice/plotly without nimix
+  drew, so you can replot with ggplot2/lattice/plotly without Rnimix
   carrying those packages.
 
 ## Installation
 
-`nimix` depends on `nimble`, which compiles model code, so you need a
+`Rnimix` depends on `nimble`, which compiles model code, so you need a
 working C/C++ toolchain (Rtools on Windows, Xcode CLT on macOS,
 build-essential on Linux).
 
 ``` r
 
 # install.packages("pak")
-pak::pak("madsyair/nimix")
+pak::pak("madsyair/Rnimix")
 
 # or
 # install.packages("remotes")
-remotes::install_github("madsyair/nimix")
+remotes::install_github("madsyair/Rnimix")
 ```
 
 ## Quick start
 
 ``` r
 
-library(nimix)
+library(Rnimix)
 
 ## Univariate clustering, number of components estimated (DPM)
 set.seed(1)
@@ -200,7 +200,7 @@ summary(reg)
 ## Documentation
 
 Function reference and vignettes are published at
-<https://madsyair.github.io/nimix/>. `NEWS.md` documents each release,
+<https://madsyair.github.io/Rnimix/>. `NEWS.md` documents each release,
 including the measured numbers behind sampler-default decisions and two
 breaking-change notes (the v1.1.0 skewness-convention harmonisation,
 with its reciprocal-`alpha` migration).
@@ -213,83 +213,83 @@ GPL-3.
 
 ## Package
 
-- [`nimix`](https://madsyair.github.io/nimix/reference/nimix-package.md)
-  [`nimix-package`](https://madsyair.github.io/nimix/reference/nimix-package.md)
-  : nimix: Bayesian Mixture Clustering and Regression with NIMBLE
+- [`Rnimix`](https://madsyair.github.io/Rnimix/reference/Rnimix-package.md)
+  [`Rnimix-package`](https://madsyair.github.io/Rnimix/reference/Rnimix-package.md)
+  : Rnimix: Bayesian Mixture Clustering and Regression with NIMBLE
 
 ## Fitting functions
 
 User-facing entry points for clustering and mixture-of-regression.
 
-- [`nimixClust()`](https://madsyair.github.io/nimix/reference/nimixClust.md)
+- [`nimixClust()`](https://madsyair.github.io/Rnimix/reference/nimixClust.md)
   : Bayesian mixture clustering
-- [`nimixReg()`](https://madsyair.github.io/nimix/reference/nimixReg.md)
+- [`nimixReg()`](https://madsyair.github.io/Rnimix/reference/nimixReg.md)
   : Bayesian mixture of linear regressions
 
 ## Engines
 
 Inference engines selected via the `method` argument.
 
-- [`DPMEngine()`](https://madsyair.github.io/nimix/reference/DPMEngine.md)
+- [`DPMEngine()`](https://madsyair.github.io/Rnimix/reference/DPMEngine.md)
   : Construct a DPM engine configuration
-- [`FixedKEngine()`](https://madsyair.github.io/nimix/reference/FixedKEngine.md)
+- [`FixedKEngine()`](https://madsyair.github.io/Rnimix/reference/FixedKEngine.md)
   : Construct a fixed-K finite-mixture engine configuration
-- [`DPMEngine-class`](https://madsyair.github.io/nimix/reference/DPMEngine-class.md)
+- [`DPMEngine-class`](https://madsyair.github.io/Rnimix/reference/DPMEngine-class.md)
   : Dirichlet Process Mixture engine (native NIMBLE dCRP)
-- [`FixedKEngine-class`](https://madsyair.github.io/nimix/reference/FixedKEngine-class.md)
+- [`FixedKEngine-class`](https://madsyair.github.io/Rnimix/reference/FixedKEngine-class.md)
   : Finite-mixture engine with fixed, known K
-- [`EngineConfig-class`](https://madsyair.github.io/nimix/reference/EngineConfig-class.md)
+- [`EngineConfig-class`](https://madsyair.github.io/Rnimix/reference/EngineConfig-class.md)
   : Virtual base class for mixture sampling engines
-- [`HMMEngine()`](https://madsyair.github.io/nimix/reference/HMMEngine.md)
+- [`HMMEngine()`](https://madsyair.github.io/Rnimix/reference/HMMEngine.md)
   : Construct a hidden-Markov mixture engine configuration
 
 ## Distribution registry
 
 Register and look up component distributions by name.
 
-- [`registerDistribution()`](https://madsyair.github.io/nimix/reference/registerDistribution.md)
+- [`registerDistribution()`](https://madsyair.github.io/Rnimix/reference/registerDistribution.md)
   : Register a component distribution
-- [`getDistribution()`](https://madsyair.github.io/nimix/reference/getDistribution.md)
+- [`getDistribution()`](https://madsyair.github.io/Rnimix/reference/getDistribution.md)
   : Retrieve a registered distribution by name
-- [`listDistributions()`](https://madsyair.github.io/nimix/reference/listDistributions.md)
+- [`listDistributions()`](https://madsyair.github.io/Rnimix/reference/listDistributions.md)
   : List registered distribution names
 
 ## Clustering component specs
 
-- [`NormalUvSpec()`](https://madsyair.github.io/nimix/reference/NormalUvSpec.md)
+- [`NormalUvSpec()`](https://madsyair.github.io/Rnimix/reference/NormalUvSpec.md)
   : Construct a univariate Gaussian component spec
-- [`NormalMvSpec()`](https://madsyair.github.io/nimix/reference/NormalMvSpec.md)
+- [`NormalMvSpec()`](https://madsyair.github.io/Rnimix/reference/NormalMvSpec.md)
   : Construct a multivariate Gaussian component spec
-- [`StudentTUvSpec()`](https://madsyair.github.io/nimix/reference/StudentTUvSpec.md)
+- [`StudentTUvSpec()`](https://madsyair.github.io/Rnimix/reference/StudentTUvSpec.md)
   : Construct a univariate Student-t component spec
-- [`StudentTMvSpec()`](https://madsyair.github.io/nimix/reference/StudentTMvSpec.md)
+- [`StudentTMvSpec()`](https://madsyair.github.io/Rnimix/reference/StudentTMvSpec.md)
   : Construct a multivariate Student-t component spec
-- [`NormalGammaUvSpec()`](https://madsyair.github.io/nimix/reference/NormalGammaUvSpec.md)
+- [`NormalGammaUvSpec()`](https://madsyair.github.io/Rnimix/reference/NormalGammaUvSpec.md)
   : Construct a univariate Normal-Gamma component spec
-- [`NormalGammaMvSpec()`](https://madsyair.github.io/nimix/reference/NormalGammaMvSpec.md)
+- [`NormalGammaMvSpec()`](https://madsyair.github.io/Rnimix/reference/NormalGammaMvSpec.md)
   : Construct a multivariate Normal-Gamma component spec
-- [`PoissonSpec()`](https://madsyair.github.io/nimix/reference/PoissonSpec.md)
+- [`PoissonSpec()`](https://madsyair.github.io/Rnimix/reference/PoissonSpec.md)
   : Construct a Poisson component spec
-- [`BinomialSpec()`](https://madsyair.github.io/nimix/reference/BinomialSpec.md)
+- [`BinomialSpec()`](https://madsyair.github.io/Rnimix/reference/BinomialSpec.md)
   : Construct a Binomial component spec
 
 ## Regression component specs
 
-- [`NormalRegSpec()`](https://madsyair.github.io/nimix/reference/NormalRegSpec.md)
+- [`NormalRegSpec()`](https://madsyair.github.io/Rnimix/reference/NormalRegSpec.md)
   : Construct a Normal-linear regression component spec
-- [`StudentTRegSpec()`](https://madsyair.github.io/nimix/reference/StudentTRegSpec.md)
+- [`StudentTRegSpec()`](https://madsyair.github.io/Rnimix/reference/StudentTRegSpec.md)
   : Construct a Student-t regression component spec
-- [`NormalGammaRegSpec()`](https://madsyair.github.io/nimix/reference/NormalGammaRegSpec.md)
+- [`NormalGammaRegSpec()`](https://madsyair.github.io/Rnimix/reference/NormalGammaRegSpec.md)
   : Construct a Normal-Gamma regression component spec
-- [`PoissonRegSpec()`](https://madsyair.github.io/nimix/reference/PoissonRegSpec.md)
+- [`PoissonRegSpec()`](https://madsyair.github.io/Rnimix/reference/PoissonRegSpec.md)
   : Construct a Poisson regression component spec
-- [`BinomialRegSpec()`](https://madsyair.github.io/nimix/reference/BinomialRegSpec.md)
+- [`BinomialRegSpec()`](https://madsyair.github.io/Rnimix/reference/BinomialRegSpec.md)
   : Construct a Binomial regression component spec
-- [`NormalMvRegSpec()`](https://madsyair.github.io/nimix/reference/NormalMvRegSpec.md)
+- [`NormalMvRegSpec()`](https://madsyair.github.io/Rnimix/reference/NormalMvRegSpec.md)
   : Construct a multivariate-response Normal regression spec
-- [`StudentTMvRegSpec()`](https://madsyair.github.io/nimix/reference/StudentTMvRegSpec.md)
+- [`StudentTMvRegSpec()`](https://madsyair.github.io/Rnimix/reference/StudentTMvRegSpec.md)
   : Construct a multivariate-response Student-t regression spec
-- [`NormalGammaMvRegSpec()`](https://madsyair.github.io/nimix/reference/NormalGammaMvRegSpec.md)
+- [`NormalGammaMvRegSpec()`](https://madsyair.github.io/Rnimix/reference/NormalGammaMvRegSpec.md)
   : Construct a multivariate-response Normal-Gamma regression spec
 
 ## Neo-normal regression component specs
@@ -299,23 +299,23 @@ is a linear predictor, with per-component scale and shape. Available
 across the fixed-K, DPM, and HMM (Markov-switching) engines, with random
 effects under fixed-K and DPM.
 
-- [`MSNBurrRegSpec()`](https://madsyair.github.io/nimix/reference/MSNBurrRegSpec-class.md)
+- [`MSNBurrRegSpec()`](https://madsyair.github.io/Rnimix/reference/MSNBurrRegSpec-class.md)
   : MSNBurr regression specification
-- [`MSNBurr2aRegSpec()`](https://madsyair.github.io/nimix/reference/MSNBurr2aRegSpec-class.md)
+- [`MSNBurr2aRegSpec()`](https://madsyair.github.io/Rnimix/reference/MSNBurr2aRegSpec-class.md)
   : MSNBurr-IIa regression specification
-- [`GMSNBurrRegSpec()`](https://madsyair.github.io/nimix/reference/GMSNBurrRegSpec-class.md)
+- [`GMSNBurrRegSpec()`](https://madsyair.github.io/Rnimix/reference/GMSNBurrRegSpec-class.md)
   : GMSNBurr regression specification
-- [`FSSNRegSpec()`](https://madsyair.github.io/nimix/reference/FSSNRegSpec-class.md)
+- [`FSSNRegSpec()`](https://madsyair.github.io/Rnimix/reference/FSSNRegSpec-class.md)
   : FSSN regression specification
-- [`FSSTRegSpec()`](https://madsyair.github.io/nimix/reference/FSSTRegSpec-class.md)
+- [`FSSTRegSpec()`](https://madsyair.github.io/Rnimix/reference/FSSTRegSpec-class.md)
   : FSST regression specification
-- [`SEPRegSpec()`](https://madsyair.github.io/nimix/reference/SEPRegSpec-class.md)
+- [`SEPRegSpec()`](https://madsyair.github.io/Rnimix/reference/SEPRegSpec-class.md)
   : SEP regression specification
-- [`LEPRegSpec()`](https://madsyair.github.io/nimix/reference/LEPRegSpec-class.md)
+- [`LEPRegSpec()`](https://madsyair.github.io/Rnimix/reference/LEPRegSpec-class.md)
   : LEP regression specification
-- [`FOSSEPRegSpec()`](https://madsyair.github.io/nimix/reference/FOSSEPRegSpec-class.md)
+- [`FOSSEPRegSpec()`](https://madsyair.github.io/Rnimix/reference/FOSSEPRegSpec-class.md)
   : FOSSEP regression specification
-- [`JFSTRegSpec()`](https://madsyair.github.io/nimix/reference/JFSTRegSpec-class.md)
+- [`JFSTRegSpec()`](https://madsyair.github.io/Rnimix/reference/JFSTRegSpec-class.md)
   : JFST regression specification
 
 ## Extension API (generics)
@@ -323,39 +323,39 @@ effects under fixed-K and DPM.
 The public S4 contract a component spec implements so a new family plugs
 into every engine without engine edits.
 
-- [`buildModelCode()`](https://madsyair.github.io/nimix/reference/buildModelCode.md)
+- [`buildModelCode()`](https://madsyair.github.io/Rnimix/reference/buildModelCode.md)
   : Build the NIMBLE model code for a (distribution, engine) pair
-- [`defaultPrior()`](https://madsyair.github.io/nimix/reference/defaultPrior.md)
+- [`defaultPrior()`](https://madsyair.github.io/Rnimix/reference/defaultPrior.md)
   : Build a data-scaled default prior for a distribution
-- [`validateParams()`](https://madsyair.github.io/nimix/reference/validateParams.md)
+- [`validateParams()`](https://madsyair.github.io/Rnimix/reference/validateParams.md)
   : Validate component parameters or a prior specification
-- [`customizeSamplers()`](https://madsyair.github.io/nimix/reference/customizeSamplers.md)
+- [`customizeSamplers()`](https://madsyair.github.io/Rnimix/reference/customizeSamplers.md)
   : Customise MCMC samplers for a component spec
-- [`relabel()`](https://madsyair.github.io/nimix/reference/relabel.md) :
-  Correct label switching in a fitted mixture
-- [`psm()`](https://madsyair.github.io/nimix/reference/psm.md) :
+- [`relabel()`](https://madsyair.github.io/Rnimix/reference/relabel.md)
+  : Correct label switching in a fitted mixture
+- [`psm()`](https://madsyair.github.io/Rnimix/reference/psm.md) :
   Posterior similarity matrix
-- [`binderPartition()`](https://madsyair.github.io/nimix/reference/binderPartition.md)
+- [`binderPartition()`](https://madsyair.github.io/Rnimix/reference/binderPartition.md)
   : Binder-loss point partition (Dahl's least-squares criterion)
-- [`plotClusterMap()`](https://madsyair.github.io/nimix/reference/plotClusterMap.md)
+- [`plotClusterMap()`](https://madsyair.github.io/Rnimix/reference/plotClusterMap.md)
   : Map the clusters of a spatial mixture fit
-- [`clusterValidity()`](https://madsyair.github.io/nimix/reference/clusterValidity.md)
+- [`clusterValidity()`](https://madsyair.github.io/Rnimix/reference/clusterValidity.md)
   : Internal validity indices for a fitted clustering
-- [`viterbiPath()`](https://madsyair.github.io/nimix/reference/viterbiPath.md)
+- [`viterbiPath()`](https://madsyair.github.io/Rnimix/reference/viterbiPath.md)
   : Most probable state path of a hidden-Markov mixture fit
-- [`nimixForecast()`](https://madsyair.github.io/nimix/reference/nimixForecast.md)
+- [`nimixForecast()`](https://madsyair.github.io/Rnimix/reference/nimixForecast.md)
   : Forecast ahead from a regime-switching (HMM) fit
-- [`posteriorLinpred()`](https://madsyair.github.io/nimix/reference/posteriorLinpred.md)
+- [`posteriorLinpred()`](https://madsyair.github.io/Rnimix/reference/posteriorLinpred.md)
   : Per-component linear predictors
-- [`posteriorEpred()`](https://madsyair.github.io/nimix/reference/posteriorEpred.md)
+- [`posteriorEpred()`](https://madsyair.github.io/Rnimix/reference/posteriorEpred.md)
   : Expected value of the posterior predictive
-- [`posteriorPredictive()`](https://madsyair.github.io/nimix/reference/posteriorPredictive.md)
+- [`posteriorPredictive()`](https://madsyair.github.io/Rnimix/reference/posteriorPredictive.md)
   : Draws from the posterior predictive distribution
-- [`isRegressionSpec()`](https://madsyair.github.io/nimix/reference/isRegressionSpec.md)
+- [`isRegressionSpec()`](https://madsyair.github.io/Rnimix/reference/isRegressionSpec.md)
   : Is this a regression component spec?
-- [`linkInv()`](https://madsyair.github.io/nimix/reference/linkInv.md) :
-  Inverse link for a regression component
-- [`responseRng()`](https://madsyair.github.io/nimix/reference/responseRng.md)
+- [`linkInv()`](https://madsyair.github.io/Rnimix/reference/linkInv.md)
+  : Inverse link for a regression component
+- [`responseRng()`](https://madsyair.github.io/Rnimix/reference/responseRng.md)
   : Draw a response given linear predictors and error scale
 
 ## S4 class definitions
@@ -364,51 +364,51 @@ Virtual base classes, model/result containers, and the class behind each
 component spec. Most users work through the constructor functions above;
 these document the underlying S4 classes.
 
-- [`DistributionSpec-class`](https://madsyair.github.io/nimix/reference/DistributionSpec-class.md)
+- [`DistributionSpec-class`](https://madsyair.github.io/Rnimix/reference/DistributionSpec-class.md)
   : Virtual base class for mixture component distributions
-- [`MixtureModel-class`](https://madsyair.github.io/nimix/reference/MixtureModel-class.md)
+- [`MixtureModel-class`](https://madsyair.github.io/Rnimix/reference/MixtureModel-class.md)
   : Virtual base class for mixture models
-- [`ClusterModel-class`](https://madsyair.github.io/nimix/reference/ClusterModel-class.md)
+- [`ClusterModel-class`](https://madsyair.github.io/Rnimix/reference/ClusterModel-class.md)
   : Mixture clustering model (for nimixClust)
-- [`RegressionMixModel-class`](https://madsyair.github.io/nimix/reference/RegressionMixModel-class.md)
+- [`RegressionMixModel-class`](https://madsyair.github.io/Rnimix/reference/RegressionMixModel-class.md)
   : Mixture-of-regressions model (for nimixReg)
-- [`show(`*`<FitResult>`*`)`](https://madsyair.github.io/nimix/reference/FitResult-class.md)
-  [`summary(`*`<FitResult>`*`)`](https://madsyair.github.io/nimix/reference/FitResult-class.md)
-  [`plot(`*`<FitResult>`*`,`*`<missing>`*`)`](https://madsyair.github.io/nimix/reference/FitResult-class.md)
-  [`predict(`*`<FitResult>`*`)`](https://madsyair.github.io/nimix/reference/FitResult-class.md)
-  : Fitted nimix mixture result
-- [`NormalUvSpec-class`](https://madsyair.github.io/nimix/reference/NormalUvSpec-class.md)
+- [`show(`*`<FitResult>`*`)`](https://madsyair.github.io/Rnimix/reference/FitResult-class.md)
+  [`summary(`*`<FitResult>`*`)`](https://madsyair.github.io/Rnimix/reference/FitResult-class.md)
+  [`plot(`*`<FitResult>`*`,`*`<missing>`*`)`](https://madsyair.github.io/Rnimix/reference/FitResult-class.md)
+  [`predict(`*`<FitResult>`*`)`](https://madsyair.github.io/Rnimix/reference/FitResult-class.md)
+  : Fitted Rnimix mixture result
+- [`NormalUvSpec-class`](https://madsyair.github.io/Rnimix/reference/NormalUvSpec-class.md)
   : Univariate Gaussian component specification
-- [`NormalMvSpec-class`](https://madsyair.github.io/nimix/reference/NormalMvSpec-class.md)
+- [`NormalMvSpec-class`](https://madsyair.github.io/Rnimix/reference/NormalMvSpec-class.md)
   : Multivariate Gaussian component specification
-- [`StudentTUvSpec-class`](https://madsyair.github.io/nimix/reference/StudentTUvSpec-class.md)
+- [`StudentTUvSpec-class`](https://madsyair.github.io/Rnimix/reference/StudentTUvSpec-class.md)
   : Univariate Student-t component specification
-- [`StudentTMvSpec-class`](https://madsyair.github.io/nimix/reference/StudentTMvSpec-class.md)
+- [`StudentTMvSpec-class`](https://madsyair.github.io/Rnimix/reference/StudentTMvSpec-class.md)
   : Multivariate Student-t component specification (direct density)
-- [`NormalGammaUvSpec-class`](https://madsyair.github.io/nimix/reference/NormalGammaUvSpec-class.md)
+- [`NormalGammaUvSpec-class`](https://madsyair.github.io/Rnimix/reference/NormalGammaUvSpec-class.md)
   : Univariate Normal-Gamma (scale-mixture Student-t) component
   specification
-- [`NormalGammaMvSpec-class`](https://madsyair.github.io/nimix/reference/NormalGammaMvSpec-class.md)
+- [`NormalGammaMvSpec-class`](https://madsyair.github.io/Rnimix/reference/NormalGammaMvSpec-class.md)
   : Multivariate Normal-Gamma (scale-mixture multivariate-t) component
-- [`PoissonSpec-class`](https://madsyair.github.io/nimix/reference/PoissonSpec-class.md)
+- [`PoissonSpec-class`](https://madsyair.github.io/Rnimix/reference/PoissonSpec-class.md)
   : Poisson count component specification
-- [`BinomialSpec-class`](https://madsyair.github.io/nimix/reference/BinomialSpec-class.md)
+- [`BinomialSpec-class`](https://madsyair.github.io/Rnimix/reference/BinomialSpec-class.md)
   : Binomial count component specification
-- [`NormalRegSpec-class`](https://madsyair.github.io/nimix/reference/NormalRegSpec-class.md)
+- [`NormalRegSpec-class`](https://madsyair.github.io/Rnimix/reference/NormalRegSpec-class.md)
   : Normal-linear regression component specification
-- [`StudentTRegSpec-class`](https://madsyair.github.io/nimix/reference/StudentTRegSpec-class.md)
+- [`StudentTRegSpec-class`](https://madsyair.github.io/Rnimix/reference/StudentTRegSpec-class.md)
   : Student-t mixture regression component (direct t density)
-- [`NormalGammaRegSpec-class`](https://madsyair.github.io/nimix/reference/NormalGammaRegSpec-class.md)
+- [`NormalGammaRegSpec-class`](https://madsyair.github.io/Rnimix/reference/NormalGammaRegSpec-class.md)
   : Normal-Gamma mixture regression component (conjugate scale-mixture)
-- [`PoissonRegSpec-class`](https://madsyair.github.io/nimix/reference/PoissonRegSpec-class.md)
+- [`PoissonRegSpec-class`](https://madsyair.github.io/Rnimix/reference/PoissonRegSpec-class.md)
   : Poisson GLM regression component (log link)
-- [`BinomialRegSpec-class`](https://madsyair.github.io/nimix/reference/BinomialRegSpec-class.md)
+- [`BinomialRegSpec-class`](https://madsyair.github.io/Rnimix/reference/BinomialRegSpec-class.md)
   : Binomial GLM regression component (logit link)
-- [`NormalMvRegSpec-class`](https://madsyair.github.io/nimix/reference/NormalMvRegSpec-class.md)
+- [`NormalMvRegSpec-class`](https://madsyair.github.io/Rnimix/reference/NormalMvRegSpec-class.md)
   : Multivariate-response Normal mixture regression
-- [`StudentTMvRegSpec-class`](https://madsyair.github.io/nimix/reference/StudentTMvRegSpec-class.md)
+- [`StudentTMvRegSpec-class`](https://madsyair.github.io/Rnimix/reference/StudentTMvRegSpec-class.md)
   : Multivariate-response Student-t mixture regression (direct density)
-- [`NormalGammaMvRegSpec-class`](https://madsyair.github.io/nimix/reference/NormalGammaMvRegSpec-class.md)
+- [`NormalGammaMvRegSpec-class`](https://madsyair.github.io/Rnimix/reference/NormalGammaMvRegSpec-class.md)
   : Multivariate-response Normal-Gamma mixture regression (scale
   mixture)
 
@@ -416,107 +416,107 @@ these document the underlying S4 classes.
 
 Skew-capable MSNBurr families (Iriawan 2000; Choir 2020).
 
-- [`MSNBurrUvSpec()`](https://madsyair.github.io/nimix/reference/MSNBurrUvSpec-class.md)
+- [`MSNBurrUvSpec()`](https://madsyair.github.io/Rnimix/reference/MSNBurrUvSpec-class.md)
   : MSNBurr mixture components (neo-normal, left-skew capable)
-- [`MSNBurr2aUvSpec()`](https://madsyair.github.io/nimix/reference/MSNBurr2aUvSpec-class.md)
+- [`MSNBurr2aUvSpec()`](https://madsyair.github.io/Rnimix/reference/MSNBurr2aUvSpec-class.md)
   : MSNBurr-IIa mixture components (neo-normal, right-skew capable)
-- [`GMSNBurrUvSpec()`](https://madsyair.github.io/nimix/reference/GMSNBurrUvSpec-class.md)
+- [`GMSNBurrUvSpec()`](https://madsyair.github.io/Rnimix/reference/GMSNBurrUvSpec-class.md)
   : GMSNBurr mixture components (generalized neo-normal)
-- [`SEPUvSpec()`](https://madsyair.github.io/nimix/reference/SEPUvSpec-class.md)
+- [`SEPUvSpec()`](https://madsyair.github.io/Rnimix/reference/SEPUvSpec-class.md)
   : SEP mixture components (symmetric exponential power)
-- [`LEPUvSpec()`](https://madsyair.github.io/nimix/reference/LEPUvSpec-class.md)
+- [`LEPUvSpec()`](https://madsyair.github.io/Rnimix/reference/LEPUvSpec-class.md)
   : LEP mixture components (exponential power, alternative
   parameterisation)
-- [`FSSNUvSpec()`](https://madsyair.github.io/nimix/reference/FSSNUvSpec-class.md)
+- [`FSSNUvSpec()`](https://madsyair.github.io/Rnimix/reference/FSSNUvSpec-class.md)
   : FSSN mixture components (Fernandez-Steel skew Normal)
-- [`FOSSEPUvSpec()`](https://madsyair.github.io/nimix/reference/FOSSEPUvSpec-class.md)
+- [`FOSSEPUvSpec()`](https://madsyair.github.io/Rnimix/reference/FOSSEPUvSpec-class.md)
   : FOSSEP mixture components (Fernandez-Steel skew exponential power)
-- [`FSSTUvSpec()`](https://madsyair.github.io/nimix/reference/FSSTUvSpec-class.md)
+- [`FSSTUvSpec()`](https://madsyair.github.io/Rnimix/reference/FSSTUvSpec-class.md)
   : FSST mixture components (Fernandez-Steel skew Student-t)
-- [`JFSTUvSpec()`](https://madsyair.github.io/nimix/reference/JFSTUvSpec-class.md)
+- [`JFSTUvSpec()`](https://madsyair.github.io/Rnimix/reference/JFSTUvSpec-class.md)
   : JFST mixture components (Jones-Faddy skew-t)
-- [`SkewNormalMvSpec()`](https://madsyair.github.io/nimix/reference/SkewNormalMvSpec-class.md)
+- [`SkewNormalMvSpec()`](https://madsyair.github.io/Rnimix/reference/SkewNormalMvSpec-class.md)
   : Skew multivariate Normal mixture components (Ferreira-Steel)
-- [`SkewIStudentMvSpec()`](https://madsyair.github.io/nimix/reference/SkewIStudentMvSpec-class.md)
+- [`SkewIStudentMvSpec()`](https://madsyair.github.io/Rnimix/reference/SkewIStudentMvSpec-class.md)
   : Skew multivariate independent-Student mixture components
   (Ferreira-Steel)
-- [`SkewNormalMvOSpec()`](https://madsyair.github.io/nimix/reference/SkewNormalMvOSpec-class.md)
+- [`SkewNormalMvOSpec()`](https://madsyair.github.io/Rnimix/reference/SkewNormalMvOSpec-class.md)
   : Skew multivariate Normal components with estimated orthogonal factor
-- [`SkewIStudentMvOSpec()`](https://madsyair.github.io/nimix/reference/SkewIStudentMvOSpec-class.md)
+- [`SkewIStudentMvOSpec()`](https://madsyair.github.io/Rnimix/reference/SkewIStudentMvOSpec-class.md)
   : Skew mv independent-Student components with estimated orthogonal
   factor
-- [`SkewNormalMvOGenSpec()`](https://madsyair.github.io/nimix/reference/SkewNormalMvOGenSpec-class.md)
+- [`SkewNormalMvOGenSpec()`](https://madsyair.github.io/Rnimix/reference/SkewNormalMvOGenSpec-class.md)
   : Skew multivariate Normal components with estimated O, general
   dimension
-- [`SkewIStudentMvOGenSpec()`](https://madsyair.github.io/nimix/reference/SkewIStudentMvOGenSpec-class.md)
+- [`SkewIStudentMvOGenSpec()`](https://madsyair.github.io/Rnimix/reference/SkewIStudentMvOGenSpec-class.md)
   : Skew mv independent-Student components with estimated O, general
   dimension
-- [`orthogonalFactor()`](https://madsyair.github.io/nimix/reference/orthogonalFactor.md)
+- [`orthogonalFactor()`](https://madsyair.github.io/Rnimix/reference/orthogonalFactor.md)
   : Orthogonal factor from Householder angles
-- [`canonicaliseO()`](https://madsyair.github.io/nimix/reference/canonicaliseO.md)
+- [`canonicaliseO()`](https://madsyair.github.io/Rnimix/reference/canonicaliseO.md)
   : Canonical representative of an FS orthogonal factor
 
 ## Neo-normal distribution functions
 
 Numerically stable density, distribution, quantile, and RNG.
 
-- [`dmsnburr()`](https://madsyair.github.io/nimix/reference/msnburr-distribution.md)
-  [`pmsnburr()`](https://madsyair.github.io/nimix/reference/msnburr-distribution.md)
-  [`qmsnburr()`](https://madsyair.github.io/nimix/reference/msnburr-distribution.md)
-  [`rmsnburr()`](https://madsyair.github.io/nimix/reference/msnburr-distribution.md)
+- [`dmsnburr()`](https://madsyair.github.io/Rnimix/reference/msnburr-distribution.md)
+  [`pmsnburr()`](https://madsyair.github.io/Rnimix/reference/msnburr-distribution.md)
+  [`qmsnburr()`](https://madsyair.github.io/Rnimix/reference/msnburr-distribution.md)
+  [`rmsnburr()`](https://madsyair.github.io/Rnimix/reference/msnburr-distribution.md)
   : MSNBurr Distribution
-- [`dmsnburr2a()`](https://madsyair.github.io/nimix/reference/msnburr2a-distribution.md)
-  [`pmsnburr2a()`](https://madsyair.github.io/nimix/reference/msnburr2a-distribution.md)
-  [`qmsnburr2a()`](https://madsyair.github.io/nimix/reference/msnburr2a-distribution.md)
-  [`rmsnburr2a()`](https://madsyair.github.io/nimix/reference/msnburr2a-distribution.md)
+- [`dmsnburr2a()`](https://madsyair.github.io/Rnimix/reference/msnburr2a-distribution.md)
+  [`pmsnburr2a()`](https://madsyair.github.io/Rnimix/reference/msnburr2a-distribution.md)
+  [`qmsnburr2a()`](https://madsyair.github.io/Rnimix/reference/msnburr2a-distribution.md)
+  [`rmsnburr2a()`](https://madsyair.github.io/Rnimix/reference/msnburr2a-distribution.md)
   : MSNBurr-IIa Distribution
-- [`dgmsnburr()`](https://madsyair.github.io/nimix/reference/gmsnburr-distribution.md)
-  [`pgmsnburr()`](https://madsyair.github.io/nimix/reference/gmsnburr-distribution.md)
-  [`qgmsnburr()`](https://madsyair.github.io/nimix/reference/gmsnburr-distribution.md)
-  [`rgmsnburr()`](https://madsyair.github.io/nimix/reference/gmsnburr-distribution.md)
+- [`dgmsnburr()`](https://madsyair.github.io/Rnimix/reference/gmsnburr-distribution.md)
+  [`pgmsnburr()`](https://madsyair.github.io/Rnimix/reference/gmsnburr-distribution.md)
+  [`qgmsnburr()`](https://madsyair.github.io/Rnimix/reference/gmsnburr-distribution.md)
+  [`rgmsnburr()`](https://madsyair.github.io/Rnimix/reference/gmsnburr-distribution.md)
   : GMSNBurr Distribution
-- [`dsep()`](https://madsyair.github.io/nimix/reference/sep-distribution.md)
-  [`psep()`](https://madsyair.github.io/nimix/reference/sep-distribution.md)
-  [`qsep()`](https://madsyair.github.io/nimix/reference/sep-distribution.md)
-  [`rsep()`](https://madsyair.github.io/nimix/reference/sep-distribution.md)
+- [`dsep()`](https://madsyair.github.io/Rnimix/reference/sep-distribution.md)
+  [`psep()`](https://madsyair.github.io/Rnimix/reference/sep-distribution.md)
+  [`qsep()`](https://madsyair.github.io/Rnimix/reference/sep-distribution.md)
+  [`rsep()`](https://madsyair.github.io/Rnimix/reference/sep-distribution.md)
   : Subbotin Exponential Power (SEP) Distribution
-- [`dlep()`](https://madsyair.github.io/nimix/reference/lep-distribution.md)
-  [`plep()`](https://madsyair.github.io/nimix/reference/lep-distribution.md)
-  [`qlep()`](https://madsyair.github.io/nimix/reference/lep-distribution.md)
-  [`rlep()`](https://madsyair.github.io/nimix/reference/lep-distribution.md)
+- [`dlep()`](https://madsyair.github.io/Rnimix/reference/lep-distribution.md)
+  [`plep()`](https://madsyair.github.io/Rnimix/reference/lep-distribution.md)
+  [`qlep()`](https://madsyair.github.io/Rnimix/reference/lep-distribution.md)
+  [`rlep()`](https://madsyair.github.io/Rnimix/reference/lep-distribution.md)
   : Lunetta Exponential Power Distribution
-- [`dfssn()`](https://madsyair.github.io/nimix/reference/fssn-distribution.md)
-  [`pfssn()`](https://madsyair.github.io/nimix/reference/fssn-distribution.md)
-  [`qfssn()`](https://madsyair.github.io/nimix/reference/fssn-distribution.md)
-  [`rfssn()`](https://madsyair.github.io/nimix/reference/fssn-distribution.md)
+- [`dfssn()`](https://madsyair.github.io/Rnimix/reference/fssn-distribution.md)
+  [`pfssn()`](https://madsyair.github.io/Rnimix/reference/fssn-distribution.md)
+  [`qfssn()`](https://madsyair.github.io/Rnimix/reference/fssn-distribution.md)
+  [`rfssn()`](https://madsyair.github.io/Rnimix/reference/fssn-distribution.md)
   : Fernandez-Steel Skew Normal Distribution
-- [`dfossep()`](https://madsyair.github.io/nimix/reference/fossep-distribution.md)
-  [`pfossep()`](https://madsyair.github.io/nimix/reference/fossep-distribution.md)
-  [`qfossep()`](https://madsyair.github.io/nimix/reference/fossep-distribution.md)
-  [`rfossep()`](https://madsyair.github.io/nimix/reference/fossep-distribution.md)
+- [`dfossep()`](https://madsyair.github.io/Rnimix/reference/fossep-distribution.md)
+  [`pfossep()`](https://madsyair.github.io/Rnimix/reference/fossep-distribution.md)
+  [`qfossep()`](https://madsyair.github.io/Rnimix/reference/fossep-distribution.md)
+  [`rfossep()`](https://madsyair.github.io/Rnimix/reference/fossep-distribution.md)
   : Fernandez-Osiewalski-Steel Skew Exponential Power Distribution
-- [`dfsst()`](https://madsyair.github.io/nimix/reference/fsst-distribution.md)
-  [`pfsst()`](https://madsyair.github.io/nimix/reference/fsst-distribution.md)
-  [`qfsst()`](https://madsyair.github.io/nimix/reference/fsst-distribution.md)
-  [`rfsst()`](https://madsyair.github.io/nimix/reference/fsst-distribution.md)
+- [`dfsst()`](https://madsyair.github.io/Rnimix/reference/fsst-distribution.md)
+  [`pfsst()`](https://madsyair.github.io/Rnimix/reference/fsst-distribution.md)
+  [`qfsst()`](https://madsyair.github.io/Rnimix/reference/fsst-distribution.md)
+  [`rfsst()`](https://madsyair.github.io/Rnimix/reference/fsst-distribution.md)
   : Fernandez-Steel Skew t Distribution
-- [`djfst()`](https://madsyair.github.io/nimix/reference/jfst-distribution.md)
-  [`pjfst()`](https://madsyair.github.io/nimix/reference/jfst-distribution.md)
-  [`qjfst()`](https://madsyair.github.io/nimix/reference/jfst-distribution.md)
-  [`rjfst()`](https://madsyair.github.io/nimix/reference/jfst-distribution.md)
+- [`djfst()`](https://madsyair.github.io/Rnimix/reference/jfst-distribution.md)
+  [`pjfst()`](https://madsyair.github.io/Rnimix/reference/jfst-distribution.md)
+  [`qjfst()`](https://madsyair.github.io/Rnimix/reference/jfst-distribution.md)
+  [`rjfst()`](https://madsyair.github.io/Rnimix/reference/jfst-distribution.md)
   : Jones-Faddy Skew-t Distribution
-- [`dskewmvn()`](https://madsyair.github.io/nimix/reference/skewnormal-mv-distribution.md)
-  [`rskewmvn()`](https://madsyair.github.io/nimix/reference/skewnormal-mv-distribution.md)
+- [`dskewmvn()`](https://madsyair.github.io/Rnimix/reference/skewnormal-mv-distribution.md)
+  [`rskewmvn()`](https://madsyair.github.io/Rnimix/reference/skewnormal-mv-distribution.md)
   : Ferreira-Steel skew multivariate Normal
-- [`dskewmvit()`](https://madsyair.github.io/nimix/reference/skewistudent-mv-distribution.md)
-  [`rskewmvit()`](https://madsyair.github.io/nimix/reference/skewistudent-mv-distribution.md)
+- [`dskewmvit()`](https://madsyair.github.io/Rnimix/reference/skewistudent-mv-distribution.md)
+  [`rskewmvit()`](https://madsyair.github.io/Rnimix/reference/skewistudent-mv-distribution.md)
   : Ferreira-Steel skew multivariate independent-Student
-- [`dskewmvno()`](https://madsyair.github.io/nimix/reference/skewnormal-mv-o-distribution.md)
-  [`rskewmvno()`](https://madsyair.github.io/nimix/reference/skewnormal-mv-o-distribution.md)
+- [`dskewmvno()`](https://madsyair.github.io/Rnimix/reference/skewnormal-mv-o-distribution.md)
+  [`rskewmvno()`](https://madsyair.github.io/Rnimix/reference/skewnormal-mv-o-distribution.md)
   : Ferreira-Steel skew multivariate Normal with estimated orthogonal
   factor
-- [`dskewmvito()`](https://madsyair.github.io/nimix/reference/skewistudent-mv-o-distribution.md)
-  [`rskewmvito()`](https://madsyair.github.io/nimix/reference/skewistudent-mv-o-distribution.md)
+- [`dskewmvito()`](https://madsyair.github.io/Rnimix/reference/skewistudent-mv-o-distribution.md)
+  [`rskewmvito()`](https://madsyair.github.io/Rnimix/reference/skewistudent-mv-o-distribution.md)
   : Ferreira-Steel skew multivariate independent-Student with estimated
   O
 
@@ -525,28 +525,28 @@ Numerically stable density, distribution, quantile, and RNG.
 Spatially constrained mixtures whose labels follow a Potts / Markov
 random field over a neighbourhood graph.
 
-- [`spatialWeights()`](https://madsyair.github.io/nimix/reference/spatialWeights.md)
+- [`spatialWeights()`](https://madsyair.github.io/Rnimix/reference/spatialWeights.md)
   : Construct a SpatialWeightSpec from an adjacency/weight matrix
-- [`gridAdjacency()`](https://madsyair.github.io/nimix/reference/gridAdjacency.md)
+- [`gridAdjacency()`](https://madsyair.github.io/Rnimix/reference/gridAdjacency.md)
   : Rook/queen contiguity on a regular grid
-- [`spacetimeAdjacency()`](https://madsyair.github.io/nimix/reference/spacetimeAdjacency.md)
+- [`spacetimeAdjacency()`](https://madsyair.github.io/Rnimix/reference/spacetimeAdjacency.md)
   : Build a space-time adjacency for spatio-temporal mixtures
-- [`nRegions()`](https://madsyair.github.io/nimix/reference/nRegions.md)
+- [`nRegions()`](https://madsyair.github.io/Rnimix/reference/nRegions.md)
   : Number of regions in a spatial weight structure
-- [`getAdjacency()`](https://madsyair.github.io/nimix/reference/getAdjacency.md)
+- [`getAdjacency()`](https://madsyair.github.io/Rnimix/reference/getAdjacency.md)
   : Adjacency matrix of a spatial weight structure
-- [`neighborsOf()`](https://madsyair.github.io/nimix/reference/neighborsOf.md)
+- [`neighborsOf()`](https://madsyair.github.io/Rnimix/reference/neighborsOf.md)
   : Neighbours of one region
-- [`MRFEngine()`](https://madsyair.github.io/nimix/reference/MRFEngine-class.md)
+- [`MRFEngine()`](https://madsyair.github.io/Rnimix/reference/MRFEngine-class.md)
   : Markov random field engine (spatially constrained finite mixture)
-- [`show(`*`<SpatialWeightSpec>`*`)`](https://madsyair.github.io/nimix/reference/SpatialWeightSpec-class.md)
+- [`show(`*`<SpatialWeightSpec>`*`)`](https://madsyair.github.io/Rnimix/reference/SpatialWeightSpec-class.md)
   : Spatial neighbourhood structure for spatially constrained mixtures
 
 ## Model containers
 
-- [`ClusterModel()`](https://madsyair.github.io/nimix/reference/ClusterModel.md)
+- [`ClusterModel()`](https://madsyair.github.io/Rnimix/reference/ClusterModel.md)
   : Construct a ClusterModel
-- [`RegressionMixModel()`](https://madsyair.github.io/nimix/reference/RegressionMixModel.md)
+- [`RegressionMixModel()`](https://madsyair.github.io/Rnimix/reference/RegressionMixModel.md)
   : Construct a RegressionMixModel
 
 ## Bayesian workflow
@@ -554,88 +554,88 @@ random field over a neighbourhood graph.
 Posterior predictive checks; convergence diagnostics print via
 summary().
 
-- [`ppCheck()`](https://madsyair.github.io/nimix/reference/ppCheck.md) :
-  Posterior predictive check
-- [`priorPredictive()`](https://madsyair.github.io/nimix/reference/priorPredictive.md)
+- [`ppCheck()`](https://madsyair.github.io/Rnimix/reference/ppCheck.md)
+  : Posterior predictive check
+- [`priorPredictive()`](https://madsyair.github.io/Rnimix/reference/priorPredictive.md)
   : Prior predictive check for a mixture model
-- [`posteriorPredict()`](https://madsyair.github.io/nimix/reference/posteriorPredict.md)
+- [`posteriorPredict()`](https://madsyair.github.io/Rnimix/reference/posteriorPredict.md)
   : Posterior predictive replicates
-- [`drawsArray()`](https://madsyair.github.io/nimix/reference/drawsArray.md)
+- [`drawsArray()`](https://madsyair.github.io/Rnimix/reference/drawsArray.md)
   : Posterior draws as an iterations x chains x parameters array
-- [`ppcData()`](https://madsyair.github.io/nimix/reference/ppcData.md) :
-  Observed data and posterior predictive replicates for graphical PPC
+- [`ppcData()`](https://madsyair.github.io/Rnimix/reference/ppcData.md)
+  : Observed data and posterior predictive replicates for graphical PPC
 
 ## Extension API (engine-facing generics)
 
 The remaining S4 contract a component spec implements so a new family
 plugs into every engine.
 
-- [`runEngine()`](https://madsyair.github.io/nimix/reference/runEngine.md)
+- [`runEngine()`](https://madsyair.github.io/Rnimix/reference/runEngine.md)
   : Run a mixture engine on a model (internal generic)
 
-- [`componentDensity()`](https://madsyair.github.io/nimix/reference/componentDensity.md)
+- [`componentDensity()`](https://madsyair.github.io/Rnimix/reference/componentDensity.md)
   : Component density evaluator (R-level, for posterior predictive
   checks)
 
-- [`simulateParams()`](https://madsyair.github.io/nimix/reference/simulateParams.md)
+- [`simulateParams()`](https://madsyair.github.io/Rnimix/reference/simulateParams.md)
   : Simulate component parameters from a prior (for inits / recovery
   tests)
 
-- [`componentInits()`](https://madsyair.github.io/nimix/reference/componentInits.md)
+- [`componentInits()`](https://madsyair.github.io/Rnimix/reference/componentInits.md)
   : Build dispersed initial values (engine-agnostic)
 
-- [`buildConstants()`](https://madsyair.github.io/nimix/reference/buildConstants.md)
+- [`buildConstants()`](https://madsyair.github.io/Rnimix/reference/buildConstants.md)
   : Assemble distribution-specific NIMBLE constants for the DPM engine
 
-- [`buildDataList()`](https://madsyair.github.io/nimix/reference/buildDataList.md)
+- [`buildDataList()`](https://madsyair.github.io/Rnimix/reference/buildDataList.md)
   :
 
   Shape the observed data into the NIMBLE `data` list
 
-- [`extractParamTraces()`](https://madsyair.github.io/nimix/reference/extractParamTraces.md)
+- [`extractParamTraces()`](https://madsyair.github.io/Rnimix/reference/extractParamTraces.md)
   : Parse raw cluster-parameter traces from the MCMC sample matrix
 
-- [`relabelComponents()`](https://madsyair.github.io/nimix/reference/relabelComponents.md)
+- [`relabelComponents()`](https://madsyair.github.io/Rnimix/reference/relabelComponents.md)
   : Permute cluster parameters and build the relabelled component
   summary
 
 ## Utilities
 
-- [`nimixClearCache()`](https://madsyair.github.io/nimix/reference/nimixClearCache.md)
+- [`nimixClearCache()`](https://madsyair.github.io/Rnimix/reference/nimixClearCache.md)
   : Clear the compiled-model cache
-- [`dmvt_nimix()`](https://madsyair.github.io/nimix/reference/dmvt_nimix.md)
-  [`rmvt_nimix()`](https://madsyair.github.io/nimix/reference/dmvt_nimix.md)
+- [`dmvt_nimix()`](https://madsyair.github.io/Rnimix/reference/dmvt_nimix.md)
+  [`rmvt_nimix()`](https://madsyair.github.io/Rnimix/reference/dmvt_nimix.md)
   : Multivariate Student-t log density (nimbleFunction)
-- [`getEdges()`](https://madsyair.github.io/nimix/reference/getEdges.md)
+- [`getEdges()`](https://madsyair.github.io/Rnimix/reference/getEdges.md)
   : Edge list of a spatial weight structure
 
 ## Datasets
 
-- [`usStates2023`](https://madsyair.github.io/nimix/reference/usStates2023.md)
+- [`usStates2023`](https://madsyair.github.io/Rnimix/reference/usStates2023.md)
   : US state poverty and income, 2023 (SAIPE official estimates)
-- [`usStateAdj`](https://madsyair.github.io/nimix/reference/usStateAdj.md)
+- [`usStateAdj`](https://madsyair.github.io/Rnimix/reference/usStateAdj.md)
   : Contiguity of the 48 contiguous US states + DC (official derivation)
-- [`wdi2022`](https://madsyair.github.io/nimix/reference/wdi2022.md) :
+- [`wdi2022`](https://madsyair.github.io/Rnimix/reference/wdi2022.md) :
   World Development Indicators, 2022 (country-level official statistics)
 
 ## Cluster profiling
 
-- [`clusterProfile()`](https://madsyair.github.io/nimix/reference/clusterProfile.md)
+- [`clusterProfile()`](https://madsyair.github.io/Rnimix/reference/clusterProfile.md)
   : Profile the clusters of a fitted mixture
 
 ## Model selection and ensembling
 
 Predictive comparison (WAIC / PSIS-LOO) and weighted ensembles.
 
-- [`nimixWAIC()`](https://madsyair.github.io/nimix/reference/nimixWAIC.md)
+- [`nimixWAIC()`](https://madsyair.github.io/Rnimix/reference/nimixWAIC.md)
   : WAIC for a fitted mixture
-- [`nimixLOO()`](https://madsyair.github.io/nimix/reference/nimixLOO.md)
+- [`nimixLOO()`](https://madsyair.github.io/Rnimix/reference/nimixLOO.md)
   : PSIS-LOO for a fitted mixture
-- [`modelSelect()`](https://madsyair.github.io/nimix/reference/modelSelect.md)
+- [`modelSelect()`](https://madsyair.github.io/Rnimix/reference/modelSelect.md)
   : Compare mixture models by predictive fit
-- [`ensembleFit()`](https://madsyair.github.io/nimix/reference/ensembleFit.md)
+- [`ensembleFit()`](https://madsyair.github.io/Rnimix/reference/ensembleFit.md)
   : Ensemble several fitted mixtures
-- [`predict(`*`<nimixEnsemble>`*`)`](https://madsyair.github.io/nimix/reference/predict-nimixEnsemble.md)
+- [`predict(`*`<nimixEnsemble>`*`)`](https://madsyair.github.io/Rnimix/reference/predict-nimixEnsemble.md)
   : Weighted predictive density from a mixture ensemble
 
 # Articles
@@ -643,23 +643,23 @@ Predictive comparison (WAIC / PSIS-LOO) and weighted ensembles.
 ### Get started
 
 - [Univariate mixture clustering with the DPM
-  engine](https://madsyair.github.io/nimix/articles/mixClust-univariate.md):
+  engine](https://madsyair.github.io/Rnimix/articles/mixClust-univariate.md):
 
 ### More worked examples
 
 Rendered on the website only (not shipped as package vignettes).
 
 - [Multivariate mixture clustering with the DPM
-  engine](https://madsyair.github.io/nimix/articles/mixClust-multivariate.md):
+  engine](https://madsyair.github.io/Rnimix/articles/mixClust-multivariate.md):
 - [Mixtures of linear
-  regressions](https://madsyair.github.io/nimix/articles/mixReg.md):
+  regressions](https://madsyair.github.io/Rnimix/articles/mixReg.md):
 - [Heavy tails: Student-t vs Normal-Gamma
-  components](https://madsyair.github.io/nimix/articles/normal-gamma-vs-studentt.md):
+  components](https://madsyair.github.io/Rnimix/articles/normal-gamma-vs-studentt.md):
 - [Spatially constrained mixtures (MRF
-  engine)](https://madsyair.github.io/nimix/articles/spatial-mixture.md):
+  engine)](https://madsyair.github.io/Rnimix/articles/spatial-mixture.md):
 - [Skew multivariate clustering with an estimated orthogonal
-  factor](https://madsyair.github.io/nimix/articles/skew-multivariate.md):
+  factor](https://madsyair.github.io/Rnimix/articles/skew-multivariate.md):
 - [Regime switching in time series: the hidden-Markov
-  engine](https://madsyair.github.io/nimix/articles/hmm-timeseries.md):
+  engine](https://madsyair.github.io/Rnimix/articles/hmm-timeseries.md):
 - [Diagnostics, partitions, and bayesplot
-  interoperability](https://madsyair.github.io/nimix/articles/diagnostics-interop.md):
+  interoperability](https://madsyair.github.io/Rnimix/articles/diagnostics-interop.md):

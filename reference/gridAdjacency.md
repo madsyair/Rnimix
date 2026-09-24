@@ -1,7 +1,7 @@
 # Rook/queen contiguity on a regular grid
 
 Builds the
-[`SpatialWeightSpec`](https://madsyair.github.io/nimix/reference/SpatialWeightSpec-class.md)
+[`SpatialWeightSpec`](https://madsyair.github.io/Rnimix/reference/SpatialWeightSpec-class.md)
 of a `nrow` x `ncol` regular lattice under rook (shared edge) or queen
 (shared edge or corner) contiguity – the standard conventions of spatial
 econometrics (Anselin 1988, Ch. 3). Regular grids with known block
@@ -27,7 +27,7 @@ gridAdjacency(nrow, ncol, contiguity = c("rook", "queen"))
 ## Value
 
 A
-[`SpatialWeightSpec`](https://madsyair.github.io/nimix/reference/SpatialWeightSpec-class.md)
+[`SpatialWeightSpec`](https://madsyair.github.io/Rnimix/reference/SpatialWeightSpec-class.md)
 with regions named `"r<i>c<j>"` in row-major order.
 
 ## Examples

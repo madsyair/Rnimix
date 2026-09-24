@@ -4,7 +4,7 @@ Simulates replicated data sets from the fitted mixture, conditionally on
 each retained draw's parameters and allocations, and returns them – the
 input that graphical posterior predictive checking (for example
 `bayesplot::ppc_dens_overlay(y, yrep)`) consumes.
-[`ppCheck`](https://madsyair.github.io/nimix/reference/ppCheck.md)
+[`ppCheck`](https://madsyair.github.io/Rnimix/reference/ppCheck.md)
 computes summary-statistic tail probabilities from the same replicates;
 this function exposes the replicates themselves.
 
@@ -36,5 +36,5 @@ iterations were used.
 
 ## See also
 
-[`ppCheck`](https://madsyair.github.io/nimix/reference/ppCheck.md) for
+[`ppCheck`](https://madsyair.github.io/Rnimix/reference/ppCheck.md) for
 tail-probability summaries.

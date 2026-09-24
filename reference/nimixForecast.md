@@ -23,7 +23,7 @@ nimixForecast(
 - object:
 
   A
-  [`FitResult`](https://madsyair.github.io/nimix/reference/FitResult-class.md)
+  [`FitResult`](https://madsyair.github.io/Rnimix/reference/FitResult-class.md)
   fitted with `method = "hmm"`.
 
 - h:
@@ -94,7 +94,7 @@ convenient, not faithful; `$draws` is the honest object, and `$regime`
 usually answers the question actually being asked ("which regime will we
 be in"), degrading far more gracefully than any forecast of `y`.
 
-For a trend or a seasonal pattern this is the wrong model; nimix does
+For a trend or a seasonal pattern this is the wrong model; Rnimix does
 not fit those.
 
 ## Autoregression
@@ -118,7 +118,7 @@ do not have to.
 
 ## See also
 
-[`viterbiPath`](https://madsyair.github.io/nimix/reference/viterbiPath.md)
+[`viterbiPath`](https://madsyair.github.io/Rnimix/reference/viterbiPath.md)
 
 ## Examples
 

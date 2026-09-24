@@ -1,6 +1,6 @@
 # Heavy tails: Student-t vs Normal-Gamma components
 
-nimix offers two mathematically equivalent heavy-tailed component
+Rnimix offers two mathematically equivalent heavy-tailed component
 families:
 
 - `distribution = "studentt"` – the Student-t density used **directly**
@@ -14,8 +14,8 @@ families:
 The marginal model is identical; the *computational* behaviour is not,
 and that trade-off is the point of this vignette. We compare both on
 official statistics: log GDP per capita from `wdi2022`
-([`?wdi2022`](https://madsyair.github.io/nimix/reference/wdi2022.md)), a
-skewed, heavy-tailed cross-country distribution.
+([`?wdi2022`](https://madsyair.github.io/Rnimix/reference/wdi2022.md)),
+a skewed, heavy-tailed cross-country distribution.
 
 > MCMC chunks use `eval = FALSE` (CRAN time limits); printed results are
 > from an actual run on this data.
@@ -24,9 +24,9 @@ skewed, heavy-tailed cross-country distribution.
 
 ``` r
 
-library(nimix)
+library(Rnimix)
 #> Loading required package: nimble
-#> nimble version 1.4.2 is loaded.
+#> nimble version 1.4.3 is loaded.
 #> For more information on NIMBLE and a User Manual,
 #> please visit https://R-nimble.org.
 #> 

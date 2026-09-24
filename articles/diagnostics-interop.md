@@ -4,7 +4,7 @@ Fitting a mixture is half the job; interpreting the posterior is the
 other half, and mixtures make it subtle. The component labels are
 exchangeable, so “component 1” means nothing across draws until you
 condition on something, and under a Dirichlet process the *number* of
-components moves too. This article shows the tools `nimix` provides for
+components moves too. This article shows the tools `Rnimix` provides for
 that, and how to hand a fit to
 [`bayesplot`](https://mc-stan.org/bayesplot/) without taking it on as a
 dependency.
@@ -14,7 +14,7 @@ dependency.
 
 ``` r
 
-library(nimix)
+library(Rnimix)
 
 set.seed(1)
 y <- c(rnorm(120, -3, 0.8), rnorm(90, 0, 0.6), rnorm(120, 3, 0.8))
@@ -30,7 +30,7 @@ they need different summaries.
 
 **“What are the component parameters?”** This needs labels aligned
 across draws, which
-[`relabel()`](https://madsyair.github.io/nimix/reference/relabel.md)
+[`relabel()`](https://madsyair.github.io/Rnimix/reference/relabel.md)
 does by conditioning on the modal number of occupied clusters and then
 applying a label-switching algorithm. Conditioning is unavoidable – a
 draw with four clusters has no “third component” to align with a draw
@@ -52,10 +52,10 @@ Here only about half the draws sit at the modal `K = 3`; the rest inform
 labels at all, because co-clustering is label-invariant: whether
 observations *i* and *j* share a component does not depend on what that
 component is called.
-[`psm()`](https://madsyair.github.io/nimix/reference/psm.md) estimates
+[`psm()`](https://madsyair.github.io/Rnimix/reference/psm.md) estimates
 the posterior similarity matrix $`S_{ij} = \Pr(z_i = z_j \mid y)`$ from
 **every** draw, and
-[`binderPartition()`](https://madsyair.github.io/nimix/reference/binderPartition.md)
+[`binderPartition()`](https://madsyair.github.io/Rnimix/reference/binderPartition.md)
 returns the point partition minimising the expected Binder (1978) loss –
 equivalently, Dahl’s (2006) least-squares criterion, searched over the
 partitions the chain actually visited.
@@ -72,13 +72,13 @@ table(bp$partition)
 #> 118  98 114
 ```
 
-No [`relabel()`](https://madsyair.github.io/nimix/reference/relabel.md)
+No [`relabel()`](https://madsyair.github.io/Rnimix/reference/relabel.md)
 call was needed, and no draws were discarded. The two tools are
 complements: use
-[`relabel()`](https://madsyair.github.io/nimix/reference/relabel.md) for
-component parameters,
-[`psm()`](https://madsyair.github.io/nimix/reference/psm.md)/
-[`binderPartition()`](https://madsyair.github.io/nimix/reference/binderPartition.md)
+[`relabel()`](https://madsyair.github.io/Rnimix/reference/relabel.md)
+for component parameters,
+[`psm()`](https://madsyair.github.io/Rnimix/reference/psm.md)/
+[`binderPartition()`](https://madsyair.github.io/Rnimix/reference/binderPartition.md)
 for the partition. On overlapping clusters the similarity matrix is
 especially informative, because it reports genuine allocation
 uncertainty (entries near 0.5) instead of forcing a hard assignment.
@@ -87,13 +87,13 @@ uncertainty (entries near 0.5) instead of forcing a hard assignment.
 
 Reaching for R-hat on `muTilde[1]` is a trap: under label switching that
 trace refers to different components in different chains, so the number
-looks plausible and means nothing. `nimix` steers you to
+looks plausible and means nothing. `Rnimix` steers you to
 **label-invariant functionals** – the number of occupied clusters, the
 allocation entropy, and (for DPM fits) the concentration `alpha` – which
 are meaningful on raw draws and retain the per-chain structure that
 R-hat needs.
 
-[`drawsArray()`](https://madsyair.github.io/nimix/reference/drawsArray.md)
+[`drawsArray()`](https://madsyair.github.io/Rnimix/reference/drawsArray.md)
 returns these in the `iterations x chains x parameters` layout that
 `bayesplot`’s `mcmc_*` functions accept natively:
 
@@ -140,13 +140,13 @@ pd <- ppcData(fit, ndraws = 50)       # list(y, yrep)
 ppc_dens_overlay(pd$y, pd$yrep)
 ```
 
-[`ppcData()`](https://madsyair.github.io/nimix/reference/ppcData.md)
+[`ppcData()`](https://madsyair.github.io/Rnimix/reference/ppcData.md)
 wraps
-[`posteriorPredict()`](https://madsyair.github.io/nimix/reference/posteriorPredict.md),
+[`posteriorPredict()`](https://madsyair.github.io/Rnimix/reference/posteriorPredict.md),
 which returns the replicated data sets themselves (an `ndraws x n`
 matrix, or `ndraws x n x d` for multivariate fits). For a numeric
 summary rather than a plot,
-[`ppCheck()`](https://madsyair.github.io/nimix/reference/ppCheck.md)
+[`ppCheck()`](https://madsyair.github.io/Rnimix/reference/ppCheck.md)
 gives tail-area posterior predictive p-values for a set of statistics:
 
 ``` r
@@ -167,7 +167,8 @@ statistic of the observed data – here all four are comfortably interior.
 The built-in [`plot()`](https://rdrr.io/r/graphics/plot.default.html)
 methods draw with base graphics but return, invisibly, the tidy data
 frame they plotted – so you can reproduce or restyle any of them with
-ggplot2, lattice, or plotly without `nimix` depending on those packages.
+ggplot2, lattice, or plotly without `Rnimix` depending on those
+packages.
 
 ``` r
 
@@ -179,7 +180,7 @@ ggplot(d, aes(x, density)) + geom_line()
 
 ## A secondary lens: internal validity indices
 
-[`clusterValidity()`](https://madsyair.github.io/nimix/reference/clusterValidity.md)
+[`clusterValidity()`](https://madsyair.github.io/Rnimix/reference/clusterValidity.md)
 bridges the Binder partition to the classical internal indices –
 silhouette width (`cluster`), Dunn and Calinski-Harabasz (`fpc`), both
 Suggests-only:
@@ -205,13 +206,13 @@ clusterValidity(fit_overlap)
 ```
 
 Low silhouette here is not evidence against the model –
-[`ppCheck()`](https://madsyair.github.io/nimix/reference/ppCheck.md) on
+[`ppCheck()`](https://madsyair.github.io/Rnimix/reference/ppCheck.md) on
 the same fit is clean. Use these indices to compare partitions (say,
 across candidate `K`) on an equal footing, and keep model adequacy
 questions with
-[`ppCheck()`](https://madsyair.github.io/nimix/reference/ppCheck.md) and
-[`psm()`](https://madsyair.github.io/nimix/reference/psm.md). For the
-full battery beyond these three, both backends accept the pair this
+[`ppCheck()`](https://madsyair.github.io/Rnimix/reference/ppCheck.md)
+and [`psm()`](https://madsyair.github.io/Rnimix/reference/psm.md). For
+the full battery beyond these three, both backends accept the pair this
 function assembles:
 `fpc::cluster.stats(dist(fit@data), binderPartition(fit)$partition)`.
 

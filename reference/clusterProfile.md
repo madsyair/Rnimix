@@ -20,9 +20,9 @@ clusterProfile(fit, variables = NULL)
 - fit:
 
   A
-  [`FitResult`](https://madsyair.github.io/nimix/reference/FitResult-class.md)
+  [`FitResult`](https://madsyair.github.io/Rnimix/reference/FitResult-class.md)
   from
-  [`nimixClust`](https://madsyair.github.io/nimix/reference/nimixClust.md).
+  [`nimixClust`](https://madsyair.github.io/Rnimix/reference/nimixClust.md).
   Regression fits are also accepted: the response and each covariate are
   profiled per regime.
 
@@ -42,7 +42,7 @@ A data.frame with one row per occupied cluster and columns `cluster`,
 Cluster ids are recoded 1, 2, ... by descending size (largest cluster
 first). Because mixture labels are not identified, this data-side
 profile does not require
-[`relabel`](https://madsyair.github.io/nimix/reference/relabel.md): it
+[`relabel`](https://madsyair.github.io/Rnimix/reference/relabel.md): it
 summarises a partition, and a partition is label-invariant.
 
 ## See also

@@ -25,5 +25,5 @@ modeling using the t distribution. *JASA*, 84(408), 881–896.
 
 ## See also
 
-[`NormalGammaUvSpec`](https://madsyair.github.io/nimix/reference/NormalGammaUvSpec.md)
+[`NormalGammaUvSpec`](https://madsyair.github.io/Rnimix/reference/NormalGammaUvSpec.md)
 for the conjugate scale-mixture path to the same marginal distribution.

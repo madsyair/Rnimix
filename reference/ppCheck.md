@@ -26,9 +26,9 @@ ppCheck(
 - fit:
 
   A
-  [`FitResult`](https://madsyair.github.io/nimix/reference/FitResult-class.md)
+  [`FitResult`](https://madsyair.github.io/Rnimix/reference/FitResult-class.md)
   from
-  [`nimixClust`](https://madsyair.github.io/nimix/reference/nimixClust.md).
+  [`nimixClust`](https://madsyair.github.io/Rnimix/reference/nimixClust.md).
 
 - nrep:
 

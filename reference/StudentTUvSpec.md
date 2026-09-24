@@ -11,7 +11,7 @@ StudentTUvSpec()
 ## Value
 
 A
-[`StudentTUvSpec`](https://madsyair.github.io/nimix/reference/StudentTUvSpec-class.md).
+[`StudentTUvSpec`](https://madsyair.github.io/Rnimix/reference/StudentTUvSpec-class.md).
 
 ## Examples
 

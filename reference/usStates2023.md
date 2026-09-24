@@ -4,7 +4,7 @@ Median household income and the all-ages poverty rate for the 48
 contiguous United States plus the District of Columbia (49 regions),
 from the U.S. Census Bureau's Small Area Income and Poverty Estimates
 (SAIPE) programme, 2023 vintage. Used together with
-[`usStateAdj`](https://madsyair.github.io/nimix/reference/usStateAdj.md)
+[`usStateAdj`](https://madsyair.github.io/Rnimix/reference/usStateAdj.md)
 by the spatial-mixture vignette.
 
 ## Usage

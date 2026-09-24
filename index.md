@@ -1,6 +1,6 @@
-# nimix
+# Rnimix
 
-**nimix** is a Bayesian mixture-modelling package built on top of
+**Rnimix** is a Bayesian mixture-modelling package built on top of
 [NIMBLE](https://r-nimble.org/). It provides mixture *clustering*
 (univariate and multivariate), mixtures *of regressions* (univariate and
 multivariate response), and *spatially coupled* mixtures, through an
@@ -30,7 +30,7 @@ registry currently holds **32 component distributions**.
   robust, but individual angles are large-sample quantities and the
   reported `gamma`/`O` are canonicalised (compare against canonicalised
   truth; see
-  [`?canonicaliseO`](https://madsyair.github.io/nimix/reference/canonicaliseO.md)).
+  [`?canonicaliseO`](https://madsyair.github.io/Rnimix/reference/canonicaliseO.md)).
 
 ## Inference engines
 
@@ -42,7 +42,7 @@ Selected with `method`:
   baseline for model comparison).
 - `"mrf"` — spatially coupled allocations via a Potts prior over a
   user-supplied adjacency (`spatialWeights`;
-  [`gridAdjacency()`](https://madsyair.github.io/nimix/reference/gridAdjacency.md)
+  [`gridAdjacency()`](https://madsyair.github.io/Rnimix/reference/gridAdjacency.md)
   builds regular grids). `spacetimeAdjacency(W, nTime)` expands that
   graph over time, giving **spatio-temporal** mixtures with no other
   change: on a 5x5 grid over 8 times with overlapping components, a
@@ -52,9 +52,9 @@ Selected with `method`:
   chain, the state path is marginalised out by the forward algorithm
   (measured: min ESS/sec 456 vs 144 for naive latent-state sampling),
   and exact allocation draws are recovered post hoc by FFBS – so
-  [`relabel()`](https://madsyair.github.io/nimix/reference/relabel.md),
-  [`psm()`](https://madsyair.github.io/nimix/reference/psm.md),
-  [`binderPartition()`](https://madsyair.github.io/nimix/reference/binderPartition.md)
+  [`relabel()`](https://madsyair.github.io/Rnimix/reference/relabel.md),
+  [`psm()`](https://madsyair.github.io/Rnimix/reference/psm.md),
+  [`binderPartition()`](https://madsyair.github.io/Rnimix/reference/binderPartition.md)
   and the plots work unchanged. `viterbiPath(fit)` decodes the jointly
   most probable state sequence. Emissions (univariate, complete at 13):
   Gaussian, Student-t (heavy tails), Poisson (count regimes), Binomial
@@ -88,7 +88,7 @@ All 32 families run under the dpm, fixedk and mrf engines.
 ## Post-processing and interoperability
 
 - **Component parameters:**
-  [`relabel()`](https://madsyair.github.io/nimix/reference/relabel.md)
+  [`relabel()`](https://madsyair.github.io/Rnimix/reference/relabel.md)
   (post-hoc label-switching correction via the
   [`label.switching`](https://CRAN.R-project.org/package=label.switching)
   package, conditioning on the modal number of clusters), then
@@ -96,12 +96,12 @@ All 32 families run under the dpm, fixedk and mrf engines.
   [`plot()`](https://rdrr.io/r/graphics/plot.default.html),
   [`predict()`](https://rdrr.io/r/stats/predict.html).
 - **Partitions, label-free:**
-  [`psm()`](https://madsyair.github.io/nimix/reference/psm.md)
+  [`psm()`](https://madsyair.github.io/Rnimix/reference/psm.md)
   (posterior similarity matrix) and
-  [`binderPartition()`](https://madsyair.github.io/nimix/reference/binderPartition.md)
+  [`binderPartition()`](https://madsyair.github.io/Rnimix/reference/binderPartition.md)
   (Dahl’s least-squares / expected-Binder-loss point partition) use
   *every* draw — no relabelling, no fixed `K` required. They complement
-  [`relabel()`](https://madsyair.github.io/nimix/reference/relabel.md):
+  [`relabel()`](https://madsyair.github.io/Rnimix/reference/relabel.md):
   it answers “what are the component parameters”, these answer “which
   observations belong together”.
 - **Internal validity, with an honest caveat:** `clusterValidity(fit)`
@@ -111,9 +111,9 @@ All 32 families run under the dpm, fixedk and mrf engines.
   components can be exactly the right model and still score low – use
   them to compare partitions, not to judge model adequacy.
 - **Predictive checking:**
-  [`ppCheck()`](https://madsyair.github.io/nimix/reference/ppCheck.md)
+  [`ppCheck()`](https://madsyair.github.io/Rnimix/reference/ppCheck.md)
   for tail-probability summaries;
-  [`posteriorPredict()`](https://madsyair.github.io/nimix/reference/posteriorPredict.md)
+  [`posteriorPredict()`](https://madsyair.github.io/Rnimix/reference/posteriorPredict.md)
   (or `ppCheck(..., store_yrep = TRUE)`) for the replicates themselves.
 - **bayesplot, without the dependency:** `drawsArray(fit)` returns a
   plain `iterations × chains × parameters` array that
@@ -122,35 +122,35 @@ All 32 families run under the dpm, fixedk and mrf engines.
   [`bayesplot::ppc_dens_overlay()`](https://mc-stan.org/bayesplot/reference/PPC-distributions.html)
   and friends. bayesplot sits in `Suggests` only. The adaptors enforce
   one statistical guard: per-component draws are refused before
-  [`relabel()`](https://madsyair.github.io/nimix/reference/relabel.md),
+  [`relabel()`](https://madsyair.github.io/Rnimix/reference/relabel.md),
   because under label switching an R-hat on a raw `muTilde` trace looks
   valid and means nothing — the default `"invariant"` view (cluster
   count, allocation entropy, `alpha`) is what is safe on raw draws.
 - Every `plot(fit, type = ...)` invisibly returns the tidy data frame it
-  drew, so you can replot with ggplot2/lattice/plotly without nimix
+  drew, so you can replot with ggplot2/lattice/plotly without Rnimix
   carrying those packages.
 
 ## Installation
 
-`nimix` depends on `nimble`, which compiles model code, so you need a
+`Rnimix` depends on `nimble`, which compiles model code, so you need a
 working C/C++ toolchain (Rtools on Windows, Xcode CLT on macOS,
 build-essential on Linux).
 
 ``` r
 
 # install.packages("pak")
-pak::pak("madsyair/nimix")
+pak::pak("madsyair/Rnimix")
 
 # or
 # install.packages("remotes")
-remotes::install_github("madsyair/nimix")
+remotes::install_github("madsyair/Rnimix")
 ```
 
 ## Quick start
 
 ``` r
 
-library(nimix)
+library(Rnimix)
 
 ## Univariate clustering, number of components estimated (DPM)
 set.seed(1)
@@ -200,7 +200,7 @@ summary(reg)
 ## Documentation
 
 Function reference and vignettes are published at
-<https://madsyair.github.io/nimix/>. `NEWS.md` documents each release,
+<https://madsyair.github.io/Rnimix/>. `NEWS.md` documents each release,
 including the measured numbers behind sampler-default decisions and two
 breaking-change notes (the v1.1.0 skewness-convention harmonisation,
 with its reciprocal-`alpha` migration).

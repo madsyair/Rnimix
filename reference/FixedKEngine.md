@@ -18,7 +18,7 @@ FixedKEngine(dirichletConc = 1)
 ## Value
 
 A
-[`FixedKEngine`](https://madsyair.github.io/nimix/reference/FixedKEngine-class.md)
+[`FixedKEngine`](https://madsyair.github.io/Rnimix/reference/FixedKEngine-class.md)
 object.
 
 ## Examples

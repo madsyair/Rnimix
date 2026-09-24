@@ -1,9 +1,9 @@
 # Virtual base class for mixture component distributions
 
 `DistributionSpec` is the abstract S4 class that every component
-distribution in nimix extends. It is never instantiated directly; use a
+distribution in Rnimix extends. It is never instantiated directly; use a
 concrete subclass such as
-[`NormalUvSpec`](https://madsyair.github.io/nimix/reference/NormalUvSpec-class.md).
+[`NormalUvSpec`](https://madsyair.github.io/Rnimix/reference/NormalUvSpec-class.md).
 
 ## Slots
 
@@ -18,14 +18,14 @@ concrete subclass such as
 - `priorSpec`:
 
   A named list of prior hyperparameters. Empty until
-  [`defaultPrior`](https://madsyair.github.io/nimix/reference/defaultPrior.md)
+  [`defaultPrior`](https://madsyair.github.io/Rnimix/reference/defaultPrior.md)
   (or the user) fills it.
 
 - `dataDim`:
 
   Integer, the data dimension the spec is meant for (1 for univariate).
   Used for early validation in
-  [`nimixClust`](https://madsyair.github.io/nimix/reference/nimixClust.md).
+  [`nimixClust`](https://madsyair.github.io/Rnimix/reference/nimixClust.md).
 
 ## References
 
@@ -35,5 +35,5 @@ Models*. Springer.
 
 ## See also
 
-[`NormalUvSpec`](https://madsyair.github.io/nimix/reference/NormalUvSpec-class.md),
-[`registerDistribution`](https://madsyair.github.io/nimix/reference/registerDistribution.md)
+[`NormalUvSpec`](https://madsyair.github.io/Rnimix/reference/NormalUvSpec-class.md),
+[`registerDistribution`](https://madsyair.github.io/Rnimix/reference/registerDistribution.md)

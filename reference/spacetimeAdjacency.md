@@ -3,7 +3,7 @@
 Expands a spatial adjacency over `nTime` time points, so that node \\(i,
 t)\\ neighbours its spatial neighbours at the same time and itself at
 \\t \pm 1\\. The result is an ordinary
-[`SpatialWeightSpec`](https://madsyair.github.io/nimix/reference/SpatialWeightSpec-class.md):
+[`SpatialWeightSpec`](https://madsyair.github.io/Rnimix/reference/SpatialWeightSpec-class.md):
 pass it to `nimixClust(..., method = "mrf", spatialWeights = )` and the
 Potts prior couples allocations across space *and* time, with no other
 change.
@@ -19,9 +19,9 @@ spacetimeAdjacency(spaceWeights, nTime, spatial = TRUE, temporal = TRUE)
 - spaceWeights:
 
   A
-  [`SpatialWeightSpec`](https://madsyair.github.io/nimix/reference/SpatialWeightSpec-class.md)
+  [`SpatialWeightSpec`](https://madsyair.github.io/Rnimix/reference/SpatialWeightSpec-class.md)
   over \\n\_{loc}\\ locations, e.g. from
-  [`gridAdjacency`](https://madsyair.github.io/nimix/reference/gridAdjacency.md).
+  [`gridAdjacency`](https://madsyair.github.io/Rnimix/reference/gridAdjacency.md).
 
 - nTime:
 
@@ -39,7 +39,7 @@ spacetimeAdjacency(spaceWeights, nTime, spatial = TRUE, temporal = TRUE)
 ## Value
 
 A
-[`SpatialWeightSpec`](https://madsyair.github.io/nimix/reference/SpatialWeightSpec-class.md)
+[`SpatialWeightSpec`](https://madsyair.github.io/Rnimix/reference/SpatialWeightSpec-class.md)
 over \\n\_{loc} \times n\_{time}\\ nodes.
 
 ## Details
@@ -65,7 +65,7 @@ temporal-only graph with `spatial = FALSE`.
 For a pure time series with no spatial component, `method = "hmm"` is
 the better tool: it marginalises the state path (better mixing) and
 offers
-[`viterbiPath`](https://madsyair.github.io/nimix/reference/viterbiPath.md).
+[`viterbiPath`](https://madsyair.github.io/Rnimix/reference/viterbiPath.md).
 This function is for when space matters too.
 
 ## Scale limit
@@ -82,8 +82,8 @@ longer the wall.
 
 ## See also
 
-[`gridAdjacency`](https://madsyair.github.io/nimix/reference/gridAdjacency.md),
-[`viterbiPath`](https://madsyair.github.io/nimix/reference/viterbiPath.md)
+[`gridAdjacency`](https://madsyair.github.io/Rnimix/reference/gridAdjacency.md),
+[`viterbiPath`](https://madsyair.github.io/Rnimix/reference/viterbiPath.md)
 
 ## Examples
 

@@ -1,11 +1,11 @@
 # Univariate mixture clustering with the DPM engine
 
 This vignette demonstrates Bayesian univariate Gaussian mixture
-clustering with **nimix**’s Dirichlet Process Mixture (DPM) engine,
+clustering with **Rnimix**’s Dirichlet Process Mixture (DPM) engine,
 built on NIMBLE’s Chinese Restaurant Process (`dCRP`), using **official
 statistics**: the `wdi2022` dataset shipped with the package (World Bank
 World Development Indicators, 2022, CC BY 4.0; see
-[`?wdi2022`](https://madsyair.github.io/nimix/reference/wdi2022.md)).
+[`?wdi2022`](https://madsyair.github.io/Rnimix/reference/wdi2022.md)).
 The same workflow applies directly to other official-statistics sources,
 e.g. BPS regional indicators.
 
@@ -21,9 +21,9 @@ population.
 
 ``` r
 
-library(nimix)
+library(Rnimix)
 #> Loading required package: nimble
-#> nimble version 1.4.2 is loaded.
+#> nimble version 1.4.3 is loaded.
 #> For more information on NIMBLE and a User Manual,
 #> please visit https://R-nimble.org.
 #> 

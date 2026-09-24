@@ -2,7 +2,7 @@
 
 Direct multivariate-t kernel via a user-defined NIMBLE distribution.
 Same marginal as
-[`NormalGammaMvSpec`](https://madsyair.github.io/nimix/reference/NormalGammaMvSpec-class.md)
+[`NormalGammaMvSpec`](https://madsyair.github.io/Rnimix/reference/NormalGammaMvSpec-class.md)
 but non-conjugate. `df` is a fixed hyperparameter.
 
 ## Slots
@@ -23,5 +23,5 @@ modeling using the t distribution. *JASA*, 84(408), 881–896.
 
 ## See also
 
-[`NormalGammaMvSpec`](https://madsyair.github.io/nimix/reference/NormalGammaMvSpec.md)
+[`NormalGammaMvSpec`](https://madsyair.github.io/Rnimix/reference/NormalGammaMvSpec.md)
 for the conjugate path.

@@ -1,6 +1,6 @@
-# Fitted nimix mixture result
+# Fitted Rnimix mixture result
 
-Fitted nimix mixture result
+Fitted Rnimix mixture result
 
 ## Usage
 
@@ -34,7 +34,7 @@ predict(object, newdata, maxDraws = 500L, ...)
 
   Passed to the underlying plot. For `type = "forecast"`, also `h`,
   `newdata`, `lags`, `draws` and `level`, as in
-  [`nimixForecast`](https://madsyair.github.io/nimix/reference/nimixForecast.md).
+  [`nimixForecast`](https://madsyair.github.io/Rnimix/reference/nimixForecast.md).
 
 - x:
 
@@ -59,7 +59,7 @@ predict(object, newdata, maxDraws = 500L, ...)
   \mathrm{data})\\ through time, which is the honest companion to the
   Viterbi path – where the bands are mixed, the decode is a guess; and
   `"forecast"` draws the predictive fan past the end of the series (see
-  [`nimixForecast`](https://madsyair.github.io/nimix/reference/nimixForecast.md)
+  [`nimixForecast`](https://madsyair.github.io/Rnimix/reference/nimixForecast.md)
   for what that fan can and cannot mean).
 
 - newdata:
@@ -78,7 +78,7 @@ predict(object, newdata, maxDraws = 500L, ...)
 Invisibly, a tidy data frame of exactly what was drawn (e.g.
 `iteration`/`component`/`value` for traces, `x`/`density` for the
 predictive density), so the plot can be reproduced with ggplot2 or any
-other system without nimix depending on them.
+other system without Rnimix depending on them.
 
 ## Methods (by generic)
 
@@ -127,7 +127,7 @@ other system without nimix depending on them.
 - `distSpec`:
 
   The
-  [`DistributionSpec`](https://madsyair.github.io/nimix/reference/DistributionSpec-class.md)
+  [`DistributionSpec`](https://madsyair.github.io/Rnimix/reference/DistributionSpec-class.md)
   used.
 
 - `data`:
@@ -145,8 +145,8 @@ other system without nimix depending on them.
 - `relabeled`:
 
   A list cache populated by
-  [`relabel`](https://madsyair.github.io/nimix/reference/relabel.md) (or
-  empty).
+  [`relabel`](https://madsyair.github.io/Rnimix/reference/relabel.md)
+  (or empty).
 
 - `mcmcControl`:
 

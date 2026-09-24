@@ -1,7 +1,7 @@
 # MSNBurr-IIa mixture components (neo-normal, right-skew capable)
 
 Mirror image of
-[`MSNBurrUvSpec`](https://madsyair.github.io/nimix/reference/MSNBurrUvSpec-class.md):
+[`MSNBurrUvSpec`](https://madsyair.github.io/Rnimix/reference/MSNBurrUvSpec-class.md):
 the MSNBurr-IIa family (Iriawan 2000; Choir 2020) accommodates right
 skew, with `alpha = 1` again the logistic distribution.
 

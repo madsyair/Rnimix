@@ -19,7 +19,7 @@ DPMEngine(concPrior = c(2, 4))
 ## Value
 
 A
-[`DPMEngine`](https://madsyair.github.io/nimix/reference/DPMEngine-class.md)
+[`DPMEngine`](https://madsyair.github.io/Rnimix/reference/DPMEngine-class.md)
 object.
 
 ## Examples

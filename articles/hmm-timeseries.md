@@ -18,9 +18,9 @@ Two implementation facts shape everything downstream:
 2.  **Allocation draws are recovered afterwards, exactly**, by
     forward-filter backward-sampling (FFBS) per retained draw. That is
     why everything you already know –
-    [`relabel()`](https://madsyair.github.io/nimix/reference/relabel.md),
-    [`psm()`](https://madsyair.github.io/nimix/reference/psm.md),
-    [`binderPartition()`](https://madsyair.github.io/nimix/reference/binderPartition.md),
+    [`relabel()`](https://madsyair.github.io/Rnimix/reference/relabel.md),
+    [`psm()`](https://madsyair.github.io/Rnimix/reference/psm.md),
+    [`binderPartition()`](https://madsyair.github.io/Rnimix/reference/binderPartition.md),
     the plots, the bayesplot adaptors – works on an HMM fit unchanged.
 
 > MCMC chunks use `eval = FALSE` (CRAN time limits); printed results are
@@ -30,7 +30,7 @@ Two implementation facts shape everything downstream:
 
 ``` r
 
-library(nimix)
+library(Rnimix)
 
 set.seed(11)
 P  <- rbind(c(0.95, 0.05),    # regime 1: very persistent
@@ -87,11 +87,11 @@ mean(fit@mcmcSamples[, "P[2, 2]"])
 
 ## Two decodings, one distinction worth knowing
 
-[`viterbiPath()`](https://madsyair.github.io/nimix/reference/viterbiPath.md)
+[`viterbiPath()`](https://madsyair.github.io/Rnimix/reference/viterbiPath.md)
 returns the single *jointly* most probable state sequence under the
 Markov prior; the FFBS allocation draws give the *marginal* posterior of
 each $`z_t`$, which
-[`binderPartition()`](https://madsyair.github.io/nimix/reference/binderPartition.md)
+[`binderPartition()`](https://madsyair.github.io/Rnimix/reference/binderPartition.md)
 and per-time MAP summarise. On well-separated regimes they agree; they
 part exactly where the state is genuinely ambiguous.
 
@@ -132,8 +132,9 @@ da <- drawsArray(fit)                # 2500 x 2 chains x {K, entropy}
 # bayesplot::mcmc_trace(da)
 ```
 
-[`ppCheck()`](https://madsyair.github.io/nimix/reference/ppCheck.md) and
-[`ppcData()`](https://madsyair.github.io/nimix/reference/ppcData.md)
+[`ppCheck()`](https://madsyair.github.io/Rnimix/reference/ppCheck.md)
+and
+[`ppcData()`](https://madsyair.github.io/Rnimix/reference/ppcData.md)
 also work, with one honest nuance: replicated series are drawn
 **conditionally on each draw’s sampled state path**, not by
 re-simulating the Markov chain. That is the right check for “do the
@@ -152,9 +153,9 @@ pd <- ppcData(fit, ndraws = 20)      # list(y, yrep), yrep 20 x 300
 - **Order matters.** The Markov prior binds to the data order; shuffled
   data silently means an i.i.d. mixture fitted expensively.
 - **State labels can switch**, like any mixture.
-  [`relabel()`](https://madsyair.github.io/nimix/reference/relabel.md)
+  [`relabel()`](https://madsyair.github.io/Rnimix/reference/relabel.md)
   handles the component summaries;
-  [`viterbiPath()`](https://madsyair.github.io/nimix/reference/viterbiPath.md)
+  [`viterbiPath()`](https://madsyair.github.io/Rnimix/reference/viterbiPath.md)
   and the partition tools are label-free by construction.
 - **Over-specifying `K` is safe but diluting.** Extra states go (nearly)
   empty – the engine’s tests assert no corruption occurs – but

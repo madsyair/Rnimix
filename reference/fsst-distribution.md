@@ -49,7 +49,7 @@ rfsst(n, mu = 0, sigma = 1, alpha = 1, nu = 5)
 
   Numeric. Skewness parameter, must be positive (default = 1,
   symmetric). Follows the Fernandez-Steel convention shared by all skew
-  families in nimix: `alpha` is the FS skewness \\\gamma\\, so \\P(X \>
+  families in Rnimix: `alpha` is the FS skewness \\\gamma\\, so \\P(X \>
   \mu) = \alpha^2/(1 + \alpha^2)\\ and `alpha > 1` skews right. \\\alpha
   = 1\\ gives the standard Student-t distribution with \\\nu\\ degrees
   of freedom.

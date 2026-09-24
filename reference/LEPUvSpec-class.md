@@ -2,7 +2,7 @@
 
 Symmetric exponential-power component with location `mu`, scale `sigma`,
 and shape `nu`; an alternative parameterisation to
-[`SEPUvSpec`](https://madsyair.github.io/nimix/reference/SEPUvSpec-class.md).
+[`SEPUvSpec`](https://madsyair.github.io/Rnimix/reference/SEPUvSpec-class.md).
 Non-conjugate.
 
 ## Usage

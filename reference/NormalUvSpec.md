@@ -11,7 +11,7 @@ NormalUvSpec()
 ## Value
 
 A
-[`NormalUvSpec`](https://madsyair.github.io/nimix/reference/NormalUvSpec-class.md).
+[`NormalUvSpec`](https://madsyair.github.io/Rnimix/reference/NormalUvSpec-class.md).
 
 ## Examples
 

@@ -2,7 +2,7 @@
 
 Latent component labels follow a Potts model on the neighbourhood graph
 of a
-[`SpatialWeightSpec`](https://madsyair.github.io/nimix/reference/SpatialWeightSpec-class.md)
+[`SpatialWeightSpec`](https://madsyair.github.io/Rnimix/reference/SpatialWeightSpec-class.md)
 instead of being independent across observations: neighbouring regions
 favour the same component, with fixed interaction strength `beta` (Potts
 1952; Besag 1974; spatially variant finite mixtures, Blekas et al.
@@ -25,7 +25,7 @@ MRFEngine(beta = 0.8, spatial, estimateBeta = FALSE, betaMax = 2)
 - spatial:
 
   A
-  [`SpatialWeightSpec`](https://madsyair.github.io/nimix/reference/SpatialWeightSpec-class.md).
+  [`SpatialWeightSpec`](https://madsyair.github.io/Rnimix/reference/SpatialWeightSpec-class.md).
 
 - estimateBeta:
 
@@ -47,7 +47,7 @@ MRFEngine(beta = 0.8, spatial, estimateBeta = FALSE, betaMax = 2)
 - `spatial`:
 
   The
-  [`SpatialWeightSpec`](https://madsyair.github.io/nimix/reference/SpatialWeightSpec-class.md)
+  [`SpatialWeightSpec`](https://madsyair.github.io/Rnimix/reference/SpatialWeightSpec-class.md)
   neighbourhood.
 
 - `estimateBeta`:

@@ -11,7 +11,7 @@ PoissonRegSpec()
 ## Value
 
 A
-[`PoissonRegSpec`](https://madsyair.github.io/nimix/reference/PoissonRegSpec-class.md).
+[`PoissonRegSpec`](https://madsyair.github.io/Rnimix/reference/PoissonRegSpec-class.md).
 
 ## Examples
 

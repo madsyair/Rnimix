@@ -18,7 +18,7 @@ relabel(fit, method = "ECR-ITERATIVE-1", ...)
 - fit:
 
   A
-  [`FitResult`](https://madsyair.github.io/nimix/reference/FitResult-class.md).
+  [`FitResult`](https://madsyair.github.io/Rnimix/reference/FitResult-class.md).
 
 - method:
 

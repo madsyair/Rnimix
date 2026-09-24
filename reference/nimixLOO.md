@@ -4,7 +4,7 @@ Pareto-smoothed importance-sampling leave-one-out cross-validation
 (Vehtari, Gelman & Gabry 2017) via the loo package, on the
 label-invariant pointwise mixture log-likelihood. Requires loo; if it is
 not installed, use
-[`nimixWAIC`](https://madsyair.github.io/nimix/reference/nimixWAIC.md)
+[`nimixWAIC`](https://madsyair.github.io/Rnimix/reference/nimixWAIC.md)
 instead.
 
 ## Usage
@@ -18,7 +18,7 @@ nimixLOO(fit, maxDraws = 1000L)
 - fit:
 
   A clustering
-  [`FitResult`](https://madsyair.github.io/nimix/reference/FitResult-class.md).
+  [`FitResult`](https://madsyair.github.io/Rnimix/reference/FitResult-class.md).
 
 - maxDraws:
 

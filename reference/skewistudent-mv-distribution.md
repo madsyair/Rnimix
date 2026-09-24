@@ -4,7 +4,7 @@ Density and RNG for the FS skew multivariate independent-Student:
 FS-skew Student-t margins with per-dimension `nu`, transformed by the
 upper-triangular Cholesky factor of `Sigma`. `gamma = 1` gives the
 symmetric independent-Student; `nu -> Inf` recovers
-[`dskewmvn`](https://madsyair.github.io/nimix/reference/skewnormal-mv-distribution.md).
+[`dskewmvn`](https://madsyair.github.io/Rnimix/reference/skewnormal-mv-distribution.md).
 
 ## Usage
 

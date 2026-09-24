@@ -5,8 +5,8 @@ on the DPM engine. From the user’s point of view the only change from
 the univariate case is that `data` is a numeric **matrix** (one row per
 observation, one column per dimension). The example clusters countries
 in the `wdi2022` official-statistics dataset
-([`?wdi2022`](https://madsyair.github.io/nimix/reference/wdi2022.md)) on
-two development indicators jointly.
+([`?wdi2022`](https://madsyair.github.io/Rnimix/reference/wdi2022.md))
+on two development indicators jointly.
 
 > MCMC chunks use `eval = FALSE` (CRAN time limits); printed results are
 > from an actual run.
@@ -15,9 +15,9 @@ two development indicators jointly.
 
 ``` r
 
-library(nimix)
+library(Rnimix)
 #> Loading required package: nimble
-#> nimble version 1.4.2 is loaded.
+#> nimble version 1.4.3 is loaded.
 #> For more information on NIMBLE and a User Manual,
 #> please visit https://R-nimble.org.
 #> 
@@ -42,7 +42,7 @@ plot(Y, main = "207 countries, 2022", xlab = "log GDP per capita",
 Each component is a multivariate normal with a conjugate
 Normal-Inverse-Wishart cluster base measure (`dmnorm(cov=)` +
 `dinvwish`), data-scaled by default. NIMBLE’s native conjugate CRP
-samplers are used – nimix deliberately does not reimplement them.
+samplers are used – Rnimix deliberately does not reimplement them.
 
 ## Fit
 

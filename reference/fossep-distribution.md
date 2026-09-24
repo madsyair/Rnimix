@@ -49,7 +49,7 @@ rfossep(n, mu = 0, sigma = 1, alpha = 2, theta = 2)
 - alpha:
 
   Numeric. Skewness parameter, must be positive (default = 2). Follows
-  the Fernandez-Steel convention shared by all skew families in nimix:
+  the Fernandez-Steel convention shared by all skew families in Rnimix:
   `alpha` is the FS skewness \\\gamma\\, so \\P(X \> \mu) =
   \alpha^2/(1 + \alpha^2)\\ and `alpha > 1` skews right.
 

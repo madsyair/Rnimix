@@ -8,15 +8,15 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/madsyair/nimix/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/madsyair/Rnimix/blob/main/DESCRIPTION)
 
-Choir A (2026). *nimix: Bayesian Mixture Clustering and Regression with
-NIMBLE*. R package version 1.5.0, <https://github.com/madsyair/nimix>.
+Choir A (2026). *Rnimix: Bayesian Mixture Clustering and Regression with
+NIMBLE*. R package version 1.5.0, <https://github.com/madsyair/Rnimix>.
 
     @Manual{,
-      title = {nimix: Bayesian Mixture Clustering and Regression with NIMBLE},
+      title = {Rnimix: Bayesian Mixture Clustering and Regression with NIMBLE},
       author = {Achmad Syahrul Choir},
       year = {2026},
       note = {R package version 1.5.0},
-      url = {https://github.com/madsyair/nimix},
+      url = {https://github.com/madsyair/Rnimix},
     }

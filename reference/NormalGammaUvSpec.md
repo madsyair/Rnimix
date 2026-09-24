@@ -11,7 +11,7 @@ NormalGammaUvSpec()
 ## Value
 
 A
-[`NormalGammaUvSpec`](https://madsyair.github.io/nimix/reference/NormalGammaUvSpec-class.md).
+[`NormalGammaUvSpec`](https://madsyair.github.io/Rnimix/reference/NormalGammaUvSpec-class.md).
 
 ## Examples
 

@@ -11,7 +11,7 @@ NormalGammaMvRegSpec()
 ## Value
 
 A
-[`NormalGammaMvRegSpec`](https://madsyair.github.io/nimix/reference/NormalGammaMvRegSpec-class.md).
+[`NormalGammaMvRegSpec`](https://madsyair.github.io/Rnimix/reference/NormalGammaMvRegSpec-class.md).
 
 ## Examples
 

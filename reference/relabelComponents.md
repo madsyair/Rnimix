@@ -1,12 +1,12 @@
 # Permute cluster parameters and build the relabelled component summary
 
 Called by
-[`relabel`](https://madsyair.github.io/nimix/reference/relabel.md) after
-the label-permutation matrix has been derived from the allocation
+[`relabel`](https://madsyair.github.io/Rnimix/reference/relabel.md)
+after the label-permutation matrix has been derived from the allocation
 vectors (which is distribution-independent). The spec is responsible
 only for permuting its own parameters and producing a tidy per-component
 summary, so multivariate covariance handling stays inside
-[`NormalMvSpec`](https://madsyair.github.io/nimix/reference/NormalMvSpec-class.md).
+[`NormalMvSpec`](https://madsyair.github.io/Rnimix/reference/NormalMvSpec-class.md).
 
 ## Usage
 
@@ -91,7 +91,7 @@ relabelComponents(spec, paramTrace, idx, occList, perms, modalK, weights, ...)
 - spec:
 
   A
-  [`DistributionSpec`](https://madsyair.github.io/nimix/reference/DistributionSpec-class.md).
+  [`DistributionSpec`](https://madsyair.github.io/Rnimix/reference/DistributionSpec-class.md).
 
 - paramTrace:
 

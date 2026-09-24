@@ -26,7 +26,7 @@ plotClusterMap(
 - fit:
 
   A clustering
-  [`FitResult`](https://madsyair.github.io/nimix/reference/FitResult-class.md)
+  [`FitResult`](https://madsyair.github.io/Rnimix/reference/FitResult-class.md)
   (any engine; the MRF engine is the usual source).
 
 - shp:
@@ -40,7 +40,7 @@ plotClusterMap(
 
   How to summarise the posterior into one label per region: `"binder"`
   (default) uses
-  [`binderPartition`](https://madsyair.github.io/nimix/reference/binderPartition.md),
+  [`binderPartition`](https://madsyair.github.io/Rnimix/reference/binderPartition.md),
   the draw minimising Binder loss against the posterior similarity
   matrix – a label-invariant summary; `"modal"` uses the per-region
   posterior mode of the allocation trace.

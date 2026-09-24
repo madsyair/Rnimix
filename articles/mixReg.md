@@ -1,6 +1,6 @@
 # Mixtures of linear regressions
 
-[`nimixReg()`](https://madsyair.github.io/nimix/reference/nimixReg.md)
+[`nimixReg()`](https://madsyair.github.io/Rnimix/reference/nimixReg.md)
 fits a Bayesian mixture of Gaussian linear regressions: each component
 is $`y \sim N(x^\top \beta_k, \sigma^2_k)`$ with a conjugate
 Normal-Inverse-Gamma cluster prior. The number of regimes can be
@@ -9,7 +9,7 @@ inferred (`method = "dpm"`) or fixed (`method = "fixedk"`).
 This vignette uses the **Preston curve** – the classic
 official-statistics relationship between national income and life
 expectancy – on the `wdi2022` dataset
-([`?wdi2022`](https://madsyair.github.io/nimix/reference/wdi2022.md)).
+([`?wdi2022`](https://madsyair.github.io/Rnimix/reference/wdi2022.md)).
 
 > MCMC chunks use `eval = FALSE` (CRAN time limits); printed results are
 > from an actual run.
@@ -18,9 +18,9 @@ expectancy – on the `wdi2022` dataset
 
 ``` r
 
-library(nimix)
+library(Rnimix)
 #> Loading required package: nimble
-#> nimble version 1.4.2 is loaded.
+#> nimble version 1.4.3 is loaded.
 #> For more information on NIMBLE and a User Manual,
 #> please visit https://R-nimble.org.
 #> 

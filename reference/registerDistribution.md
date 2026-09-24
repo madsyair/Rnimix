@@ -1,7 +1,7 @@
 # Register a component distribution
 
 Adds a
-[`DistributionSpec`](https://madsyair.github.io/nimix/reference/DistributionSpec-class.md)
+[`DistributionSpec`](https://madsyair.github.io/Rnimix/reference/DistributionSpec-class.md)
 to the registry under its `name` slot so it can be selected by name. New
 built-in distributions (Student-t, Poisson/Binomial) are planned for
 v0.4.0.
@@ -17,7 +17,7 @@ registerDistribution(spec, overwrite = FALSE)
 - spec:
 
   A
-  [`DistributionSpec`](https://madsyair.github.io/nimix/reference/DistributionSpec-class.md)
+  [`DistributionSpec`](https://madsyair.github.io/Rnimix/reference/DistributionSpec-class.md)
   instance.
 
 - overwrite:

@@ -1,7 +1,7 @@
 # Draw a response given linear predictors and error scale
 
 The family-specific tail of
-[`posteriorPredictive`](https://madsyair.github.io/nimix/reference/posteriorPredictive.md):
+[`posteriorPredictive`](https://madsyair.github.io/Rnimix/reference/posteriorPredictive.md):
 given the per-observation linear predictor(s) and (for a Normal) the
 error variance, draw one response each. Defaults to the Gaussian \\y
 \sim N(\eta, \sigma^2)\\; Poisson and Binomial override it with their

@@ -17,7 +17,7 @@ usStateAdj
 
 A 49 x 49 numeric 0/1 matrix; rows/columns ordered by state FIPS and
 named by postal code. Use `spatialWeights(usStateAdj)` to obtain a
-[`SpatialWeightSpec`](https://madsyair.github.io/nimix/reference/SpatialWeightSpec-class.md).
+[`SpatialWeightSpec`](https://madsyair.github.io/Rnimix/reference/SpatialWeightSpec-class.md).
 
 ## Source
 

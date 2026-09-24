@@ -15,7 +15,7 @@ Univariate Gaussian component specification
 - `priorSpec`:
 
   Filled by
-  [`defaultPrior`](https://madsyair.github.io/nimix/reference/defaultPrior.md).
+  [`defaultPrior`](https://madsyair.github.io/Rnimix/reference/defaultPrior.md).
 
 ## References
 
@@ -29,4 +29,4 @@ mixture models. *JCGS*, 9(2), 249–265.
 
 ## See also
 
-[`nimixClust`](https://madsyair.github.io/nimix/reference/nimixClust.md)
+[`nimixClust`](https://madsyair.github.io/Rnimix/reference/nimixClust.md)

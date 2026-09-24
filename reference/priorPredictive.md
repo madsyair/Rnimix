@@ -35,7 +35,7 @@ priorPredictive(
 - distribution:
 
   Component family name, as in
-  [`nimixClust`](https://madsyair.github.io/nimix/reference/nimixClust.md).
+  [`nimixClust`](https://madsyair.github.io/Rnimix/reference/nimixClust.md).
 
 - nsim:
 

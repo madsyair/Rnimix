@@ -11,4 +11,4 @@ MSNBurr2aRegSpec()
 ## Value
 
 An object used internally by
-[`nimixReg`](https://madsyair.github.io/nimix/reference/nimixReg.md).
+[`nimixReg`](https://madsyair.github.io/Rnimix/reference/nimixReg.md).

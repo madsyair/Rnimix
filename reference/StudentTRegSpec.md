@@ -11,7 +11,7 @@ StudentTRegSpec()
 ## Value
 
 A
-[`StudentTRegSpec`](https://madsyair.github.io/nimix/reference/StudentTRegSpec-class.md).
+[`StudentTRegSpec`](https://madsyair.github.io/Rnimix/reference/StudentTRegSpec-class.md).
 
 ## Examples
 

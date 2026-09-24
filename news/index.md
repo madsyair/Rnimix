@@ -1,11 +1,25 @@
 # Changelog
 
-## nimix 1.5.0
+## Rnimix 1.5.0
+
+### Package renamed to Rnimix
+
+- The package is now called **Rnimix** (previously `nimix`); load it
+  with [`library(Rnimix)`](https://github.com/madsyair/Rnimix). All
+  user-facing function names are unchanged
+  ([`nimixClust()`](https://madsyair.github.io/Rnimix/reference/nimixClust.md),
+  [`nimixReg()`](https://madsyair.github.io/Rnimix/reference/nimixReg.md),
+  [`nimixWAIC()`](https://madsyair.github.io/Rnimix/reference/nimixWAIC.md),
+  [`nimixLOO()`](https://madsyair.github.io/Rnimix/reference/nimixLOO.md),
+  [`nimixForecast()`](https://madsyair.github.io/Rnimix/reference/nimixForecast.md),
+  and the rest keep their names), so existing scripts only need the new
+  [`library()`](https://rdrr.io/r/base/library.html) call. The
+  GitHub/pkgdown URLs and the hex logo were updated to match.
 
 ### Removing global-environment assignments (step 1: Gaussian HMM)
 
 - CRAN policy forbids packages writing to the global environment, and
-  nimix did so for every HMM kernel. The pattern was not gratuitous:
+  Rnimix did so for every HMM kernel. The pattern was not gratuitous:
   NIMBLE resolves a user-defined distribution by name three separate
   times – at
   [`registerDistributions()`](https://rdrr.io/pkg/nimble/man/registerDistributions.html),
@@ -91,10 +105,10 @@
 
 - New `priorPredictive(data, K, distribution)` simulates whole datasets
   from the prior – component parameters via
-  [`simulateParams()`](https://madsyair.github.io/nimix/reference/simulateParams.md),
+  [`simulateParams()`](https://madsyair.github.io/Rnimix/reference/simulateParams.md),
   weights from the Dirichlet prior, data through the same per-family
   simulators
-  [`ppCheck()`](https://madsyair.github.io/nimix/reference/ppCheck.md)
+  [`ppCheck()`](https://madsyair.github.io/Rnimix/reference/ppCheck.md)
   uses – and compares observed summary statistics (mean, sd, min, max,
   skewness) with their prior predictive distributions. Statistics in the
   far tail (two-sided p \< 0.05) are flagged: run it before fitting, and
@@ -119,10 +133,10 @@
   stand out. `sf` is Suggests-only.
 - PSIS-LOO is now chain-aware: `.pointwiseLogLik()` attaches the chain
   id of each retained draw, and
-  [`nimixLOO()`](https://madsyair.github.io/nimix/reference/nimixLOO.md),
-  [`modelSelect()`](https://madsyair.github.io/nimix/reference/modelSelect.md)
+  [`nimixLOO()`](https://madsyair.github.io/Rnimix/reference/nimixLOO.md),
+  [`modelSelect()`](https://madsyair.github.io/Rnimix/reference/modelSelect.md)
   and
-  [`ensembleFit()`](https://madsyair.github.io/nimix/reference/ensembleFit.md)
+  [`ensembleFit()`](https://madsyair.github.io/Rnimix/reference/ensembleFit.md)
   pass `r_eff = loo::relative_eff(...)` accordingly. Without r_eff, loo
   assumes independent draws and its Pareto-k diagnostics are too
   optimistic for MCMC output (Vehtari, Gelman & Gabry 2017). Verified on
@@ -151,7 +165,7 @@
   `buildModelCode` with the wrong description.
 - Removed references to internal project notes from code comments and
   roxygen (one was user-visible in
-  [`?defaultPrior`](https://madsyair.github.io/nimix/reference/defaultPrior.md)).
+  [`?defaultPrior`](https://madsyair.github.io/Rnimix/reference/defaultPrior.md)).
   The technical reasoning is kept; only the pointers to documents
   readers cannot see were dropped. Published citations (Vehtari et
   al. 2021, Neal 2000, de Valpine et al. 2017) are unchanged.
@@ -177,7 +191,7 @@
   5-7x factor). HMM is slower still per second than fixed-K (regime path
   marginalised, coefficients more correlated), and the DPM mixes well on
   its concentration parameter.
-  [`?nimixReg`](https://madsyair.github.io/nimix/reference/nimixReg.md)
+  [`?nimixReg`](https://madsyair.github.io/Rnimix/reference/nimixReg.md)
   now states the factor so users can budget iterations; a full benchmark
   write-up ships with the project notes.
 
@@ -253,11 +267,11 @@
 
 ### Prediction for neo-normal regression is now complete
 
-- [`posteriorLinpred()`](https://madsyair.github.io/nimix/reference/posteriorLinpred.md)
+- [`posteriorLinpred()`](https://madsyair.github.io/Rnimix/reference/posteriorLinpred.md)
   and
-  [`posteriorEpred()`](https://madsyair.github.io/nimix/reference/posteriorEpred.md)
+  [`posteriorEpred()`](https://madsyair.github.io/Rnimix/reference/posteriorEpred.md)
   already worked for the neo-normal regressions (identity link), but
-  [`posteriorPredictive()`](https://madsyair.github.io/nimix/reference/posteriorPredictive.md)
+  [`posteriorPredictive()`](https://madsyair.github.io/Rnimix/reference/posteriorPredictive.md)
   fell back to a Gaussian draw and lost the skew. It now draws from each
   family via a generic `responseRng` the framework attaches from the
   family’s own RNG – so a MSNBurr predictive is skewed, an FSST one
@@ -307,7 +321,7 @@
   has its OWN `buildModelCode` method, because the two heavy-tail specs
   are siblings under `NormalRegSpec`, not parent and child – inheritance
   would have handed it the Gaussian default.
-- [`nimixForecast()`](https://madsyair.github.io/nimix/reference/nimixForecast.md)
+- [`nimixForecast()`](https://madsyair.github.io/Rnimix/reference/nimixForecast.md)
   handles both: the predictive draws keep the heavy tails. This closes
   the long-standing backlog item; the HMM regression families are now
   normal, studentt, normalgamma, poisson, and binomial (18 HMM kernels).
@@ -348,7 +362,7 @@
   regression with regime-switching coefficients. Measured: intercepts
   -1.03/1.50 against -1.0/1.5, slopes 1.22/-0.81 against 1.2/-0.8,
   decoding 0.997.
-- [`nimixForecast()`](https://madsyair.github.io/nimix/reference/nimixForecast.md)
+- [`nimixForecast()`](https://madsyair.github.io/Rnimix/reference/nimixForecast.md)
   handles both: the predictive draws are counts (Poisson) or proportions
   of `size` (Binomial). Fixed alongside: the forecaster tested
   `is(spec, "NormalRegSpec")` to decide whether a fit had covariates,
@@ -359,29 +373,29 @@
 
 - The first cut of the brms-style predictors was Gaussian-only in
   disguise:
-  [`posteriorEpred()`](https://madsyair.github.io/nimix/reference/posteriorEpred.md)
+  [`posteriorEpred()`](https://madsyair.github.io/Rnimix/reference/posteriorEpred.md)
   averaged the linear predictors `x'beta_k` directly, and
-  [`posteriorPredictive()`](https://madsyair.github.io/nimix/reference/posteriorPredictive.md)
+  [`posteriorPredictive()`](https://madsyair.github.io/Rnimix/reference/posteriorPredictive.md)
   added Gaussian noise. For a Poisson (log link) or Binomial (logit
   link) regression that is simply wrong – `epred` returned the log-mean
   instead of the mean, and the predictive drew Gaussian jitter instead
   of counts.
 - Now matched to brms.
-  [`posteriorEpred()`](https://madsyair.github.io/nimix/reference/posteriorEpred.md)
+  [`posteriorEpred()`](https://madsyair.github.io/Rnimix/reference/posteriorEpred.md)
   is `E[Y|X]` on the **response scale**, applying each family’s inverse
   link to every component *before* the mixture average:
   `sum_k w_k g^{-1}(x'beta_k)`. Verified on a Poisson fit – epred came
   back at 0.87/1.79/3.68 against the truth exp(0.5 + 0.8x) =
   0.74/1.65/3.67, where the linear predictor was 0.5 + 0.8x.
-- [`posteriorLinpred()`](https://madsyair.github.io/nimix/reference/posteriorLinpred.md)
+- [`posteriorLinpred()`](https://madsyair.github.io/Rnimix/reference/posteriorLinpred.md)
   stays on the **linear-predictor scale** by design (the log-mean for a
   Poisson), and gains a `transform` argument – the counterpart of brms’s
   – to apply the inverse link when you want each component’s response
   mean instead. For a Normal fit the two coincide, so this is a no-op
   there.
-- [`posteriorPredictive()`](https://madsyair.github.io/nimix/reference/posteriorPredictive.md)
+- [`posteriorPredictive()`](https://madsyair.github.io/Rnimix/reference/posteriorPredictive.md)
   now draws from the family via a new
-  [`responseRng()`](https://madsyair.github.io/nimix/reference/responseRng.md)
+  [`responseRng()`](https://madsyair.github.io/Rnimix/reference/responseRng.md)
   generic, and this reaches every univariate regression family, not just
   the Gaussian one. A Poisson predictive draw is a count, a Binomial one
   a number of successes, and a **Student-t or Normal-Gamma one is
@@ -391,7 +405,7 @@
   (Normal-Gamma). Their `epred` was already right, since both use the
   identity link and E\[Y\|X\] = Xbeta; only the predictive law was
   wrong. Multivariate-response fits are unaffected –
-  [`posteriorLinpred()`](https://madsyair.github.io/nimix/reference/posteriorLinpred.md)
+  [`posteriorLinpred()`](https://madsyair.github.io/Rnimix/reference/posteriorLinpred.md)
   and friends decline them by design, and
   [`predict()`](https://rdrr.io/r/stats/predict.html) handles that case.
   Fixed alongside: a `K = 1` regression could not be predicted with
@@ -401,29 +415,29 @@
 
 - **Three prediction functions, because a mixture makes them three
   different questions.**
-  [`posteriorLinpred()`](https://madsyair.github.io/nimix/reference/posteriorLinpred.md)
+  [`posteriorLinpred()`](https://madsyair.github.io/Rnimix/reference/posteriorLinpred.md)
   returns each component’s own linear predictor (a `draws x n x K`
   array);
-  [`posteriorEpred()`](https://madsyair.github.io/nimix/reference/posteriorEpred.md)
+  [`posteriorEpred()`](https://madsyair.github.io/Rnimix/reference/posteriorEpred.md)
   averages the components into `E[Y|X]`;
-  [`posteriorPredictive()`](https://madsyair.github.io/nimix/reference/posteriorPredictive.md)
+  [`posteriorPredictive()`](https://madsyair.github.io/Rnimix/reference/posteriorPredictive.md)
   adds the residual noise. For a mixture, reach for the first far more
   often than the second – fit two crossing lines with slopes +1.5 and
   -1.5 and the expectation is a flat line through the middle (measured
   0.028/0.069/0.111 at x = -1/0/1). Nothing is wrong with the number; it
   is a faithful summary of a distribution no component has.
-  [`?posteriorEpred`](https://madsyair.github.io/nimix/reference/posteriorEpred.md)
+  [`?posteriorEpred`](https://madsyair.github.io/Rnimix/reference/posteriorEpred.md)
   says so.
 - The weights are what change meaning between calls, and the docs are
   explicit about it: in-sample,
-  [`posteriorEpred()`](https://madsyair.github.io/nimix/reference/posteriorEpred.md)
+  [`posteriorEpred()`](https://madsyair.github.io/Rnimix/reference/posteriorEpred.md)
   uses each row’s posterior allocation and becomes useful (measured
   correlation 0.983 with `y` on the same fit whose `newdata` expectation
   was flat); with `newdata` it uses the mixture weights, since a new
   row’s component is unknown. For `method = "hmm"` and `newdata` it is
   refused outright: a regime weight is a function of *when*, and a
   future row has no decoded regime –
-  [`nimixForecast()`](https://madsyair.github.io/nimix/reference/nimixForecast.md)
+  [`nimixForecast()`](https://madsyair.github.io/Rnimix/reference/nimixForecast.md)
   is the function that projects it.
 - **Fixed: a silent wrong answer in prediction with `newdata`.** If
   `newdata` lacked a predictor,
@@ -457,7 +471,7 @@
   coefficients about four times slower per second (ESS/s 2.3 vs 8.9 on a
   two-regime benchmark), even though the wall time is shorter. Light
   runs decode the regimes fine but leave the coefficient intervals wide;
-  [`?nimixReg`](https://madsyair.github.io/nimix/reference/nimixReg.md)
+  [`?nimixReg`](https://madsyair.github.io/Rnimix/reference/nimixReg.md)
   says so.
 - **And forecasting one now works too**, via
   `nimixForecast(fit, h, lags = c(ylag = 1))`. `lags` marks the
@@ -474,7 +488,7 @@
   invented – confidently and without complaint, because nothing in a
   design matrix says “this column is the past”. `lags` exists so that
   you do not have to, and
-  [`?nimixForecast`](https://madsyair.github.io/nimix/reference/nimixForecast.md)
+  [`?nimixForecast`](https://madsyair.github.io/Rnimix/reference/nimixForecast.md)
   says so where it will be read.
 
 ### New: forecasting from regime-switching fits (`nimixForecast()`)
@@ -495,7 +509,7 @@
   against a nominal 0.90 over a 12-step horizon on a two-regime
   benchmark, with RMSE 1.93 against 3.23 for a constant-mean forecast.
 - **Three honest limits, all documented in
-  [`?nimixForecast`](https://madsyair.github.io/nimix/reference/nimixForecast.md)
+  [`?nimixForecast`](https://madsyair.github.io/Rnimix/reference/nimixForecast.md)
   and all pinned by tests.** (1) The point forecast reverts to the
   stationary mixture as `h` grows – measured, the median fell 1.8 to
   -1.1 over twelve steps while the regime probabilities went 0.11/0.89
@@ -518,11 +532,11 @@
 - `nimixReg` gains `method = "hmm"`: the regression coefficients and
   error variance switch with a latent first-order Markov regime –
   Hamilton’s
-  1989. model, and the one classic mixture-of-regressions variant nimix
+  1989. model, and the one classic mixture-of-regressions variant Rnimix
         was missing. Give `K` regimes as for `"fixedk"`; the regime path
         is marginalised out by a forward kernel and decoded afterwards,
         so
-        [`viterbiPath()`](https://madsyair.github.io/nimix/reference/viterbiPath.md)
+        [`viterbiPath()`](https://madsyair.github.io/Rnimix/reference/viterbiPath.md)
         returns the most probable regime sequence. Measured on two
         regimes with opposite slopes: intercepts 1.96/-1.96 against
         2/-2, slopes 1.50/-1.39 against 1.5/-1.5, decoding at 0.98.
@@ -602,9 +616,9 @@
 
 - `SpatialWeightSpec` now stores its graph as an **edge list**; the
   dense matrix is derived on demand
-  ([`getAdjacency()`](https://madsyair.github.io/nimix/reference/getAdjacency.md))
+  ([`getAdjacency()`](https://madsyair.github.io/Rnimix/reference/getAdjacency.md))
   and refused above 5000 nodes with a message pointing at the new
-  [`getEdges()`](https://madsyair.github.io/nimix/reference/getEdges.md).
+  [`getEdges()`](https://madsyair.github.io/Rnimix/reference/getEdges.md).
   The motivation was measured, not assumed: a 10 000-node space-time
   graph (100 locations over 100 times – a *modest* spatio-temporal
   problem) was OOM-killed during graph construction, before any model
@@ -619,16 +633,16 @@
   the equivalence for rook and queen grids and for space-time graphs.
   `spatialWeights(A)` with a dense matrix still works, with the same
   validation and the same error messages, and
-  [`getAdjacency()`](https://madsyair.github.io/nimix/reference/getAdjacency.md)
+  [`getAdjacency()`](https://madsyair.github.io/Rnimix/reference/getAdjacency.md)
   still returns the same named matrix for small graphs.
 - New sparse entry points: `spatialWeights(edges = , nNodes = )` builds
   a graph without ever touching a dense matrix (edge order and
   duplicates are normalised), and
-  [`getEdges()`](https://madsyair.github.io/nimix/reference/getEdges.md)
+  [`getEdges()`](https://madsyair.github.io/Rnimix/reference/getEdges.md)
   returns the canonical two-column form.
-  [`gridAdjacency()`](https://madsyair.github.io/nimix/reference/gridAdjacency.md)
+  [`gridAdjacency()`](https://madsyair.github.io/Rnimix/reference/gridAdjacency.md)
   and
-  [`spacetimeAdjacency()`](https://madsyair.github.io/nimix/reference/spacetimeAdjacency.md)
+  [`spacetimeAdjacency()`](https://madsyair.github.io/Rnimix/reference/spacetimeAdjacency.md)
   now build their edge lists directly.
 - One incidental find while chasing a memory gate:
   [`duplicated()`](https://rdrr.io/r/base/duplicated.html) on a matrix
@@ -647,7 +661,7 @@
   their adjacency or edges. Code that only used the exported
   constructors and accessors is unaffected.
 
-## nimix 1.4.0
+## Rnimix 1.4.0
 
 ### New: spatio-temporal mixtures via `spacetimeAdjacency()`
 
@@ -674,7 +688,7 @@
   builds).
 - For a pure time series, `method = "hmm"` remains the better tool: it
   marginalises the state path and offers
-  [`viterbiPath()`](https://madsyair.github.io/nimix/reference/viterbiPath.md).
+  [`viterbiPath()`](https://madsyair.github.io/Rnimix/reference/viterbiPath.md).
   The two are complementary – `hmm` for time alone, a space-time Potts
   when space matters too.
 
@@ -753,7 +767,7 @@
   halved the error in `s2` at no cost), unsafe for `fixedk` with an
   over-specified `K`, where a tenfold tighter prior occupied three
   components against the default’s two.
-  [`?nimixReg`](https://madsyair.github.io/nimix/reference/nimixReg.md)
+  [`?nimixReg`](https://madsyair.github.io/Rnimix/reference/nimixReg.md)
   gains a “Reading the error variance” section with the numbers, the
   boundary, and a two-stage empirical-Bayes recipe for callers who need
   the scale right without external knowledge: the first fit’s allocation
@@ -819,10 +833,10 @@
   needed `tauRE` was 771 against a hard ceiling of 5, and
   `cor(b_hat, truth)` collapsed from 0.992 to 0.091 – no error, no
   warning, just wrong group effects. The bounds now scale with the data
-  like the rest of nimix’s priors (`tauRE` with `sd(y)`; `tauSlope` with
-  `sd(y)/sd(x)`), and inits scale with them. Verified across a 1000x
-  response rescale (`cor(b_hat, truth)` 0.991, `tauRE` 817 against a
-  realized spread of 772) and a 1000x predictor rescale (`tauSlope`
+  like the rest of Rnimix’s priors (`tauRE` with `sd(y)`; `tauSlope`
+  with `sd(y)/sd(x)`), and inits scale with them. Verified across a
+  1000x response rescale (`cor(b_hat, truth)` 0.991, `tauRE` 817 against
+  a realized spread of 772) and a 1000x predictor rescale (`tauSlope`
   0.000274 against a realized 0.00029, where it previously pinned at its
   0.01 floor).
 - The existing scale-equivariance lock never caught this because it
@@ -840,7 +854,7 @@
   at 8000) – allow adequate burnin rather than reading a short chain as
   bias.
 
-## nimix 1.3.0
+## Rnimix 1.3.0
 
 This release adds a fourth inference engine – hidden-Markov mixtures for
 regime switching in time series, with six emission families – and random
@@ -891,9 +905,9 @@ below.
 - Allocation draws are recovered **post-hoc by forward-filter
   backward-sampling (FFBS)** per retained draw, so every existing tool
   works unchanged on HMM fits:
-  [`relabel()`](https://madsyair.github.io/nimix/reference/relabel.md),
-  [`psm()`](https://madsyair.github.io/nimix/reference/psm.md),
-  [`binderPartition()`](https://madsyair.github.io/nimix/reference/binderPartition.md),
+  [`relabel()`](https://madsyair.github.io/Rnimix/reference/relabel.md),
+  [`psm()`](https://madsyair.github.io/Rnimix/reference/psm.md),
+  [`binderPartition()`](https://madsyair.github.io/Rnimix/reference/binderPartition.md),
   [`plot()`](https://rdrr.io/r/graphics/plot.default.html), and the
   bayesplot adaptors. Measured on simulated regimes: location recovery
   -1.99/2.14 (truth -2/2), self-transitions 0.965/0.895 (truth
@@ -901,12 +915,12 @@ below.
 
 - `viterbiPath(fit)` returns the jointly most probable state sequence at
   the posterior means – complementary to
-  [`binderPartition()`](https://madsyair.github.io/nimix/reference/binderPartition.md),
+  [`binderPartition()`](https://madsyair.github.io/Rnimix/reference/binderPartition.md),
   which summarises marginal co-clustering across the FFBS draws.
 
 - `nimbleEcology` was evaluated and is not used: its `dHMM` family is
   categorical-emission only, while regime switching on continuous data
-  needs continuous emissions. The gate showed nimix’s own kernels
+  needs continuous emissions. The gate showed Rnimix’s own kernels
   compile exactly inside the forward pass, which is the path for
   extending the engine to the other emission families – current scope is
   `"normal"`, `"student-t"`, `"poisson"` (count regimes), and the
@@ -920,7 +934,7 @@ below.
   of 6 while everything else landed), which is a property of the family
   rather than a defect. New emission families implement one density
   method (`.hmmEmisDens`) and one forward kernel; the engine, FFBS, and
-  [`viterbiPath()`](https://madsyair.github.io/nimix/reference/viterbiPath.md)
+  [`viterbiPath()`](https://madsyair.github.io/Rnimix/reference/viterbiPath.md)
   are family-generic, as the Poisson case (a non-location-scale
   emission) confirms.
 
@@ -938,13 +952,13 @@ below.
   (the structural lesson of the 1.2.0 PPC bug applied to a new engine
   from day one).
 
-## nimix 1.2.1
+## Rnimix 1.2.1
 
 ### New: internal cluster-validity indices
 
 - `clusterValidity(fit)` computes silhouette width, the Dunn index, and
   Calinski-Harabasz for a clustering fit’s point partition (default:
-  [`binderPartition()`](https://madsyair.github.io/nimix/reference/binderPartition.md),
+  [`binderPartition()`](https://madsyair.github.io/Rnimix/reference/binderPartition.md),
   so every posterior draw contributes and no relabelling is needed), via
   the `cluster` and `fpc` packages – both in Suggests. The documentation
   states, and the test suite asserts, the honest caveat: these indices
@@ -953,11 +967,11 @@ below.
   low (measured: silhouette 0.90/Dunn 1.6 for separated clusters vs
   0.52/0.0 for a legitimate overlapping fit). They are a secondary
   comparison lens;
-  [`ppCheck()`](https://madsyair.github.io/nimix/reference/ppCheck.md)
-  and [`psm()`](https://madsyair.github.io/nimix/reference/psm.md)
+  [`ppCheck()`](https://madsyair.github.io/Rnimix/reference/ppCheck.md)
+  and [`psm()`](https://madsyair.github.io/Rnimix/reference/psm.md)
   remain the primary model-adequacy tools.
 
-## nimix 1.2.0
+## Rnimix 1.2.0
 
 Response wave to an external code review: two correctness fixes, five
 new exported functions, sampler-default upgrades, and a test-harness
@@ -972,7 +986,7 @@ headers for the numbers’ provenance.
   scatter, `fitted`/`observed` for regression). Base `graphics` remains
   the only plotting dependency; users who want ggplot2/lattice/plotly
   replot from the returned data.
-- [`ppCheck()`](https://madsyair.github.io/nimix/reference/ppCheck.md)/[`posteriorPredict()`](https://madsyair.github.io/nimix/reference/posteriorPredict.md)
+- [`ppCheck()`](https://madsyair.github.io/Rnimix/reference/ppCheck.md)/[`posteriorPredict()`](https://madsyair.github.io/Rnimix/reference/posteriorPredict.md)
   now resolve each monitored node’s columns once per call instead of
   once per draw (memoised via an attribute cache). Measured cost of the
   old lookup was ~3e-05 s/call, so this is a clarity and
@@ -992,11 +1006,11 @@ headers for the numbers’ provenance.
   resolving under `load_all()` but not after `R CMD INSTALL`. That guard
   had a blind spot: many tests called internal helpers
   (`.rowPresence()`, `.nodeToArray()`, `.cacheKey()`,
-  [`buildConstants()`](https://madsyair.github.io/nimix/reference/buildConstants.md),
+  [`buildConstants()`](https://madsyair.github.io/Rnimix/reference/buildConstants.md),
   …) unqualified, which works under `load_all()` but errors when only
   the namespace exports are attached – and testthat counts those as
   *errors*, not *failures*, so a summary reading “0 failed” hid them.
-  All internal references in tests are now `nimix:::`-qualified, and
+  All internal references in tests are now `Rnimix:::`-qualified, and
   both suite modes now report identically (588 passing, zero errors).
   Suite gates now check the error flag, not just the failure count.
 
@@ -1026,7 +1040,7 @@ headers for the numbers’ provenance.
 - The important part is the safety guard, not the plumbing:
   `drawsArray(fit, "components")` **refuses** to serve per-component
   draws before
-  [`relabel()`](https://madsyair.github.io/nimix/reference/relabel.md),
+  [`relabel()`](https://madsyair.github.io/Rnimix/reference/relabel.md),
   explaining why – under label switching, `muTilde[1]` names different
   components in different chains, so an R-hat computed on the raw trace
   looks valid and means nothing. The default `"invariant"` view (cluster
@@ -1043,7 +1057,7 @@ headers for the numbers’ provenance.
   `yrep`/`y`/`draws` attributes. Previously the replicates were computed
   and discarded, which made graphical PPC
   (e.g. `bayesplot::ppc_dens_overlay(y, yrep)`) impossible to drive from
-  a nimix fit. Storage stays opt-in so the default result remains lean.
+  a Rnimix fit. Storage stays opt-in so the default result remains lean.
 - Multi-chain fits now record `diagnostics$chainId`, marking which chain
   each pooled draw came from. Post-hoc per-chain diagnostics (R-hat on
   invariant functionals, per-chain traces, draws arrays) were previously
@@ -1059,20 +1073,20 @@ headers for the numbers’ provenance.
   least-squares criterion). Both are invariant to label permutations
   *and* to the number of occupied clusters, so **every draw
   contributes** – unlike
-  [`relabel()`](https://madsyair.github.io/nimix/reference/relabel.md),
+  [`relabel()`](https://madsyair.github.io/Rnimix/reference/relabel.md),
   which must condition on the modal cluster count to align component
   parameters (measured: 34% of DPM draws discarded on a two-cluster
   example). They are complements, not replacements:
-  [`relabel()`](https://madsyair.github.io/nimix/reference/relabel.md)
+  [`relabel()`](https://madsyair.github.io/Rnimix/reference/relabel.md)
   answers “what are the component parameters”,
-  [`psm()`](https://madsyair.github.io/nimix/reference/psm.md)/[`binderPartition()`](https://madsyair.github.io/nimix/reference/binderPartition.md)
+  [`psm()`](https://madsyair.github.io/Rnimix/reference/psm.md)/[`binderPartition()`](https://madsyair.github.io/Rnimix/reference/binderPartition.md)
   answer “which observations belong together”. On overlapping clusters
   the similarity matrix expresses genuine allocation uncertainty
   (mid-region pairs ~0.65) instead of forcing a hard 0/1 answer.
 
 ### Fixed: multivariate posterior predictive checks with empty components
 
-- [`ppCheck()`](https://madsyair.github.io/nimix/reference/ppCheck.md)
+- [`ppCheck()`](https://madsyair.github.io/Rnimix/reference/ppCheck.md)
   for `normal-mv` (and the inheriting `student-t-mv`, `normal-gamma-mv`)
   reconstructed each draw’s covariance array with
   `dim = c(max(alloc), d, d)`. On draws where a component was empty,
@@ -1098,7 +1112,7 @@ headers for the numbers’ provenance.
   from 0.48 to 0.004, and minimum ESS/second on the coefficients rose
   ~35x (0.4 to 15.3). A scale-equivariance test locks the guarantee.
 
-## nimix 1.1.0
+## Rnimix 1.1.0
 
 ### New: estimating the orthogonal factor O beyond two dimensions
 
@@ -1119,16 +1133,16 @@ exactly.
   on the data dimension: `m = 2` keeps its dedicated implementation,
   `m > 2` uses the general Householder parameterisation with `m(m-1)/2`
   angles (FS Lemma 2). New exported helpers
-  [`orthogonalFactor()`](https://madsyair.github.io/nimix/reference/orthogonalFactor.md)
+  [`orthogonalFactor()`](https://madsyair.github.io/Rnimix/reference/orthogonalFactor.md)
   and
-  [`canonicaliseO()`](https://madsyair.github.io/nimix/reference/canonicaliseO.md).
+  [`canonicaliseO()`](https://madsyair.github.io/Rnimix/reference/canonicaliseO.md).
 
 - **Restriction (8) is a canonicalisation, not a sampling constraint.**
   FS write that confining the angles to their box `Theta^j` puts `O` in
   `O_m`; testing this directly, the fraction of box draws that
   satisfy (8) is 0.245 (`m = 2`), 0.069 (`m = 3`) and 0.007 (`m = 4`).
   Constraining a sampler to a 0.7% slice of its own prior would mix
-  badly. What *is* true, and what nimix uses: among the signed row
+  badly. What *is* true, and what Rnimix uses: among the signed row
   permutations `P` of `A` with `|P| = +1`, exactly one `PO` satisfies
 
   8.  – verified exhaustively for `m = 2, 3, 4`. So the angles are
@@ -1224,11 +1238,11 @@ mixtures recover location, per-dimension skew direction and partition
   `gamma = 1` recovers `dmnorm` exactly), and `A = chol(Sigma)` upper
   triangular with `Sigma ~ inverse-Wishart`. Available under the
   finite-K and DPM engines, with
-  [`dskewmvn()`](https://madsyair.github.io/nimix/reference/skewnormal-mv-distribution.md)
+  [`dskewmvn()`](https://madsyair.github.io/Rnimix/reference/skewnormal-mv-distribution.md)
   /
-  [`rskewmvn()`](https://madsyair.github.io/nimix/reference/skewnormal-mv-distribution.md)
+  [`rskewmvn()`](https://madsyair.github.io/Rnimix/reference/skewnormal-mv-distribution.md)
   and
-  [`ppCheck()`](https://madsyair.github.io/nimix/reference/ppCheck.md)
+  [`ppCheck()`](https://madsyair.github.io/Rnimix/reference/ppCheck.md)
   support. Validated: compiled kernel equals the R reference to 1e-14,
   the 2-D density integrates to one, the m = 1 case equals the
   univariate `fssn`, and mixtures recover location, per-dimension skew
@@ -1267,13 +1281,13 @@ guarantee. `fossep` is unchanged. The Jones-Faddy family (`jfst`) uses
 its own `alpha`/`theta` shapes and is not affected; neither are the
 MSNBurr families.
 
-## nimix 1.0.1
+## Rnimix 1.0.1
 
 ### Batch B: six new neo-normal component families
 
 All six are univariate, non-conjugate, and available under the finite-K,
 DPM and MRF engines, with `d/p/q/r` functions and
-[`ppCheck()`](https://madsyair.github.io/nimix/reference/ppCheck.md)
+[`ppCheck()`](https://madsyair.github.io/Rnimix/reference/ppCheck.md)
 support. Each NIMBLE kernel is built and registered in the global
 environment (the pattern required for scalar user-defined densities) and
 was validated against the R reference to 1e-8, with the density
@@ -1302,7 +1316,7 @@ sample length and subset them per branch, so per-observation parameter
 vectors (as used by posterior predictive simulation) align without
 recycling warnings.
 
-## nimix 1.0.0 (in development)
+## Rnimix 1.0.0 (in development)
 
 ### Bug fixes (installed-package correctness)
 
@@ -1311,10 +1325,10 @@ recycling warnings.
   neo-normal densities). Registering them from the package namespace
   made NIMBLE fail to find `rPottsNimix` during code generation for the
   latent label node once the package was installed
-  ([`library(nimix)`](https://github.com/madsyair/nimix)), so every MRF
-  fit errored under a normal install while working under `load_all()`.
-  Fixed.
-- [`ppCheck()`](https://madsyair.github.io/nimix/reference/ppCheck.md)
+  ([`library(Rnimix)`](https://github.com/madsyair/Rnimix)), so every
+  MRF fit errored under a normal install while working under
+  `load_all()`. Fixed.
+- [`ppCheck()`](https://madsyair.github.io/Rnimix/reference/ppCheck.md)
   for MSNBurr / MSNBurr-IIa / GMSNBurr no longer emits recycling
   warnings: the quantile functions now recycle vector parameters to the
   sample length and index the interior subset consistently, so
@@ -1337,7 +1351,7 @@ recycling warnings.
         the R reference to 1e-8; density integrates to one; exact
         reduction to MSNBurr / MSNBurr-IIa verified). `d/p/q/r`
         functions and
-        [`ppCheck()`](https://madsyair.github.io/nimix/reference/ppCheck.md)
+        [`ppCheck()`](https://madsyair.github.io/Rnimix/reference/ppCheck.md)
         support included.
 
 ### Parallel chains
@@ -1369,7 +1383,7 @@ recycling warnings.
   and 95% credible interval for every scalar component parameter (all
   univariate families) and per dimension for multivariate clustering.
 - New
-  [`clusterProfile()`](https://madsyair.github.io/nimix/reference/clusterProfile.md):
+  [`clusterProfile()`](https://madsyair.github.io/Rnimix/reference/clusterProfile.md):
   assigns each observation to its MAP cluster and describes the observed
   data within each cluster (size, proportion, and per-variable mean / sd
   / median) – the data-side complement to
@@ -1378,15 +1392,15 @@ recycling warnings.
   partition).
 - New predictive model-selection layer built on the label-invariant
   pointwise mixture log-likelihood:
-  [`nimixWAIC()`](https://madsyair.github.io/nimix/reference/nimixWAIC.md)
+  [`nimixWAIC()`](https://madsyair.github.io/Rnimix/reference/nimixWAIC.md)
   (native; Watanabe 2010),
-  [`nimixLOO()`](https://madsyair.github.io/nimix/reference/nimixLOO.md)
+  [`nimixLOO()`](https://madsyair.github.io/Rnimix/reference/nimixLOO.md)
   (PSIS-LOO via the **loo** package; Vehtari, Gelman & Gabry 2017), and
-  [`modelSelect()`](https://madsyair.github.io/nimix/reference/modelSelect.md)
+  [`modelSelect()`](https://madsyair.github.io/Rnimix/reference/modelSelect.md)
   to rank several fits (e.g. choosing K, or comparing Normal / Student-t
   / MSNBurr components on the same data).
 - New
-  [`ensembleFit()`](https://madsyair.github.io/nimix/reference/ensembleFit.md):
+  [`ensembleFit()`](https://madsyair.github.io/Rnimix/reference/ensembleFit.md):
   combines several fits into one weighted predictive model via Bayesian
   stacking or Pseudo-BMA+ (Yao et al. 2018, needs **loo**) or
   Akaike-style WAIC weights (native).
@@ -1407,7 +1421,7 @@ recycling warnings.
   standardized values in the hundreds; the density integrates to one
   from `alpha = 0.05` to `alpha = 100`; the NIMBLE and R densities agree
   to 1e-8; and
-  [`ppCheck()`](https://madsyair.github.io/nimix/reference/ppCheck.md)
+  [`ppCheck()`](https://madsyair.github.io/Rnimix/reference/ppCheck.md)
   supports both families.
 - Verified recovery on synthetic skew-component mixtures (finite-K
   allocation accuracy 1.00 / 0.99, DPM recovers the true K, MRF accuracy
@@ -1429,7 +1443,7 @@ recycling warnings.
   scale disagreement that location Rhat misses, AR(0.9) ESS matches the
   analytic value).
 - New
-  [`ppCheck()`](https://madsyair.github.io/nimix/reference/ppCheck.md):
+  [`ppCheck()`](https://madsyair.github.io/Rnimix/reference/ppCheck.md):
   posterior predictive checks (Gelman, Meng & Stern 1996; Gelman et
   al. 2020, Bayesian workflow) with replicates drawn conditionally on
   each draw’s fitted allocation – label-invariant by construction and
@@ -1440,7 +1454,7 @@ recycling warnings.
   well-specified Gaussian mixture and to flag a Poisson mixture on
   overdispersed counts (tail p = 0.013).
 
-## nimix 0.9.0
+## Rnimix 0.9.0
 
 ### MRF engine across the distribution registry (batch 2) – matrix complete
 
@@ -1472,7 +1486,7 @@ recycling warnings.
   Guidance: prefer `normalgamma` for MRF parameter mixing; the direct-t
   route remains available and equally valid.
 
-## nimix 0.8.0
+## Rnimix 0.8.0
 
 ### MRF engine across the distribution registry (batch 1: closed-form emissions)
 
@@ -1515,7 +1529,7 @@ recycling warnings.
 - The recovery harness gains an `mrfbeta` group (pseudo-likelihood beta
   estimation on the synthetic lattice, 3 seeds).
 
-## nimix 0.7.0
+## Rnimix 0.7.0
 
 ### MRF engine: Bayesian estimation of the interaction beta
 
@@ -1543,7 +1557,7 @@ recycling warnings.
 
 ### MRF engine: spatially clustered regressions
 
-- [`nimixReg()`](https://madsyair.github.io/nimix/reference/nimixReg.md)
+- [`nimixReg()`](https://madsyair.github.io/Rnimix/reference/nimixReg.md)
   gains `method = "mrf"` and a `spatialWeights` argument: a mixture of
   Gaussian linear regressions whose latent regime labels follow the
   Potts field on a neighbourhood graph – regression coefficients that
@@ -1570,12 +1584,12 @@ recycling warnings.
   explicitly blocked with a clear message instead of silently using the
   wrong emission density.
 
-## nimix 0.6.0
+## Rnimix 0.6.0
 
 ### Spatially constrained mixtures: the MRF engine
 
 - New `method = "mrf"` in
-  [`nimixClust()`](https://madsyair.github.io/nimix/reference/nimixClust.md):
+  [`nimixClust()`](https://madsyair.github.io/Rnimix/reference/nimixClust.md):
   a finite mixture whose latent labels follow a Potts Markov random
   field on a `spatialWeights` neighbourhood (Potts 1952; Besag 1974;
   spatially variant finite mixtures, Blekas et al. 2005), so
@@ -1603,28 +1617,28 @@ Blekas et al. 2005).
   (symmetric, zero-diagonal, non-negative weight matrix) deliberately
   orthogonal to `DistributionSpec`, so any registered component family
   can be paired with any graph. Constructors
-  [`spatialWeights()`](https://madsyair.github.io/nimix/reference/spatialWeights.md)
+  [`spatialWeights()`](https://madsyair.github.io/Rnimix/reference/spatialWeights.md)
   (from a matrix) and
-  [`gridAdjacency()`](https://madsyair.github.io/nimix/reference/gridAdjacency.md)
+  [`gridAdjacency()`](https://madsyair.github.io/Rnimix/reference/gridAdjacency.md)
   (rook/queen contiguity on a regular lattice); accessors
-  [`nRegions()`](https://madsyair.github.io/nimix/reference/nRegions.md),
-  [`getAdjacency()`](https://madsyair.github.io/nimix/reference/getAdjacency.md),
-  [`neighborsOf()`](https://madsyair.github.io/nimix/reference/neighborsOf.md).
-- [`nimixClust()`](https://madsyair.github.io/nimix/reference/nimixClust.md)
+  [`nRegions()`](https://madsyair.github.io/Rnimix/reference/nRegions.md),
+  [`getAdjacency()`](https://madsyair.github.io/Rnimix/reference/getAdjacency.md),
+  [`neighborsOf()`](https://madsyair.github.io/Rnimix/reference/neighborsOf.md).
+- [`nimixClust()`](https://madsyair.github.io/Rnimix/reference/nimixClust.md)
   gains a `spatialWeights` argument (default `NULL`, fully
   backward-compatible). Supplying a structure validates it and points to
   the MRF engine planned for 0.6.0; the exchangeable mixture remains the
   default behaviour.
 
 First stable release. The public API –
-[`nimixClust()`](https://madsyair.github.io/nimix/reference/nimixClust.md),
-[`nimixReg()`](https://madsyair.github.io/nimix/reference/nimixReg.md),
-[`registerDistribution()`](https://madsyair.github.io/nimix/reference/registerDistribution.md),
-[`relabel()`](https://madsyair.github.io/nimix/reference/relabel.md),
+[`nimixClust()`](https://madsyair.github.io/Rnimix/reference/nimixClust.md),
+[`nimixReg()`](https://madsyair.github.io/Rnimix/reference/nimixReg.md),
+[`registerDistribution()`](https://madsyair.github.io/Rnimix/reference/registerDistribution.md),
+[`relabel()`](https://madsyair.github.io/Rnimix/reference/relabel.md),
 [`summary()`](https://rdrr.io/r/base/summary.html),
 [`plot()`](https://rdrr.io/r/graphics/plot.default.html),
 [`predict()`](https://rdrr.io/r/stats/predict.html),
-[`nimixClearCache()`](https://madsyair.github.io/nimix/reference/nimixClearCache.md)
+[`nimixClearCache()`](https://madsyair.github.io/Rnimix/reference/nimixClearCache.md)
 – is now considered stable; breaking changes will bump the major
 version.
 
@@ -1633,7 +1647,7 @@ version.
 - New packaged dataset `wdi2022`: four development indicators for 207
   countries (World Bank World Development Indicators, 2022; CC BY 4.0;
   full provenance in
-  [`?wdi2022`](https://madsyair.github.io/nimix/reference/wdi2022.md)).
+  [`?wdi2022`](https://madsyair.github.io/Rnimix/reference/wdi2022.md)).
 - All four vignettes now run on this official-statistics data instead of
   simulations only: income-regime clustering (univariate), joint
   income-longevity clustering (multivariate), the Preston curve as a
@@ -1642,7 +1656,7 @@ version.
   heavy-tail comparison. Reported numbers in the vignettes come from
   actual runs.
 
-## nimix 0.5.0
+## Rnimix 0.5.0
 
 This line opens the performance and hardening phase, built on the 0.4.3
 feature set. The two production engines are `method = "dpm"` (Dirichlet
@@ -1657,7 +1671,7 @@ is estimated) and `method = "fixedk"` (finite mixture with a known `K`).
   and initial values. This skips recompilation for repeated fits
   (multiple seeds, multiple chains) and is bit-for-bit identical to a
   fresh compile. Controlled by `mcmcControl$reuse` (default `TRUE`);
-  [`nimixClearCache()`](https://madsyair.github.io/nimix/reference/nimixClearCache.md)
+  [`nimixClearCache()`](https://madsyair.github.io/Rnimix/reference/nimixClearCache.md)
   releases the cached compiled models.
 - **Reproducibility.** The dispersed (k-means) initialisation is now
   seeded by the fit’s `seed`, so repeated fits with the same data and
@@ -1690,14 +1704,14 @@ is estimated) and `method = "fixedk"` (finite mixture with a known `K`).
   untested engine pairings are additionally pinned in
   `tests/testthat/test-hardening-matrix.R`.
 
-## nimix 0.4.3
+## Rnimix 0.4.3
 
 ### Robustness and ergonomics
 
 - `verbose` now defaults to `FALSE` for
-  [`nimixClust()`](https://madsyair.github.io/nimix/reference/nimixClust.md)
+  [`nimixClust()`](https://madsyair.github.io/Rnimix/reference/nimixClust.md)
   and
-  [`nimixReg()`](https://madsyair.github.io/nimix/reference/nimixReg.md).
+  [`nimixReg()`](https://madsyair.github.io/Rnimix/reference/nimixReg.md).
   Benign NIMBLE configuration chatter (e.g. the
   Chinese-restaurant-process truncation reminder) is muffled
   selectively; genuine warnings about potentially invalid MCMC draws and
@@ -1718,36 +1732,36 @@ is estimated) and `method = "fixedk"` (finite mixture with a known `K`).
   Student-t and Normal-Gamma (heavy-tailed, univariate / multivariate),
   and Poisson / Binomial counts.
 
-## nimix 0.4.2
+## Rnimix 0.4.2
 
-- [`nimixReg()`](https://madsyair.github.io/nimix/reference/nimixReg.md)
+- [`nimixReg()`](https://madsyair.github.io/Rnimix/reference/nimixReg.md)
   gains multivariate responses (`cbind(y1, y2) ~ x`) for Normal,
   Student-t and Normal-Gamma components, with per-component coefficient
   matrices and error covariances.
 
-## nimix 0.4.0
+## Rnimix 0.4.0
 
 - Student-t and Normal-Gamma components (univariate and multivariate)
   and Poisson / Binomial counts; public
-  [`registerDistribution()`](https://madsyair.github.io/nimix/reference/registerDistribution.md).
+  [`registerDistribution()`](https://madsyair.github.io/Rnimix/reference/registerDistribution.md).
 
-## nimix 0.3.0
+## Rnimix 0.3.0
 
-- [`nimixReg()`](https://madsyair.github.io/nimix/reference/nimixReg.md)
+- [`nimixReg()`](https://madsyair.github.io/Rnimix/reference/nimixReg.md)
   and the `RegressionMixModel` class: mixture-of-regressions with a
   Normal-Inverse-Gamma g-prior. `FixedKEngine` implemented across
   univariate, multivariate and regression models. Engine selection is
   polymorphic via
-  [`runEngine()`](https://madsyair.github.io/nimix/reference/runEngine.md).
+  [`runEngine()`](https://madsyair.github.io/Rnimix/reference/runEngine.md).
 
-## nimix 0.2.0
+## Rnimix 0.2.0
 
 - Multivariate Gaussian clustering (`NormalMvSpec`) with a
   Normal-Inverse-Wishart base measure. Engine generalised to be
   dimension-agnostic.
 
-## nimix 0.1.0
+## Rnimix 0.1.0
 
 - S4 foundation, univariate Gaussian clustering (`NormalUvSpec`),
-  [`nimixClust()`](https://madsyair.github.io/nimix/reference/nimixClust.md)
+  [`nimixClust()`](https://madsyair.github.io/Rnimix/reference/nimixClust.md)
   on the DPM and fixed-K engines.

@@ -11,7 +11,7 @@ BinomialSpec()
 ## Value
 
 A
-[`BinomialSpec`](https://madsyair.github.io/nimix/reference/BinomialSpec-class.md).
+[`BinomialSpec`](https://madsyair.github.io/Rnimix/reference/BinomialSpec-class.md).
 
 ## Examples
 

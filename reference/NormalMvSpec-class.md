@@ -26,5 +26,5 @@ normals with unknown number of components. *Statistics and Computing*,
 
 ## See also
 
-[`nimixClust`](https://madsyair.github.io/nimix/reference/nimixClust.md),
-[`NormalUvSpec`](https://madsyair.github.io/nimix/reference/NormalUvSpec-class.md)
+[`nimixClust`](https://madsyair.github.io/Rnimix/reference/nimixClust.md),
+[`NormalUvSpec`](https://madsyair.github.io/Rnimix/reference/NormalUvSpec-class.md)

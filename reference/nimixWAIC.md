@@ -17,7 +17,7 @@ nimixWAIC(fit, maxDraws = 1000L)
 - fit:
 
   A clustering
-  [`FitResult`](https://madsyair.github.io/nimix/reference/FitResult-class.md).
+  [`FitResult`](https://madsyair.github.io/Rnimix/reference/FitResult-class.md).
 
 - maxDraws:
 

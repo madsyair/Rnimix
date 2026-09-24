@@ -18,7 +18,7 @@ HMMEngine(transConc = 1)
 ## Value
 
 An
-[`HMMEngine`](https://madsyair.github.io/nimix/reference/HMMEngine-class.md)
+[`HMMEngine`](https://madsyair.github.io/Rnimix/reference/HMMEngine-class.md)
 object.
 
 ## Examples

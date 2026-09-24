@@ -14,7 +14,7 @@ predict(object, newdata = NULL, ...)
 - object:
 
   A `nimixEnsemble` from
-  [`ensembleFit`](https://madsyair.github.io/nimix/reference/ensembleFit.md).
+  [`ensembleFit`](https://madsyair.github.io/Rnimix/reference/ensembleFit.md).
 
 - newdata:
 

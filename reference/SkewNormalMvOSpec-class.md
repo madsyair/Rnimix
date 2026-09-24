@@ -1,7 +1,7 @@
 # Skew multivariate Normal components with estimated orthogonal factor
 
 As
-[`SkewNormalMvSpec-class`](https://madsyair.github.io/nimix/reference/SkewNormalMvSpec-class.md),
+[`SkewNormalMvSpec-class`](https://madsyair.github.io/Rnimix/reference/SkewNormalMvSpec-class.md),
 but the orthogonal factor of \\A = OU\\ is estimated through the
 Householder angle `theta` with a uniform prior on \\(-\pi/8, \pi/8)\\
 (FS restriction (8)). Bivariate data only. `theta` is identified only

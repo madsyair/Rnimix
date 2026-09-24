@@ -11,7 +11,7 @@ BinomialRegSpec()
 ## Value
 
 A
-[`BinomialRegSpec`](https://madsyair.github.io/nimix/reference/BinomialRegSpec-class.md).
+[`BinomialRegSpec`](https://madsyair.github.io/Rnimix/reference/BinomialRegSpec-class.md).
 
 ## Examples
 
