@@ -16,7 +16,7 @@ test_that("R-level densities are numerically stable and correct", {
   expect_true(all(is.finite(dmsnburr(ext, 1, 2, 0.5, log = TRUE))))
   expect_true(all(is.finite(dmsnburr2a(ext, 1, 2, 0.5, log = TRUE))))
   # alpha = 1 is exactly logistic(mu, sigma/omega)
-  om1 <- exp(nimix:::.log_omega_msnburr(1))
+  om1 <- exp(Rnimix:::.log_omega_msnburr(1))
   xg <- seq(-8, 8, 0.5)
   expect_lt(max(abs(dmsnburr(xg, 1, 2, 1, log = TRUE) -
                     dlogis(xg, 1, 2 / om1, log = TRUE))), 1e-8)
@@ -27,7 +27,7 @@ test_that("R-level densities are numerically stable and correct", {
 
 test_that("NIMBLE densities equal the R references (stability preserved)", {
   skip_on_cran()
-  suppressMessages(nimix:::.nimixEnsureMSNBurr())
+  suppressMessages(Rnimix:::.nimixEnsureMSNBurr())
   cdM <- nimble::compileNimble(get("dMSNBurr_k", envir = globalenv()))
   cd2 <- nimble::compileNimble(get("dMSNBurr2a_k", envir = globalenv()))
   grid <- expand.grid(x = c(-500, -8, 0, 8, 500), a = c(0.05, 0.6, 1, 80))

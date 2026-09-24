@@ -4,9 +4,9 @@ test_that("WAIC helpers are correct on a synthetic loglik matrix", {
   # two obs, known loglik columns: logMeanExp and WAIC decomposition
   set.seed(1)
   ll <- matrix(rnorm(200 * 2, -1, 0.3), 200, 2)
-  lme <- nimix:::.logMeanExp(ll[, 1])
+  lme <- Rnimix:::.logMeanExp(ll[, 1])
   expect_equal(lme, log(mean(exp(ll[, 1]))), tolerance = 1e-10)
-  w <- nimix:::.waicFromLL(ll)
+  w <- Rnimix:::.waicFromLL(ll)
   # p_waic = sum of per-column variances; elpd = lppd - p_waic
   expect_equal(w$p_waic, sum(apply(ll, 2L, var)), tolerance = 1e-10)
   expect_equal(w$waic, -2 * w$elpd_waic, tolerance = 1e-10)

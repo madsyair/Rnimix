@@ -3,7 +3,7 @@
 # identifiability caveats.
 
 test_that("Householder O and Theta^2 match FS restriction (8)", {
-  Oh <- nimix:::.householderO
+  Oh <- Rnimix:::.householderO
   for (th in c(-0.3, -0.1, 0.1, 0.3)) {
     O <- Oh(th)
     expect_lt(abs(det(O) + 1), 1e-10)                # |O| = (-1)^(m+1) = -1
@@ -14,7 +14,7 @@ test_that("Householder O and Theta^2 match FS restriction (8)", {
   # the bound is exactly pi/8: equality at |theta| = pi/8
   Ob <- Oh(pi / 8)
   expect_lt(abs(Ob[1, 1] - abs(Ob[2, 1])), 1e-10)
-  expect_lt(abs(nimix:::.thetaBound - pi / 8), 1e-12)
+  expect_lt(abs(Rnimix:::.thetaBound - pi / 8), 1e-12)
 })
 
 test_that("dskewmvno integrates to one and is theta-invariant at gamma = 1", {
@@ -62,7 +62,7 @@ test_that("rskewmvno is consistent with dskewmvno (profile likelihood)", {
 
 test_that("compiled dSkewMvNO_k equals the R reference", {
   skip_on_cran()
-  suppressMessages(nimix:::.nimixEnsureMSNBurr())
+  suppressMessages(Rnimix:::.nimixEnsureMSNBurr())
   cK <- nimble::compileNimble(get("dSkewMvNO_k", envir = globalenv()))
   Sg <- matrix(c(2, .8, .8, 1.2), 2, 2)
   set.seed(3); err <- 0

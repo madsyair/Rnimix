@@ -13,7 +13,7 @@
 ##  * Parameterisation is (mu, Sigma, gamma) with Sigma ~ inverse-Wishart --
 ##    the same stochastic matrix node the Normal-mv DPM uses, which dCRP is
 ##    proven to cluster (a deterministic per-component node would break it).
-##  * gamma follows the harmonised FS convention shared by all nimix skew
+##  * gamma follows the harmonised FS convention shared by all Rnimix skew
 ##    families: gamma_j > 1 skews dimension j right along its basic axis, and
 ##    the prior log(gamma_j) ~ N(0, s^2) treats both directions symmetrically
 ##    (FS use s = 1).

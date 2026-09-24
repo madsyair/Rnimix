@@ -56,7 +56,7 @@ setMethod("summary", "FitResult", function(object, ...) {
             "poorly across partitions. ",
             "Consider a longer run or k-means initialisation.", call. = FALSE)
 
-  cat("nimix mixture summary (engine: ", object@engineUsed,
+  cat("Rnimix mixture summary (engine: ", object@engineUsed,
       ", distribution: ", object@distSpec@name, ")\n", sep = "")
   cat("Observations: ", .nObs(object@data), " (dimension d = ",
       .dataDimOf(object@data), ")\n", sep = "")
@@ -128,7 +128,7 @@ setMethod("summary", "FitResult", function(object, ...) {
 #' @return Invisibly, a tidy data frame of exactly what was drawn (e.g.
 #'   \code{iteration}/\code{component}/\code{value} for traces,
 #'   \code{x}/\code{density} for the predictive density), so the plot can be
-#'   reproduced with ggplot2 or any other system without nimix depending on
+#'   reproduced with ggplot2 or any other system without Rnimix depending on
 #'   them.
 setMethod("plot", signature(x = "FitResult", y = "missing"),
   function(x, y, type = c("K", "trace_raw", "trace_relabeled", "density",
@@ -161,7 +161,7 @@ setMethod("plot", signature(x = "FitResult", y = "missing"),
     # Every branch draws with base graphics AND returns (invisibly) the tidy
     # data frame it plotted. That keeps `graphics` as the only plotting
     # dependency while letting users replot with ggplot2/lattice/plotly from
-    # the returned data -- no need for nimix to carry those packages.
+    # the returned data -- no need for Rnimix to carry those packages.
     out <- NULL
     if (type == "K") {
       tab <- prop.table(table(x@Kposterior))
@@ -394,7 +394,7 @@ setMethod("predict", "FitResult", function(object, newdata, maxDraws = 500L,
 #
 # Base graphics only, and every branch returns the tidy data frame it drew --
 # same contract as the other plot types, so a caller who wants ggplot2 has the
-# numbers without nimix depending on it.
+# numbers without Rnimix depending on it.
 .plotHMM <- function(x, type, h = 12L, newdata = NULL, lags = NULL,
                      draws = 400L, level = 0.9, ...) {
   y <- x@data

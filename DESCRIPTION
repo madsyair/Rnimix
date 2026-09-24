@@ -1,4 +1,4 @@
-Package: nimix
+Package: Rnimix
 Type: Package
 Title: Bayesian Mixture Clustering and Regression with NIMBLE
 Version: 1.5.0
@@ -19,8 +19,8 @@ Description: Implements Bayesian mixture models and mixture regression
     random effects, label-switching correction, and extensive model
     diagnostics.
 License: GPL-3
-URL: https://github.com/madsyair/nimix, https://madsyair.github.io/nimix/
-BugReports: https://github.com/madsyair/nimix/issues
+URL: https://github.com/madsyair/Rnimix, https://madsyair.github.io/Rnimix/
+BugReports: https://github.com/madsyair/Rnimix/issues
 Encoding: UTF-8
 Language: en-US
 LazyData: true
@@ -31,6 +31,7 @@ Suggests: testthat (>= 3.0.0), knitr, rmarkdown, bayesplot,
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 Collate: 
+    'Rnimix-package.R'
     'utils-internal.R'
     'class-DistributionSpec.R'
     'class-FitResult.R'
@@ -85,7 +86,6 @@ Collate:
     'kernels-neonormal.R'
     'methods-summary-plot.R'
     'model-selection.R'
-    'nimix-package.R'
     'registerDistribution.R'
     'nimixClust.R'
     'nimixReg.R'
@@ -96,5 +96,5 @@ Collate:
     'utils-labelswitch.R'
     'workflow-ppc.R'
     'workflow-prior-predictive.R'
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.0
 NeedsCompilation: no

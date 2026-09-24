@@ -39,7 +39,7 @@ test_that("validateParams enforces dimension and nu0 invariants", {
 test_that("simulateParams returns conformable beta and s2", {
   set.seed(2)
   pr <- list(b0 = c(0, 0), B0 = diag(2), nu0 = 5, s0 = 2, p = 2L)
-  sp <- nimix:::simulateParams(NormalRegSpec(), pr, nClust = 4)
+  sp <- Rnimix:::simulateParams(NormalRegSpec(), pr, nClust = 4)
   expect_equal(dim(sp$beta), c(4L, 2L))
   expect_length(sp$s2, 4L)
   expect_true(all(sp$s2 > 0))
@@ -103,9 +103,9 @@ test_that("conjugate NIG sampler replaces RW on the FixedK regression path", {
   sp <- getDistribution("normal-reg")
   pr <- defaultPrior(sp, y, control = list(X = X))
   mc <- buildModelCode(sp, new("FixedKEngine", dirichletConc = 1), n = n, L = 2)
-  cn <- nimix:::buildConstants(sp, pr, n)
+  cn <- Rnimix:::buildConstants(sp, pr, n)
   cn$K <- 2; cn$alphaVec <- rep(1, 2); cn$p <- ncol(X); cn$X <- X
-  ini <- nimix:::componentInits(sp, pr, y, 2)
+  ini <- Rnimix:::componentInits(sp, pr, y, 2)
   m <- suppressMessages(nimble::nimbleModel(
     mc$code, constants = cn, data = list(y = y),
     inits = c(list(z = ini$alloc, weights = c(.5, .5)), ini$params),

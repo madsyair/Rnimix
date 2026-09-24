@@ -1,4 +1,4 @@
-url: https://madsyair.github.io/nimix/
+url: https://madsyair.github.io/Rnimix/
 
 template:
   bootstrap: 5
@@ -6,7 +6,7 @@ template:
 reference:
 - title: Package
   contents:
-  - nimix-package
+  - Rnimix-package
 
 - title: Fitting functions
   desc: User-facing entry points for clustering and mixture-of-regression.

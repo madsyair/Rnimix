@@ -12,7 +12,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>", eval = FALSE)
 ```
 
 This vignette demonstrates Bayesian univariate Gaussian mixture clustering
-with **nimix**'s Dirichlet Process Mixture (DPM) engine, built on NIMBLE's
+with **Rnimix**'s Dirichlet Process Mixture (DPM) engine, built on NIMBLE's
 Chinese Restaurant Process (`dCRP`), using **official statistics**: the
 `wdi2022` dataset shipped with the package (World Bank World Development
 Indicators, 2022, CC BY 4.0; see `?wdi2022`). The same workflow applies
@@ -28,7 +28,7 @@ GDP per capita is famously multimodal on the log scale -- countries group into
 latent "development regimes" rather than forming one homogeneous population.
 
 ```{r data, eval = TRUE}
-library(nimix)
+library(Rnimix)
 data(wdi2022)
 ly <- log(wdi2022$gdp_pc)
 summary(ly)

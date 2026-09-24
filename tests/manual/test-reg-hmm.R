@@ -72,7 +72,7 @@ test_that("the hmm regression path uses NIMBLE's default samplers, not the NIG c
   Tn <- 60L
   x <- rnorm(Tn); y <- rnorm(Tn)
   spec <- getDistribution("normal-reg")
-  mc <- nimix:::buildModelCode(spec, nimix:::HMMEngine(transConc = 1),
+  mc <- Rnimix:::buildModelCode(spec, Rnimix:::HMMEngine(transConc = 1),
                                n = Tn, L = 2L)
   expect_false("z" %in% all.vars(mc$code))
   expect_identical(mc$allocNode, "zFFBS")     # decoded post-hoc, not sampled
@@ -225,11 +225,11 @@ test_that("neo-normal families run under the HMM engine (generated kernels)", {
          x = x)
   }
   cases <- list(
-    msnburr  = list(rng = function(n) nimix:::rmsnburr(n, 0, 0.6, 2),
+    msnburr  = list(rng = function(n) Rnimix:::rmsnburr(n, 0, 0.6, 2),
                     cols = c("sigma_mean", "alpha_mean")),
-    sep      = list(rng = function(n) nimix:::rsep(n, 0, 0.6, 2),
+    sep      = list(rng = function(n) Rnimix:::rsep(n, 0, 0.6, 2),
                     cols = c("sigma_mean", "nu_mean")),
-    gmsnburr = list(rng = function(n) nimix:::rgmsnburr(n, 0, 0.6, 2, 1.5),
+    gmsnburr = list(rng = function(n) Rnimix:::rgmsnburr(n, 0, 0.6, 2, 1.5),
                     cols = c("sigma_mean", "alpha_mean", "theta_mean"))
   )
   for (nm in names(cases)) {

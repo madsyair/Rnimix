@@ -16,7 +16,7 @@ NULL
 ##     betaTilde_j | s2    ~ N_p(b0, s2Tilde_j * B0)
 ## which is the conjugate prior for a Gaussian linear model. NIMBLE recognises
 ## this as conjugate for the dCRP sampler (CRP_cluster_wrapper is assigned to
-## both betaTilde and s2Tilde) -- native NIMBLE machinery; nimix supplies the
+## both betaTilde and s2Tilde) -- native NIMBLE machinery; Rnimix supplies the
 ## S4 wiring, the data-scaled g-prior, and the relabelling.
 ##
 ## As in NormalMvSpec, a multivariate distribution parameter may

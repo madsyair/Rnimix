@@ -48,7 +48,7 @@ test_that("theta stays identified under symmetry (independent-t is not spherical
 
 test_that("compiled dSkewMvITO_k equals the R reference", {
   skip_on_cran()
-  suppressMessages(nimix:::.nimixEnsureMSNBurr())
+  suppressMessages(Rnimix:::.nimixEnsureMSNBurr())
   cK <- nimble::compileNimble(get("dSkewMvITO_k", envir = globalenv()))
   Sg <- matrix(c(2, .8, .8, 1.2), 2, 2)
   set.seed(3); err <- 0

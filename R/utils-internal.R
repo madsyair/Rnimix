@@ -307,7 +307,7 @@
 # --- Vehtari et al. (2021) convergence suite ----------------------------------
 # Rank-normalized bulk-ESS, tail-ESS, and folded split-Rhat (Vehtari, Gelman,
 # Simpson, Carpenter & Buerkner 2021, Bayesian Analysis 16(2), Sections 3-4),
-# complementing the rank-normalized split-Rhat above. Applied in nimix ONLY to
+# complementing the rank-normalized split-Rhat above. Applied in Rnimix ONLY to
 # label-invariant functionals (occupied K, concentration alpha, MRF beta,
 # allocation entropy): per-component parameter traces are not identified under
 # label switching, so chain diagnostics on them are meaningless.

@@ -3,7 +3,7 @@ test_that("MSNBurr regression recovers coefficients (framework family 1)", {
   set.seed(3)
   n <- 250L; x <- rnorm(n)
   y <- c(1.5 + 1.2 * x[1:125], -1.5 - 0.8 * x[126:250]) +
-    nimix:::rmsnburr(n, 0, 0.6, 2)
+    Rnimix:::rmsnburr(n, 0, 0.6, 2)
   f <- nimixReg(y ~ x, data.frame(y = y, x = x), K = 2, method = "fixedk",
                 distribution = "msnburr",
                 mcmcControl = list(niter = 1000, nburnin = 400), seed = 1)
@@ -22,7 +22,7 @@ test_that("SEP regression works through the same framework, different shape set"
   set.seed(4)
   n <- 250L; x <- rnorm(n)
   y <- c(1.2 + 1.0 * x[1:125], -1.2 - 0.7 * x[126:250]) +
-    nimix:::rsep(n, 0, 0.6, 2)
+    Rnimix:::rsep(n, 0, 0.6, 2)
   f <- nimixReg(y ~ x, data.frame(y = y, x = x), K = 2, method = "fixedk",
                 distribution = "sep",
                 mcmcControl = list(niter = 1000, nburnin = 400), seed = 1)
@@ -42,7 +42,7 @@ test_that("MSNBurr-IIa regression works through the framework (same shape, new k
   set.seed(6)
   n <- 250L; x <- rnorm(n)
   y <- c(1.3 + 1.1 * x[1:125], -1.3 - 0.7 * x[126:250]) +
-    nimix:::rmsnburr2a(n, 0, 0.6, 2)
+    Rnimix:::rmsnburr2a(n, 0, 0.6, 2)
   f <- nimixReg(y ~ x, data.frame(y = y, x = x), K = 2, method = "fixedk",
                 distribution = "msnburr2a",
                 mcmcControl = list(niter = 1000, nburnin = 400), seed = 1)
@@ -60,7 +60,7 @@ test_that("FSSN regression works through the framework (log-normal skew prior)",
   set.seed(8)
   n <- 250L; x <- rnorm(n)
   y <- c(1.4 + 1.0 * x[1:125], -1.4 - 0.6 * x[126:250]) +
-    nimix:::rfssn(n, 0, 0.6, 2)
+    Rnimix:::rfssn(n, 0, 0.6, 2)
   f <- nimixReg(y ~ x, data.frame(y = y, x = x), K = 2, method = "fixedk",
                 distribution = "fssn",
                 mcmcControl = list(niter = 1000, nburnin = 400), seed = 1)
@@ -78,7 +78,7 @@ test_that("GMSNBurr regression works with THREE shape parameters", {
   set.seed(10)
   n <- 260L; x <- rnorm(n)
   y <- c(1.3 + 1.0 * x[1:130], -1.3 - 0.7 * x[131:260]) +
-    nimix:::rgmsnburr(n, 0, 0.6, 2, 1.5)
+    Rnimix:::rgmsnburr(n, 0, 0.6, 2, 1.5)
   f <- nimixReg(y ~ x, data.frame(y = y, x = x), K = 2, method = "fixedk",
                 distribution = "gmsnburr",
                 mcmcControl = list(niter = 1000, nburnin = 400), seed = 1)
@@ -98,13 +98,13 @@ test_that("the remaining neo-normal families all fit through the framework", {
   n <- 240L; x <- rnorm(n)
   base <- c(1.3 + 1.0 * x[1:120], -1.3 - 0.7 * x[121:240])
   cases <- list(
-    lep    = list(y = base + nimix:::rlep(n, 0, 0.6, 2),
+    lep    = list(y = base + Rnimix:::rlep(n, 0, 0.6, 2),
                   cols = c("sigma_mean", "nu_mean")),
-    fsst   = list(y = base + nimix:::rfsst(n, 0, 0.6, 1.5, 5),
+    fsst   = list(y = base + Rnimix:::rfsst(n, 0, 0.6, 1.5, 5),
                   cols = c("sigma_mean", "alpha_mean", "nu_mean")),
-    fossep = list(y = base + nimix:::rfossep(n, 0, 0.6, 2, 2),
+    fossep = list(y = base + Rnimix:::rfossep(n, 0, 0.6, 2, 2),
                   cols = c("sigma_mean", "alpha_mean", "theta_mean")),
-    jfst   = list(y = base + nimix:::rjfst(n, 0, 0.6, 3, 3),
+    jfst   = list(y = base + Rnimix:::rjfst(n, 0, 0.6, 3, 3),
                   cols = c("sigma_mean", "alpha_mean", "theta_mean"))
   )
   for (nm in names(cases)) {
@@ -127,7 +127,7 @@ test_that("neo-normal regression prediction is complete and keeps the skew", {
   set.seed(3)
   n <- 200L; x <- rnorm(n)
   y <- c(1.5 + 1.2 * x[1:100], -1.5 - 0.8 * x[101:200]) +
-    nimix:::rmsnburr(n, 0, 0.6, 2)
+    Rnimix:::rmsnburr(n, 0, 0.6, 2)
   f <- nimixReg(y ~ x, data.frame(y = y, x = x), K = 2, method = "fixedk",
                 distribution = "msnburr",
                 mcmcControl = list(niter = 600, nburnin = 250), seed = 1)
@@ -149,8 +149,8 @@ test_that("the predictive path generalises across shape counts", {
   set.seed(5)
   n <- 200L; x <- rnorm(n)
   for (nm in c("sep", "gmsnburr")) {
-    gen <- if (nm == "sep") nimix:::rsep(n, 0, 0.6, 2) else
-      nimix:::rgmsnburr(n, 0, 0.6, 2, 1.5)
+    gen <- if (nm == "sep") Rnimix:::rsep(n, 0, 0.6, 2) else
+      Rnimix:::rgmsnburr(n, 0, 0.6, 2, 1.5)
     y <- c(1.3 + 1.0 * x[1:100], -1.3 - 0.7 * x[101:200]) + gen
     f <- nimixReg(y ~ x, data.frame(y = y, x = x), K = 2, method = "fixedk",
                   distribution = nm,
@@ -168,7 +168,7 @@ test_that("neo-normal regression runs under the DPM engine too", {
   set.seed(3)
   n <- 200L; x <- rnorm(n)
   y <- c(1.5 + 1.2 * x[1:100], -1.5 - 0.8 * x[101:200]) +
-    nimix:::rmsnburr(n, 0, 0.6, 2)
+    Rnimix:::rmsnburr(n, 0, 0.6, 2)
   f <- nimixReg(y ~ x, data.frame(y = y, x = x), method = "dpm",
                 distribution = "msnburr",
                 mcmcControl = list(niter = 800, nburnin = 350), seed = 1)
@@ -182,8 +182,8 @@ test_that("DPM works across shape counts for neo-normal regression", {
   set.seed(7)
   n <- 200L; x <- rnorm(n)
   for (nm in c("sep", "gmsnburr")) {
-    gen <- if (nm == "sep") nimix:::rsep(n, 0, 0.6, 2) else
-      nimix:::rgmsnburr(n, 0, 0.6, 2, 1.5)
+    gen <- if (nm == "sep") Rnimix:::rsep(n, 0, 0.6, 2) else
+      Rnimix:::rgmsnburr(n, 0, 0.6, 2, 1.5)
     y <- c(1.4 + 1.0 * x[1:100], -1.4 - 0.7 * x[101:200]) + gen
     f <- nimixReg(y ~ x, data.frame(y = y, x = x), method = "dpm",
                   distribution = nm,

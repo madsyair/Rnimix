@@ -1,6 +1,6 @@
 # Prior scale invariance across engines.
 #
-# nimix assigns priors from the data scale, so multiplying the response by a
+# Rnimix assigns priors from the data scale, so multiplying the response by a
 # constant must multiply the location estimates by the same constant and leave
 # everything else alone. This file locks that invariant per engine.
 #

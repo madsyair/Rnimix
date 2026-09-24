@@ -46,7 +46,7 @@ test_that("quantiles vectorise without recycling warnings", {
 
 test_that("NIMBLE densities equal the R reference (scalar params)", {
   skip_on_cran()
-  suppressMessages(nimix:::.nimixEnsureMSNBurr())
+  suppressMessages(Rnimix:::.nimixEnsureMSNBurr())
   cdF <- nimble::compileNimble(get("dFOSSEP_k", envir = globalenv()))
   cdS <- nimble::compileNimble(get("dFSST_k", envir = globalenv()))
   cdJ <- nimble::compileNimble(get("dJFST_k", envir = globalenv()))

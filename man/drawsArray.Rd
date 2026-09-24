@@ -18,7 +18,7 @@ A numeric array \code{iterations x chains x parameters} with
 \description{
 Returns a plain 3-D array in the layout \code{bayesplot}'s \code{mcmc_*}
 functions accept natively (\code{iterations x chains x parameters}), so no
-extra packages are required to hand a nimix fit to
+extra packages are required to hand a Rnimix fit to
 \code{bayesplot::mcmc_trace()}, \code{mcmc_rhat_hist()} and friends.
 }
 \details{

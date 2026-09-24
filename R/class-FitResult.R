@@ -13,7 +13,7 @@ NULL
 ## therefore route through relabel() before reporting component parameters.
 ## ---------------------------------------------------------------------------
 
-#' Fitted nimix mixture result
+#' Fitted Rnimix mixture result
 #'
 #' @slot mcmcSamples A matrix of monitored MCMC draws (iterations x parameters).
 #' @slot Kposterior Integer vector: number of occupied clusters per iteration.
@@ -58,7 +58,7 @@ setClass(
 setMethod("show", "FitResult", function(object) {
   kt <- sort(table(object@Kposterior), decreasing = TRUE)
   modalK <- as.integer(names(kt)[1])
-  cat("<nimix FitResult>\n")
+  cat("<Rnimix FitResult>\n")
   cat(sprintf("  engine        : %s\n", object@engineUsed))
   cat(sprintf("  distribution  : %s\n", object@distSpec@name))
   cat(sprintf("  observations  : %d (dimension d = %d)\n",

@@ -7,7 +7,7 @@
 \alias{summary,FitResult-method}
 \alias{plot,FitResult,missing-method}
 \alias{predict,FitResult-method}
-\title{Fitted nimix mixture result}
+\title{Fitted Rnimix mixture result}
 \usage{
 \S4method{show}{FitResult}(object)
 
@@ -63,11 +63,11 @@ data frame of predictors (regression). Defaults to the training data.}
 Invisibly, a tidy data frame of exactly what was drawn (e.g.
   \code{iteration}/\code{component}/\code{value} for traces,
   \code{x}/\code{density} for the predictive density), so the plot can be
-  reproduced with ggplot2 or any other system without nimix depending on
+  reproduced with ggplot2 or any other system without Rnimix depending on
   them.
 }
 \description{
-Fitted nimix mixture result
+Fitted Rnimix mixture result
 }
 \section{Methods (by generic)}{
 \itemize{

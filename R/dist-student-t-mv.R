@@ -5,7 +5,7 @@ NULL
 ## dist-student-t-mv.R
 ##
 ## Multivariate Student-t component evaluated DIRECTLY as a multivariate-t
-## density. NIMBLE has no built-in multivariate-t, so nimix supplies one as a
+## density. NIMBLE has no built-in multivariate-t, so Rnimix supplies one as a
 ## user-defined distribution (registered with NIMBLE at load time) -- the same
 ## mechanism registerDistribution() exposes to package users. df is a fixed
 ## hyperparameter. Because the t density is not conjugate to the cluster prior,

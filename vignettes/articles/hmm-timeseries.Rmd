@@ -37,7 +37,7 @@ Two implementation facts shape everything downstream:
 ## Simulate two persistent regimes
 
 ```{r}
-library(nimix)
+library(Rnimix)
 
 set.seed(11)
 P  <- rbind(c(0.95, 0.05),    # regime 1: very persistent

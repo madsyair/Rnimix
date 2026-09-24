@@ -26,7 +26,7 @@ dataset (`?wdi2022`).
 ## The data
 
 ```{r data, eval = TRUE}
-library(nimix)
+library(Rnimix)
 data(wdi2022)
 df <- data.frame(life = wdi2022$life_exp,
                  lgdp = log(wdi2022$gdp_pc))

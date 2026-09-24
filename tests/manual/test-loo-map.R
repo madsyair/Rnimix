@@ -6,7 +6,7 @@ test_that("PSIS-LOO is chain-aware and agrees with WAIC", {
   f <- nimixClust(y, K = 2, method = "fixedk",
                   mcmcControl = list(niter = 800, nburnin = 300, nchains = 2),
                   seed = 1)
-  ll <- nimix:::.pointwiseLogLik(f)
+  ll <- Rnimix:::.pointwiseLogLik(f)
   expect_false(is.null(attr(ll, "chain_id")))   # chain ids reconstructed
   lo <- nimixLOO(f)
   expect_s3_class(lo, "psis_loo")

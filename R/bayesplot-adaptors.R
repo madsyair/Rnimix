@@ -2,7 +2,7 @@
 ## Interoperability with the bayesplot ecosystem, WITHOUT taking it on as a
 ## dependency. bayesplot's mcmc_* functions natively accept a plain 3-D array
 ## of dimension iterations x chains x parameters, and its ppc_* functions take
-## (y, yrep) directly -- so the adaptors below return base R objects and nimix
+## (y, yrep) directly -- so the adaptors below return base R objects and Rnimix
 ## keeps bayesplot in Suggests only (used by examples and vignettes, guarded by
 ## requireNamespace()).
 ##
@@ -24,7 +24,7 @@ NULL
 #'
 #' Returns a plain 3-D array in the layout \code{bayesplot}'s \code{mcmc_*}
 #' functions accept natively (\code{iterations x chains x parameters}), so no
-#' extra packages are required to hand a nimix fit to
+#' extra packages are required to hand a Rnimix fit to
 #' \code{bayesplot::mcmc_trace()}, \code{mcmc_rhat_hist()} and friends.
 #'
 #' Two views are available, and the distinction is statistical, not cosmetic:

@@ -25,7 +25,7 @@ rfssn(n, mu = 0, sigma = 1, alpha = 1)
 
 \item{alpha}{Numeric. Skewness parameter, must be positive (default = 1,
 symmetric). Follows the Fernandez-Steel convention shared by all skew
-families in nimix: \code{alpha} is the FS skewness \eqn{\gamma}, so
+families in Rnimix: \code{alpha} is the FS skewness \eqn{\gamma}, so
 \eqn{P(X > \mu) = \alpha^2/(1 + \alpha^2)} and \code{alpha > 1} skews right.
 \eqn{\alpha = 1} gives the standard normal distribution.}
 

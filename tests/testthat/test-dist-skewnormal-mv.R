@@ -40,7 +40,7 @@ test_that("m = 1 skew-mv-Normal agrees with the univariate FSSN", {
 
 test_that("compiled dSkewMvN_k equals the R reference", {
   skip_on_cran()
-  suppressMessages(nimix:::.nimixEnsureMSNBurr())
+  suppressMessages(Rnimix:::.nimixEnsureMSNBurr())
   cD <- nimble::compileNimble(get("dSkewMvN_k", envir = globalenv()))
   Sg <- matrix(c(2, .8, .8, 1.2), 2, 2)
   set.seed(7); err <- 0

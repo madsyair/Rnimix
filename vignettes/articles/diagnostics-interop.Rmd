@@ -15,7 +15,7 @@ Fitting a mixture is half the job; interpreting the posterior is the other
 half, and mixtures make it subtle. The component labels are exchangeable, so
 "component 1" means nothing across draws until you condition on something, and
 under a Dirichlet process the *number* of components moves too. This article
-shows the tools `nimix` provides for that, and how to hand a fit to
+shows the tools `Rnimix` provides for that, and how to hand a fit to
 [`bayesplot`](https://mc-stan.org/bayesplot/) without taking it on as a
 dependency.
 
@@ -23,7 +23,7 @@ dependency.
 > from an actual run.
 
 ```{r}
-library(nimix)
+library(Rnimix)
 
 set.seed(1)
 y <- c(rnorm(120, -3, 0.8), rnorm(90, 0, 0.6), rnorm(120, 3, 0.8))
@@ -84,7 +84,7 @@ uncertainty (entries near 0.5) instead of forcing a hard assignment.
 
 Reaching for R-hat on `muTilde[1]` is a trap: under label switching that trace
 refers to different components in different chains, so the number looks
-plausible and means nothing. `nimix` steers you to **label-invariant
+plausible and means nothing. `Rnimix` steers you to **label-invariant
 functionals** -- the number of occupied clusters, the allocation entropy, and
 (for DPM fits) the concentration `alpha` -- which are meaningful on raw draws
 and retain the per-chain structure that R-hat needs.
@@ -152,7 +152,7 @@ of the observed data -- here all four are comfortably interior.
 
 The built-in `plot()` methods draw with base graphics but return, invisibly,
 the tidy data frame they plotted -- so you can reproduce or restyle any of
-them with ggplot2, lattice, or plotly without `nimix` depending on those
+them with ggplot2, lattice, or plotly without `Rnimix` depending on those
 packages.
 
 ```{r}

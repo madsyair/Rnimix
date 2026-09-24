@@ -12,7 +12,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>", eval = FALSE)
 ```
 
 Real multivariate clusters are often skewed, and not along the coordinate
-axes. `nimix` implements the Ferreira & Steel (2007) skew multivariate
+axes. `Rnimix` implements the Ferreira & Steel (2007) skew multivariate
 construction, in which each component is
 
 $$\eta = A^\top \epsilon + \mu, \qquad A = OU,$$
@@ -32,7 +32,7 @@ article uses the estimated-$O$ skew-Normal in three dimensions.
 ## Simulate two skewed, rotated clusters
 
 ```{r}
-library(nimix)
+library(Rnimix)
 
 rgen <- function(n, mu, Sigma, gamma, theta) {
   m <- length(mu)
@@ -79,7 +79,7 @@ sort(c(s$mu_1_mean))
 Here is the one thing that trips people up. The rows of $A$ can be
 permuted and sign-flipped without changing the density -- this is label
 switching, but in the *dimension* index rather than the component index.
-`nimix` resolves it by mapping every posterior draw to a unique canonical
+`Rnimix` resolves it by mapping every posterior draw to a unique canonical
 representative (Ferreira & Steel's identifiability restriction, applied
 *post hoc* rather than as a sampling constraint). So the reported `gamma` and
 `O` are **canonicalised**, and to compare them with the simulating values you
@@ -112,7 +112,7 @@ fast with dimension:
 ```{r}
 frac <- mean(replicate(500, {
   th <- runif(3, -pi/2, pi/2)
-  nimix:::.restriction8(orthogonalFactor(th, 3))
+  Rnimix:::.restriction8(orthogonalFactor(th, 3))
 }))
 frac
 #> [1] 0.068                   # ~7% at m = 3; ~0.7% at m = 4

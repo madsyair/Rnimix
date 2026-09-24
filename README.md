@@ -1,15 +1,15 @@
 <!-- README.md is generated from README.Rmd if you keep one; this file is the
      pkgdown home page and the GitHub landing page. -->
 
-# nimix <img src="man/figures/logo.png" align="right" height="139" alt="nimix logo" />
+# Rnimix <img src="man/figures/logo.png" align="right" height="139" alt="Rnimix logo" />
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/madsyair/nimix/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/madsyair/nimix/actions/workflows/R-CMD-check.yaml)
-[![pkgdown](https://github.com/madsyair/nimix/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/madsyair/nimix/actions/workflows/pkgdown.yaml)
+[![R-CMD-check](https://github.com/madsyair/Rnimix/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/madsyair/Rnimix/actions/workflows/R-CMD-check.yaml)
+[![pkgdown](https://github.com/madsyair/Rnimix/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/madsyair/Rnimix/actions/workflows/pkgdown.yaml)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-**nimix** is a Bayesian mixture-modelling package built on top of
+**Rnimix** is a Bayesian mixture-modelling package built on top of
 [NIMBLE](https://r-nimble.org/). It provides mixture *clustering* (univariate
 and multivariate), mixtures *of regressions* (univariate and multivariate
 response), and *spatially coupled* mixtures, through an extensible S4
@@ -116,28 +116,28 @@ All 32 families run under the dpm, fixedk and mrf engines.
   view (cluster count, allocation entropy, `alpha`) is what is safe on raw
   draws.
 - Every `plot(fit, type = ...)` invisibly returns the tidy data frame it
-  drew, so you can replot with ggplot2/lattice/plotly without nimix carrying
+  drew, so you can replot with ggplot2/lattice/plotly without Rnimix carrying
   those packages.
 
 ## Installation
 
-`nimix` depends on `nimble`, which compiles model code, so you need a working
+`Rnimix` depends on `nimble`, which compiles model code, so you need a working
 C/C++ toolchain (Rtools on Windows, Xcode CLT on macOS, build-essential on
 Linux).
 
 ``` r
 # install.packages("pak")
-pak::pak("madsyair/nimix")
+pak::pak("madsyair/Rnimix")
 
 # or
 # install.packages("remotes")
-remotes::install_github("madsyair/nimix")
+remotes::install_github("madsyair/Rnimix")
 ```
 
 ## Quick start
 
 ``` r
-library(nimix)
+library(Rnimix)
 
 ## Univariate clustering, number of components estimated (DPM)
 set.seed(1)
@@ -187,7 +187,7 @@ summary(reg)
 ## Documentation
 
 Function reference and vignettes are published at
-<https://madsyair.github.io/nimix/>. `NEWS.md` documents each release,
+<https://madsyair.github.io/Rnimix/>. `NEWS.md` documents each release,
 including the measured numbers behind sampler-default decisions and two
 breaking-change notes (the v1.1.0 skewness-convention harmonisation, with its
 reciprocal-`alpha` migration).

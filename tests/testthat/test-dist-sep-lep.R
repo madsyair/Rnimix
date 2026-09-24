@@ -26,7 +26,7 @@ test_that("SEP/LEP quantiles vectorise without recycling warnings", {
 
 test_that("SEP/LEP NIMBLE densities equal the R reference", {
   skip_on_cran()
-  suppressMessages(nimix:::.nimixEnsureMSNBurr())
+  suppressMessages(Rnimix:::.nimixEnsureMSNBurr())
   cdS <- nimble::compileNimble(get("dSEP_k", envir = globalenv()))
   cdL <- nimble::compileNimble(get("dLEP_k", envir = globalenv()))
   gs <- expand.grid(x = c(-6, -1, 0, 2, 6), nu = c(1, 1.5, 2, 3))

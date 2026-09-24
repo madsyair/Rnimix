@@ -83,7 +83,7 @@ object, and \code{$regime} usually answers the question actually being
 asked ("which regime will we be in"), degrading far more gracefully than
 any forecast of \code{y}.
 
-For a trend or a seasonal pattern this is the wrong model; nimix does not
+For a trend or a seasonal pattern this is the wrong model; Rnimix does not
 fit those.
 }
 

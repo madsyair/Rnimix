@@ -116,7 +116,7 @@ to 0.95 or above is allowed but warns, as it leaves little headroom.}
 
 \item{verbose}{Logical; print NIMBLE's configuration and progress output.
 Defaults to \code{FALSE} (quiet): NIMBLE's compilation notes and the benign
-dCRP truncation note are silenced, while nimix's own diagnostics (e.g. a
+dCRP truncation note are silenced, while Rnimix's own diagnostics (e.g. a
 censored-posterior warning) and any error still surface. Set \code{TRUE} to
 see NIMBLE's configuration and a progress bar.}
 

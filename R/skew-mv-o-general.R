@@ -19,7 +19,7 @@
 ## What is true, and what we use: among the signed row permutations P of A with
 ## |P| = +1, exactly one PO satisfies (8) -- verified exhaustively for
 ## m = 2, 3, 4. The m! 2^m ambiguity of A's rows is therefore label switching in
-## the dimension index, and nimix already prefers post-hoc relabelling over
+## the dimension index, and Rnimix already prefers post-hoc relabelling over
 ## ordering constraints. So we sample the angles unconstrained on the box and
 ## map each posterior draw to its unique representative.
 ##

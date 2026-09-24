@@ -31,21 +31,21 @@ test_that("the prior scale can be set directly (s2Guess and s0)", {
   X <- stats::model.matrix(~ rnorm(80))
   spec <- getDistribution("normal-reg")
 
-  d <- nimix:::defaultPrior(spec, y, control = list(X = X, s2Guess = 0.3))
+  d <- Rnimix:::defaultPrior(spec, y, control = list(X = X, s2Guess = 0.3))
   expect_equal(d$s0 / (d$nu0 - 1), 0.3)          # s2Guess IS the prior mean
-  d2 <- nimix:::defaultPrior(spec, y, control = list(X = X, s0 = 0.6))
+  d2 <- Rnimix:::defaultPrior(spec, y, control = list(X = X, s0 = 0.6))
   expect_equal(d2$s0, 0.6)                        # s0 is the raw scale
 
   # the heavy-tailed family delegates via callNextMethod, so it inherits this
-  dt <- nimix:::defaultPrior(getDistribution("student-t-reg"), y,
+  dt <- Rnimix:::defaultPrior(getDistribution("student-t-reg"), y,
                              control = list(X = X, s2Guess = 0.3))
   expect_equal(dt$s0 / (dt$nu0 - 1), 0.3)
   expect_equal(dt$df, 4)
 
-  expect_error(nimix:::defaultPrior(spec, y,
+  expect_error(Rnimix:::defaultPrior(spec, y,
                                     control = list(X = X, s2Guess = -1)),
                "positive scalar")
-  expect_error(nimix:::defaultPrior(spec, y, control = list(X = X, s0 = 0)),
+  expect_error(Rnimix:::defaultPrior(spec, y, control = list(X = X, s0 = 0)),
                "positive scalar")
 })
 
@@ -128,26 +128,26 @@ test_that("the multivariate prior ellipse is anisotropic by default, and sigmaGu
     max(e) / min(e)
   }
 
-  a <- pmean(nimix:::defaultPrior(spec, Y))
+  a <- pmean(Rnimix:::defaultPrior(spec, Y))
   expect_gt(cond(a), 10)                       # the default ellipse IS skewed
   expect_gt(as.numeric(t(v) %*% a %*% v), 5)   # inflated along the separation
 
   # a scalar guess means "isotropic with this variance"
-  b <- pmean(nimix:::defaultPrior(spec, Y, control = list(sigmaGuess = 0.25)))
+  b <- pmean(Rnimix:::defaultPrior(spec, Y, control = list(sigmaGuess = 0.25)))
   expect_equal(cond(b), 1)                     # a circle again
   expect_equal(as.numeric(t(v) %*% b %*% v), 0.25)
 
   # a matrix guess is taken as given
-  cm <- pmean(nimix:::defaultPrior(spec, Y,
+  cm <- pmean(Rnimix:::defaultPrior(spec, Y,
                                    control = list(sigmaGuess = diag(c(.25, .5)))))
   expect_equal(diag(cm), c(0.25, 0.5))
 
-  expect_error(nimix:::defaultPrior(spec, Y, control = list(sigmaGuess = -1)),
+  expect_error(Rnimix:::defaultPrior(spec, Y, control = list(sigmaGuess = -1)),
                "positive scalar")
-  expect_error(nimix:::defaultPrior(spec, Y,
+  expect_error(Rnimix:::defaultPrior(spec, Y,
                                     control = list(sigmaGuess = matrix(0, 2, 2))),
                "positive definite")
-  expect_error(nimix:::defaultPrior(spec, Y,
+  expect_error(Rnimix:::defaultPrior(spec, Y,
                                     control = list(sigmaGuess = diag(3))),
                "2 x 2 matrix")
 })
@@ -183,31 +183,31 @@ test_that("the multivariate REGRESSION prior is the univariate scale problem in 
     max(e) / min(e)
   }
 
-  a <- pmean(nimix:::defaultPrior(spec, Y, control = list(X = X)))
+  a <- pmean(Rnimix:::defaultPrior(spec, Y, control = list(X = X)))
   expect_gt(sum(diag(a)) / 0.5, 10)   # wrong size: the global residuals are inflated
   expect_gt(cond(a), 10)              # and wrong shape: skewed along the coefficient gap
 
   # a scalar guess means "isotropic residuals with this variance"
-  b <- pmean(nimix:::defaultPrior(spec, Y,
+  b <- pmean(Rnimix:::defaultPrior(spec, Y,
                                   control = list(X = X, sigmaGuess = 0.25)))
   expect_equal(cond(b), 1)
   expect_equal(diag(b), rep(0.25, d))
 
   # the t and normal-gamma variants inherit it through callNextMethod()
   for (nm in c("student-t-mv-reg", "normal-gamma-mv-reg")) {
-    p <- pmean(nimix:::defaultPrior(getDistribution(nm), Y,
+    p <- pmean(Rnimix:::defaultPrior(getDistribution(nm), Y,
                                     control = list(X = X, sigmaGuess = 0.25)))
     expect_equal(diag(p), rep(0.25, d))
   }
 
-  expect_error(nimix:::defaultPrior(spec, Y,
+  expect_error(Rnimix:::defaultPrior(spec, Y,
                                     control = list(X = X, sigmaGuess = -1)),
                "positive scalar")
-  expect_error(nimix:::defaultPrior(spec, Y,
+  expect_error(Rnimix:::defaultPrior(spec, Y,
                                     control = list(X = X,
                                                    sigmaGuess = matrix(0, 2, 2))),
                "positive definite")
-  expect_error(nimix:::defaultPrior(spec, Y,
+  expect_error(Rnimix:::defaultPrior(spec, Y,
                                     control = list(X = X,
                                                    sigmaGuess = diag(3))),
                "2 x 2 matrix")

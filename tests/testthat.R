@@ -1,4 +1,4 @@
 library(testthat)
-library(nimix)
+library(Rnimix)
 
-test_check("nimix")
+test_check("Rnimix")

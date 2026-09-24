@@ -41,7 +41,7 @@ rfossep(n, mu = 0, sigma = 1, alpha = 2, theta = 2)
 
 \item{alpha}{Numeric. Skewness parameter, must be positive (default = 2).
 Follows the Fernandez-Steel convention shared by all skew families in
-nimix: \code{alpha} is the FS skewness \eqn{\gamma}, so
+Rnimix: \code{alpha} is the FS skewness \eqn{\gamma}, so
 \eqn{P(X > \mu) = \alpha^2/(1 + \alpha^2)} and \code{alpha > 1} skews right.}
 
 \item{theta}{Numeric. Kurtosis/exponential-power parameter, must be

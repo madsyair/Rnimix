@@ -16,7 +16,7 @@ test_that("GMSNBurr density is stable, integrates to one, and reduces correctly"
 
 test_that("GMSNBurr NIMBLE density equals the R reference", {
   skip_on_cran()
-  suppressMessages(nimix:::.nimixEnsureMSNBurr())
+  suppressMessages(Rnimix:::.nimixEnsureMSNBurr())
   cdG <- nimble::compileNimble(get("dGMSNBurr_k", envir = globalenv()))
   grid <- expand.grid(x = c(-8, -1, 0, 0.7, 8), a = c(0.5, 1, 3),
                       th = c(0.5, 1, 3))

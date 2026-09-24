@@ -7,7 +7,7 @@
 ##
 ## STATISTICAL CAVEAT (deliberate, documented, and asserted in the tests):
 ## these indices assume geometric clusters -- compact, well-separated in
-## distance. nimix mixtures are *density-based*: two overlapping Gaussian
+## distance. Rnimix mixtures are *density-based*: two overlapping Gaussian
 ## components can be exactly the right model and still earn a low silhouette.
 ## So these numbers are a secondary, model-free lens for comparing partitions,
 ## NOT a verdict on model correctness; posterior predictive checks (ppCheck)

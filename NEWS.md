@@ -1,8 +1,18 @@
-# nimix 1.5.0
+# Rnimix 1.5.0
+
+## Package renamed to Rnimix
+
+* The package is now called **Rnimix** (previously `nimix`); load it with
+  `library(Rnimix)`. All user-facing function names are unchanged
+  (`nimixClust()`, `nimixReg()`, `nimixWAIC()`, `nimixLOO()`, `nimixForecast()`,
+  and the rest keep their names), so existing scripts only need the new
+  `library()` call. The GitHub/pkgdown URLs and the hex logo were updated to
+  match.
+
 
 ## Removing global-environment assignments (step 1: Gaussian HMM)
 
-* CRAN policy forbids packages writing to the global environment, and nimix
+* CRAN policy forbids packages writing to the global environment, and Rnimix
   did so for every HMM kernel. The pattern was not gratuitous: NIMBLE resolves
   a user-defined distribution by name three separate times -- at
   `registerDistributions()`, at `nimbleModel()`, and again in the C++ code
@@ -424,7 +434,7 @@
 
 * `nimixReg` gains `method = "hmm"`: the regression coefficients and error
   variance switch with a latent first-order Markov regime -- Hamilton's
-  (1989) model, and the one classic mixture-of-regressions variant nimix was
+  (1989) model, and the one classic mixture-of-regressions variant Rnimix was
   missing. Give `K` regimes as for `"fixedk"`; the regime path is
   marginalised out by a forward kernel and decoded afterwards, so
   `viterbiPath()` returns the most probable regime sequence. Measured on two
@@ -538,7 +548,7 @@
   or edges. Code that only used the exported constructors and accessors is
   unaffected.
 
-# nimix 1.4.0
+# Rnimix 1.4.0
 
 ## New: spatio-temporal mixtures via `spacetimeAdjacency()`
 
@@ -696,7 +706,7 @@
   response was on a large scale: with `y` multiplied by 1000 the needed
   `tauRE` was 771 against a hard ceiling of 5, and `cor(b_hat, truth)`
   collapsed from 0.992 to 0.091 -- no error, no warning, just wrong group
-  effects. The bounds now scale with the data like the rest of nimix's
+  effects. The bounds now scale with the data like the rest of Rnimix's
   priors (`tauRE` with `sd(y)`; `tauSlope` with `sd(y)/sd(x)`), and inits
   scale with them. Verified across a 1000x response rescale
   (`cor(b_hat, truth)` 0.991, `tauRE` 817 against a realized spread of 772)
@@ -715,7 +725,7 @@
   0.001 against an MCSE of 0.0013 at 8000) -- allow adequate burnin rather
   than reading a short chain as bias.
 
-# nimix 1.3.0
+# Rnimix 1.3.0
 
 This release adds a fourth inference engine -- hidden-Markov mixtures for
 regime switching in time series, with six emission families -- and random
@@ -771,7 +781,7 @@ through gated prototypes whose measured findings are recorded below.
   marginal co-clustering across the FFBS draws.
 * `nimbleEcology` was evaluated and is not used: its `dHMM` family is
   categorical-emission only, while regime switching on continuous data needs
-  continuous emissions. The gate showed nimix's own kernels compile exactly
+  continuous emissions. The gate showed Rnimix's own kernels compile exactly
   inside the forward pass, which is the path for extending the engine to the
   other emission families -- current scope is `"normal"`, `"student-t"`,
   `"poisson"` (count regimes), and the neo-normal skewed families
@@ -799,7 +809,7 @@ through gated prototypes whose measured findings are recorded below.
   structural lesson of the 1.2.0 PPC bug applied to a new engine from day
   one).
 
-# nimix 1.2.1
+# Rnimix 1.2.1
 
 ## New: internal cluster-validity indices
 
@@ -815,7 +825,7 @@ through gated prototypes whose measured findings are recorded below.
   secondary comparison lens; `ppCheck()` and `psm()` remain the primary
   model-adequacy tools.
 
-# nimix 1.2.0
+# Rnimix 1.2.0
 
 Response wave to an external code review: two correctness fixes, five new
 exported functions, sampler-default upgrades, and a test-harness overhaul.
@@ -850,7 +860,7 @@ numbers' provenance.
   `buildConstants()`, ...) unqualified, which works under `load_all()` but
   errors when only the namespace exports are attached -- and testthat counts
   those as *errors*, not *failures*, so a summary reading "0 failed" hid
-  them. All internal references in tests are now `nimix:::`-qualified, and
+  them. All internal references in tests are now `Rnimix:::`-qualified, and
   both suite modes now report identically (588 passing, zero errors). Suite
   gates now check the error flag, not just the failure count.
 
@@ -892,7 +902,7 @@ numbers' provenance.
   `ppCheck(..., store_yrep = TRUE)` attaches `yrep`/`y`/`draws` attributes.
   Previously the replicates were computed and discarded, which made graphical
   PPC (e.g. `bayesplot::ppc_dens_overlay(y, yrep)`) impossible to drive from
-  a nimix fit. Storage stays opt-in so the default result remains lean.
+  a Rnimix fit. Storage stays opt-in so the default result remains lean.
 * Multi-chain fits now record `diagnostics$chainId`, marking which chain each
   pooled draw came from. Post-hoc per-chain diagnostics (R-hat on invariant
   functionals, per-chain traces, draws arrays) were previously impossible to
@@ -941,7 +951,7 @@ numbers' provenance.
   the coefficients rose ~35x (0.4 to 15.3). A scale-equivariance test locks
   the guarantee.
 
-# nimix 1.1.0
+# Rnimix 1.1.0
 
 ## New: estimating the orthogonal factor O beyond two dimensions
 
@@ -964,7 +974,7 @@ recovered the spatial regions poorly and 3000 recovered them exactly.
   that confining the angles to their box `Theta^j` puts `O` in `O_m`; testing
   this directly, the fraction of box draws that satisfy (8) is 0.245 (`m = 2`),
   0.069 (`m = 3`) and 0.007 (`m = 4`). Constraining a sampler to a 0.7% slice of
-  its own prior would mix badly. What *is* true, and what nimix uses: among the
+  its own prior would mix badly. What *is* true, and what Rnimix uses: among the
   signed row permutations `P` of `A` with `|P| = +1`, exactly one `PO` satisfies
   (8) -- verified exhaustively for `m = 2, 3, 4`. So the angles are sampled
   unconstrained and each posterior draw is mapped to its unique representative,
@@ -1081,7 +1091,7 @@ compiled NIMBLE kernels were all updated together, and a regression test
 The Jones-Faddy family (`jfst`) uses its own `alpha`/`theta` shapes and is not
 affected; neither are the MSNBurr families.
 
-# nimix 1.0.1
+# Rnimix 1.0.1
 
 ## Batch B: six new neo-normal component families
 
@@ -1113,7 +1123,7 @@ The `q*` functions for these families recycle vector parameters to the sample
 length and subset them per branch, so per-observation parameter vectors (as used
 by posterior predictive simulation) align without recycling warnings.
 
-# nimix 1.0.0 (in development)
+# Rnimix 1.0.0 (in development)
 
 ## Bug fixes (installed-package correctness)
 
@@ -1121,7 +1131,7 @@ by posterior predictive simulation) align without recycling warnings.
   registered in the global environment (like the scalar neo-normal densities).
   Registering them from the package namespace made NIMBLE fail to find
   `rPottsNimix` during code generation for the latent label node once the
-  package was installed (`library(nimix)`), so every MRF fit errored under a
+  package was installed (`library(Rnimix)`), so every MRF fit errored under a
   normal install while working under `load_all()`. Fixed.
 * `ppCheck()` for MSNBurr / MSNBurr-IIa / GMSNBurr no longer emits recycling
   warnings: the quantile functions now recycle vector parameters to the sample
@@ -1221,7 +1231,7 @@ by posterior predictive simulation) align without recycling warnings.
   mixture and to flag a Poisson mixture on overdispersed counts
   (tail p = 0.013).
 
-# nimix 0.9.0
+# Rnimix 0.9.0
 
 ## MRF engine across the distribution registry (batch 2) -- matrix complete
 
@@ -1251,7 +1261,7 @@ by posterior predictive simulation) align without recycling warnings.
   the conjugate Gibbs updates win. Guidance: prefer `normalgamma` for MRF
   parameter mixing; the direct-t route remains available and equally valid.
 
-# nimix 0.8.0
+# Rnimix 0.8.0
 
 ## MRF engine across the distribution registry (batch 1: closed-form emissions)
 
@@ -1291,7 +1301,7 @@ by posterior predictive simulation) align without recycling warnings.
 * The recovery harness gains an `mrfbeta` group (pseudo-likelihood beta
   estimation on the synthetic lattice, 3 seeds).
 
-# nimix 0.7.0
+# Rnimix 0.7.0
 
 ## MRF engine: Bayesian estimation of the interaction beta
 
@@ -1344,7 +1354,7 @@ by posterior predictive simulation) align without recycling warnings.
   blocked with a clear message instead of silently using the wrong emission
   density.
 
-# nimix 0.6.0
+# Rnimix 0.6.0
 
 ## Spatially constrained mixtures: the MRF engine
 
@@ -1399,7 +1409,7 @@ major version.
   components), and the Student-t vs Normal-Gamma heavy-tail comparison.
   Reported numbers in the vignettes come from actual runs.
 
-# nimix 0.5.0
+# Rnimix 0.5.0
 
 This line opens the performance and hardening phase, built on the 0.4.3 feature
 set. The two production engines are `method = "dpm"` (Dirichlet process /
@@ -1440,7 +1450,7 @@ Chinese restaurant process; the number of occupied components is estimated) and
   2013). Previously untested engine pairings are additionally pinned in
   `tests/testthat/test-hardening-matrix.R`.
 
-# nimix 0.4.3
+# Rnimix 0.4.3
 
 ## Robustness and ergonomics
 
@@ -1464,30 +1474,30 @@ Chinese restaurant process; the number of occupied components is estimated) and
   Normal-Gamma (heavy-tailed, univariate / multivariate), and Poisson /
   Binomial counts.
 
-# nimix 0.4.2
+# Rnimix 0.4.2
 
 * `nimixReg()` gains multivariate responses (`cbind(y1, y2) ~ x`) for Normal,
   Student-t and Normal-Gamma components, with per-component coefficient
   matrices and error covariances.
 
-# nimix 0.4.0
+# Rnimix 0.4.0
 
 * Student-t and Normal-Gamma components (univariate and multivariate) and
   Poisson / Binomial counts; public `registerDistribution()`.
 
-# nimix 0.3.0
+# Rnimix 0.3.0
 
 * `nimixReg()` and the `RegressionMixModel` class: mixture-of-regressions with a
   Normal-Inverse-Gamma g-prior. `FixedKEngine` implemented across univariate,
   multivariate and regression models. Engine selection is polymorphic via
   `runEngine()`.
 
-# nimix 0.2.0
+# Rnimix 0.2.0
 
 * Multivariate Gaussian clustering (`NormalMvSpec`) with a Normal-Inverse-Wishart
   base measure. Engine generalised to be dimension-agnostic.
 
-# nimix 0.1.0
+# Rnimix 0.1.0
 
 * S4 foundation, univariate Gaussian clustering (`NormalUvSpec`),
   `nimixClust()` on the DPM and fixed-K engines.

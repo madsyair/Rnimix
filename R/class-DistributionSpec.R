@@ -4,7 +4,7 @@ NULL
 ## ---------------------------------------------------------------------------
 ## class-DistributionSpec.R
 ##
-## The DistributionSpec is the unit of extensibility in nimix. A concrete
+## The DistributionSpec is the unit of extensibility in Rnimix. A concrete
 ## spec describes ONE family of mixture
 ## component distributions: its parameter names, a sensible data-scaled default
 ## prior, a parameter validator, and -- through the buildModelCode() generic --
@@ -18,7 +18,7 @@ NULL
 #' Virtual base class for mixture component distributions
 #'
 #' \code{DistributionSpec} is the abstract S4 class that every component
-#' distribution in nimix extends. It is never instantiated directly; use a
+#' distribution in Rnimix extends. It is never instantiated directly; use a
 #' concrete subclass such as \code{\linkS4class{NormalUvSpec}}.
 #'
 #' @slot name Character scalar, a short identifier (e.g. \code{"normal-uv"}).

@@ -24,7 +24,7 @@ jointly.
 ## The data: income and longevity jointly
 
 ```{r data, eval = TRUE}
-library(nimix)
+library(Rnimix)
 data(wdi2022)
 Y <- cbind(log_gdp  = log(wdi2022$gdp_pc),
            life_exp = wdi2022$life_exp)
@@ -37,7 +37,7 @@ plot(Y, main = "207 countries, 2022", xlab = "log GDP per capita",
 Each component is a multivariate normal with a conjugate
 Normal-Inverse-Wishart cluster base measure (`dmnorm(cov=)` + `dinvwish`),
 data-scaled by default. NIMBLE's native conjugate CRP samplers are used --
-nimix deliberately does not reimplement them.
+Rnimix deliberately does not reimplement them.
 
 ## Fit
 

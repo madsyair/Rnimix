@@ -6,7 +6,7 @@
 \title{Virtual base class for mixture component distributions}
 \description{
 \code{DistributionSpec} is the abstract S4 class that every component
-distribution in nimix extends. It is never instantiated directly; use a
+distribution in Rnimix extends. It is never instantiated directly; use a
 concrete subclass such as \code{\linkS4class{NormalUvSpec}}.
 }
 \section{Slots}{

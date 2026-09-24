@@ -1,5 +1,5 @@
 ## R/data.R -------------------------------------------------------------------
-## Documentation for datasets shipped with nimix.
+## Documentation for datasets shipped with Rnimix.
 
 #' World Development Indicators, 2022 (country-level official statistics)
 #'

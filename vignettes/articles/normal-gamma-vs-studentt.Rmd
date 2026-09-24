@@ -11,7 +11,7 @@ vignette: >
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>", eval = FALSE)
 ```
 
-nimix offers two mathematically equivalent heavy-tailed component families:
+Rnimix offers two mathematically equivalent heavy-tailed component families:
 
 * `distribution = "studentt"` -- the Student-t density used **directly**
   (non-conjugate; slice sampling on the component parameters);
@@ -31,7 +31,7 @@ heavy-tailed cross-country distribution.
 ## Data
 
 ```{r data, eval = TRUE}
-library(nimix)
+library(Rnimix)
 data(wdi2022)
 ly <- log(wdi2022$gdp_pc)
 ```

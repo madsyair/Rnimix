@@ -43,7 +43,7 @@ test_that("quantiles invert the CDF and RNG matches the density", {
 
 test_that("compiled NIMBLE kernels follow the harmonised convention", {
   skip_on_cran()
-  suppressMessages(nimix:::.nimixEnsureMSNBurr())
+  suppressMessages(Rnimix:::.nimixEnsureMSNBurr())
   cdN <- nimble::compileNimble(get("dFSSN_k", envir = globalenv()))
   cdT <- nimble::compileNimble(get("dFSST_k", envir = globalenv()))
   eN <- 0; eT <- 0

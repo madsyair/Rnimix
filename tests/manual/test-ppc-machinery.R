@@ -35,8 +35,8 @@ test_that("mv ppc reconstruction matches column-name indexing draw by draw", {
   f <- nimixClust(Y, K = 3, method = "fixedk", distribution = "normal-mv",
                   mcmcControl = list(niter = 400, nburnin = 150), seed = 1)
   S <- f@mcmcSamples; d <- 3L
-  cs <- nimix:::.ppcCols(S, "covTilde")
-  cm <- nimix:::.ppcCols(S, "muTilde")
+  cs <- Rnimix:::.ppcCols(S, "covTilde")
+  cm <- Rnimix:::.ppcCols(S, "muTilde")
   Kmon <- length(cm) / d
   drs <- unique(round(seq(1L, nrow(S), length.out = 40L)))
   for (dr in drs) {

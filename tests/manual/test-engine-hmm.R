@@ -90,7 +90,7 @@ test_that("hmm guards: multivariate, non-normal, and K_max are refused", {
 
 test_that("forward kernel is exact against a pure-R reference", {
   skip_on_cran()
-  nimix:::.nimixEnsureHMM()
+  Rnimix:::.nimixEnsureHMM()
   fwdR <- function(x, mu, sg, P, init) {
     a <- init * dnorm(x[1], mu, sg); ll <- log(sum(a)); a <- a / sum(a)
     for (t in 2:length(x)) {
@@ -151,7 +151,7 @@ test_that("poisson emissions recover count regimes", {
   y <- rpois(300, lam[z])
   f <- nimixClust(y, K = 2, method = "hmm", distribution = "poisson",
                   mcmcControl = list(niter = 2500, nburnin = 1000), seed = 1)
-  lh <- sort(colMeans(nimix:::.nodeToArray(f@mcmcSamples, "lambda", 2)))
+  lh <- sort(colMeans(Rnimix:::.nodeToArray(f@mcmcSamples, "lambda", 2)))
   expect_lt(max(abs(lh - c(3, 15))), 1.5)
   zv <- viterbiPath(f)
   expect_gt(max(mean(zv == z), mean((3L - zv) == z)), 0.95)

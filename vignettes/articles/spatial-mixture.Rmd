@@ -30,7 +30,7 @@ kabupaten/kota contiguity graph.
 ## The data and the graph
 
 ```{r data, eval = TRUE}
-library(nimix)
+library(Rnimix)
 data(usStates2023); data(usStateAdj)
 sw <- spatialWeights(usStateAdj)
 sw

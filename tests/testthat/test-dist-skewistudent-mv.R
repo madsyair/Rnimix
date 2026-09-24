@@ -32,7 +32,7 @@ test_that("dskewmvit integrates to one and rskewmvit matches it", {
 
 test_that("compiled dSkewMvIT_k equals the R reference", {
   skip_on_cran()
-  suppressMessages(nimix:::.nimixEnsureMSNBurr())
+  suppressMessages(Rnimix:::.nimixEnsureMSNBurr())
   cD <- nimble::compileNimble(get("dSkewMvIT_k", envir = globalenv()))
   Sg <- matrix(c(2, .8, .8, 1.2), 2, 2)
   set.seed(10); err <- 0

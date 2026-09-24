@@ -167,7 +167,7 @@ NULL
 #' @param seed Integer RNG seed.
 #' @param verbose Logical; print NIMBLE's configuration and progress output.
 #'   Defaults to \code{FALSE} (quiet): NIMBLE's compilation notes and the benign
-#'   dCRP truncation note are silenced, while nimix's own diagnostics (e.g. a
+#'   dCRP truncation note are silenced, while Rnimix's own diagnostics (e.g. a
 #'   censored-posterior warning) and any error still surface. Set \code{TRUE} to
 #'   see NIMBLE's configuration and a progress bar.
 #'
@@ -377,7 +377,7 @@ nimixReg <- function(formula, data,
     priorList$reG    <- G
     priorList$reVar  <- gv
     # Data-scaled bounds for the random-effect SDs, following the same
-    # principle as the rest of nimix's priors. Fixed bounds silently broke
+    # principle as the rest of Rnimix's priors. Fixed bounds silently broke
     # the offsets whenever the response was on a large scale: with y x1000
     # the needed tauRE was 771 against a hard ceiling of 5, and
     # cor(b_hat, truth) collapsed from 0.992 to 0.091. tauRE has the units of

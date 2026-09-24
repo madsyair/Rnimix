@@ -13,7 +13,7 @@
 
 test_that(".ppcSimulate reconstructs each Sigma symmetric and PD when a component is empty", {
   skip_on_cran()
-  ns <- asNamespace("nimix")
+  ns <- asNamespace("Rnimix")
   set.seed(4)
   d <- 3
   Y <- rbind(matrix(rnorm(100 * d, -3), 100, d),
@@ -22,8 +22,8 @@ test_that(".ppcSimulate reconstructs each Sigma symmetric and PD when a componen
                   mcmcControl = list(niter = 500, nburnin = 200), seed = 1)
   S <- f@mcmcSamples
   A <- f@clusterAllocation
-  cs <- nimix:::.ppcCols(S, "covTilde")
-  cm <- nimix:::.ppcCols(S, "muTilde")
+  cs <- Rnimix:::.ppcCols(S, "covTilde")
+  cm <- Rnimix:::.ppcCols(S, "muTilde")
   Kmon <- length(cm) / d
 
   # there must actually be draws with an empty component, or the test is vacuous
@@ -60,7 +60,7 @@ test_that("ppCheck runs on over-fitted K for every multivariate family", {
 
 test_that(".ppcSimulate errors loudly if the covariance trace length is inconsistent", {
   skip_on_cran()
-  ns <- asNamespace("nimix")
+  ns <- asNamespace("Rnimix")
   set.seed(4)
   d <- 3
   Y <- rbind(matrix(rnorm(60 * d, -3), 60, d),
@@ -69,11 +69,11 @@ test_that(".ppcSimulate errors loudly if the covariance trace length is inconsis
                   mcmcControl = list(niter = 300, nburnin = 100), seed = 1)
   S <- f@mcmcSamples
   # drop one covariance column to simulate an inconsistent trace
-  cs <- nimix:::.ppcCols(S, "covTilde")
+  cs <- Rnimix:::.ppcCols(S, "covTilde")
   Sbad <- S[, -cs[length(cs)], drop = FALSE]
   spec <- f@distSpec
   expect_error(
-    nimix:::.ppcSimulate(spec, Sbad, 1L, f@clusterAllocation[1, ], list(d = d)),
+    Rnimix:::.ppcSimulate(spec, Sbad, 1L, f@clusterAllocation[1, ], list(d = d)),
     "not Kmon"
   )
 })

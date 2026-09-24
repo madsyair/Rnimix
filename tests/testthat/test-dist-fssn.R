@@ -17,7 +17,7 @@ test_that("FSSN quantile vectorises without recycling warnings", {
 
 test_that("FSSN NIMBLE density equals the R reference (scalar params)", {
   skip_on_cran()
-  suppressMessages(nimix:::.nimixEnsureMSNBurr())
+  suppressMessages(Rnimix:::.nimixEnsureMSNBurr())
   cdF <- nimble::compileNimble(get("dFSSN_k", envir = globalenv()))
   err <- 0
   for (a in c(0.5, 1, 2, 3)) for (x in c(-8, -1, 0, 2, 8))

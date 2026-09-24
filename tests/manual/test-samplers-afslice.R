@@ -5,14 +5,14 @@
 
 test_that("AF_slice blocks replace per-parameter samplers on fssn (FixedK)", {
   skip_on_cran()
-  suppressMessages(nimix:::.nimixEnsureMSNBurr())   # kernels are lazily defined
+  suppressMessages(Rnimix:::.nimixEnsureMSNBurr())   # kernels are lazily defined
   set.seed(9)
   y <- c(rfssn(80, -4, 1, 0.5), rfssn(80, 4, 1, 2))
   sp <- getDistribution("fssn")
   pr <- defaultPrior(sp, y)
   mc <- buildModelCode(sp, new("FixedKEngine", dirichletConc = 1), n = 160, L = 2)
-  cn <- nimix:::buildConstants(sp, pr, 160); cn$K <- 2; cn$alphaVec <- rep(1, 2)
-  ini <- nimix:::componentInits(sp, pr, y, 2)
+  cn <- Rnimix:::buildConstants(sp, pr, 160); cn$K <- 2; cn$alphaVec <- rep(1, 2)
+  ini <- Rnimix:::componentInits(sp, pr, y, 2)
   m <- suppressMessages(nimble::nimbleModel(
     mc$code, constants = cn, data = list(y = y),
     inits = c(list(z = ini$alloc, weights = c(.5, .5)), ini$params),

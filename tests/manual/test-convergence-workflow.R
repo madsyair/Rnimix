@@ -3,26 +3,26 @@
 test_that("bulk/tail ESS and folded Rhat match theory on known series", {
   set.seed(1)
   ch <- list(rnorm(1000), rnorm(1000))
-  expect_gt(nimix:::.bulkESS(ch), 1500)          # iid: ~ total draws
-  expect_gt(nimix:::.tailESS(ch), 1000)
-  expect_lt(abs(nimix:::.foldedRhat(ch) - 1), 0.02)
+  expect_gt(Rnimix:::.bulkESS(ch), 1500)          # iid: ~ total draws
+  expect_gt(Rnimix:::.tailESS(ch), 1000)
+  expect_lt(abs(Rnimix:::.foldedRhat(ch) - 1), 0.02)
 
   # scale disagreement: folded Rhat must flag what location Rhat misses
   chS <- list(rnorm(1000, 0, 1), rnorm(1000, 0, 3))
-  expect_lt(nimix:::.splitRhat(chS), 1.02)
-  expect_gt(nimix:::.foldedRhat(chS), 1.1)
+  expect_lt(Rnimix:::.splitRhat(chS), 1.02)
+  expect_gt(Rnimix:::.foldedRhat(chS), 1.1)
 
   # strong autocorrelation: bulk ESS far below the draw count
   ar <- function(n, rho) { x <- numeric(n)
     for (i in 2:n) x[i] <- rho * x[i - 1] + rnorm(1); x }
   set.seed(2)
   chA <- list(ar(2000, 0.9), ar(2000, 0.9))
-  expect_lt(nimix:::.bulkESS(chA), 600)
+  expect_lt(Rnimix:::.bulkESS(chA), 600)
 })
 
 test_that("allocation entropy is exact on known partitions", {
   zM <- rbind(c(1L, 1L, 2L, 2L), c(1L, 1L, 1L, 1L))
-  h <- nimix:::.allocEntropy(zM, 2L)
+  h <- Rnimix:::.allocEntropy(zM, 2L)
   expect_equal(h[1], log(2))
   expect_equal(h[2], 0)
 })

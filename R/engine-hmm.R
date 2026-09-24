@@ -13,7 +13,7 @@
 ##    it removes T discrete nodes from the model graph.
 ##  * nimbleEcology::dHMM was evaluated and is categorical-emission only
 ##    (probObs is an S x O matrix); continuous emissions need this manual
-##    forward, which the gate showed compiles exactly with nimix kernels too.
+##    forward, which the gate showed compiles exactly with Rnimix kernels too.
 ##  * Allocation draws are recovered POST-HOC by forward-filter
 ##    backward-sampling (FFBS) per retained draw, so every downstream tool
 ##    (relabel, psm, binderPartition, plots, ppc) works unchanged.
@@ -1379,7 +1379,7 @@ viterbiPath <- function(fit) {
 #' asked ("which regime will we be in"), degrading far more gracefully than
 #' any forecast of \code{y}.
 #'
-#' For a trend or a seasonal pattern this is the wrong model; nimix does not
+#' For a trend or a seasonal pattern this is the wrong model; Rnimix does not
 #' fit those.
 #'
 #' @section Autoregression:

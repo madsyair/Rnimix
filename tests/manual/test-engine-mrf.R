@@ -27,7 +27,7 @@ test_that("mrf still rejects unknown component families (ANY fallback)", {
   methods::setClass("DummyMrfSpec", contains = "DistributionSpec",
                     where = environment())
   dummy <- methods::new("DummyMrfSpec", name = "dummy")
-  expect_error(nimix:::.mrfSamplerFor(dummy), "not yet available")
+  expect_error(Rnimix:::.mrfSamplerFor(dummy), "not yet available")
 })
 
 test_that("mrf recovers a known spatial block structure and beats no-smoothing", {
@@ -242,10 +242,10 @@ test_that("mrf kernels are family-correct (regression test for the dispatch trap
   # NormalGammaUvSpec inherits NormalUvSpec: buildModelCode must dispatch to
   # the pottsified NG kernel (with omega), never the plain Gaussian one.
   e <- MRFEngine(0.8, gridAdjacency(2, 2))
-  kNG <- nimix:::buildModelCode(nimix:::getDistribution("normal-gamma"), e,
+  kNG <- Rnimix:::buildModelCode(Rnimix:::getDistribution("normal-gamma"), e,
                                 n = 10, L = 2)
   expect_true(grepl("omega", paste(deparse(kNG$code), collapse = " ")))
-  kTR <- nimix:::buildModelCode(nimix:::getDistribution("student-t-reg"), e,
+  kTR <- Rnimix:::buildModelCode(Rnimix:::getDistribution("student-t-reg"), e,
                                 n = 10, L = 2)
   expect_true(grepl("dt(", paste(deparse(kTR$code), collapse = " "),
                     fixed = TRUE))

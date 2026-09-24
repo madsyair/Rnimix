@@ -6,7 +6,7 @@ test_that("MSNBurr regression recovers a random intercept", {
   set.seed(5)
   n <- 240L; x <- rnorm(n); grp <- rep(1:6, length.out = n)
   b_grp <- rnorm(6, 0, 0.9); b_grp <- b_grp - mean(b_grp)
-  y <- 1 + 0.5 * x + b_grp[grp] + nimix:::rmsnburr(n, 0, 0.5, 2)
+  y <- 1 + 0.5 * x + b_grp[grp] + Rnimix:::rmsnburr(n, 0, 0.5, 2)
   f <- nimixReg(y ~ x, data.frame(y = y, x = x, grp = factor(grp)), K = 1,
                 method = "fixedk", distribution = "msnburr", random = ~ grp,
                 mcmcControl = list(niter = 1000, nburnin = 400), seed = 1)
@@ -22,7 +22,7 @@ test_that("MSNBurr regression recovers a random intercept AND slope", {
   n <- 300L; x <- rnorm(n); grp <- rep(1:6, length.out = n)
   b_grp <- rnorm(6, 0, 0.8); b_grp <- b_grp - mean(b_grp)
   s_grp <- rnorm(6, 0, 0.5); s_grp <- s_grp - mean(s_grp)
-  y <- 1 + 0.5 * x + b_grp[grp] + s_grp[grp] * x + nimix:::rmsnburr(n, 0, 0.5, 2)
+  y <- 1 + 0.5 * x + b_grp[grp] + s_grp[grp] * x + Rnimix:::rmsnburr(n, 0, 0.5, 2)
   f <- nimixReg(y ~ x, data.frame(y = y, x = x, grp = factor(grp)), K = 1,
                 method = "fixedk", distribution = "msnburr", random = ~ x | grp,
                 mcmcControl = list(niter = 1000, nburnin = 450), seed = 1)
@@ -42,10 +42,10 @@ test_that("random intercept generalises across all neo-normal families", {
   n <- 200L; x <- rnorm(n); grp <- rep(1:6, length.out = n)
   bg <- rnorm(6, 0, 0.8); bg <- bg - mean(bg)
   gens <- list(
-    msnburr2a = function(m) nimix:::rmsnburr2a(m, 0, 0.5, 2),
-    sep       = function(m) nimix:::rsep(m, 0, 0.5, 2),
-    gmsnburr  = function(m) nimix:::rgmsnburr(m, 0, 0.5, 2, 1.5),
-    fsst      = function(m) nimix:::rfsst(m, 0, 0.5, 1.5, 5)
+    msnburr2a = function(m) Rnimix:::rmsnburr2a(m, 0, 0.5, 2),
+    sep       = function(m) Rnimix:::rsep(m, 0, 0.5, 2),
+    gmsnburr  = function(m) Rnimix:::rgmsnburr(m, 0, 0.5, 2, 1.5),
+    fsst      = function(m) Rnimix:::rfsst(m, 0, 0.5, 1.5, 5)
   )
   for (nm in names(gens)) {
     y <- 1 + 0.5 * x + bg[grp] + gens[[nm]](n)
@@ -68,9 +68,9 @@ test_that("random effects work under the DPM engine for neo-normal families", {
   bg <- rnorm(6, 0, 0.7); bg <- bg - mean(bg)
   for (nm in c("msnburr", "sep", "gmsnburr")) {
     gen <- switch(nm,
-      msnburr  = nimix:::rmsnburr(n, 0, 0.5, 2),
-      sep      = nimix:::rsep(n, 0, 0.5, 2),
-      gmsnburr = nimix:::rgmsnburr(n, 0, 0.5, 2, 1.5))
+      msnburr  = Rnimix:::rmsnburr(n, 0, 0.5, 2),
+      sep      = Rnimix:::rsep(n, 0, 0.5, 2),
+      gmsnburr = Rnimix:::rgmsnburr(n, 0, 0.5, 2, 1.5))
     y <- 1 + 0.5 * x + bg[grp] + gen
     f <- nimixReg(y ~ x, data.frame(y = y, x = x, grp = factor(grp)),
                   method = "dpm", distribution = nm, random = ~ grp,

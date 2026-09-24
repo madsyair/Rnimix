@@ -18,11 +18,11 @@ NULL
 ## updates -- mixing empty components are not sampled),
 ## and (b) the precision + dwish path triggers a Cholesky-lifting failure under
 ## the dynamic CRP indexing in NIMBLE 1.4.x (verified empirically). The
-## conjugacy fact itself is native NIMBLE (0.5): nimix only
+## conjugacy fact itself is native NIMBLE (0.5): Rnimix only
 ## supplies the S4 wiring, the data-scaled prior, and the relabelling.
 ##
-## NOTE on native vs nimix (0.5): dCRP, the conjugate CRP
-## samplers, dmnorm and dinvwish are all native NIMBLE. nimix contributes the
+## NOTE on native vs Rnimix (0.5): dCRP, the conjugate CRP
+## samplers, dmnorm and dinvwish are all native NIMBLE. Rnimix contributes the
 ## DistributionSpec architecture, the DATA-SCALED Normal-Inverse-Wishart default
 ## prior, and the multivariate relabelling/summaries.
 ##

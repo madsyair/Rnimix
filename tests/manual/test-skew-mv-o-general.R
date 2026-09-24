@@ -4,14 +4,14 @@
 test_that("orthogonalFactor is orthogonal with |O| = (-1)^(m+1)", {
   set.seed(7)
   for (m in 2:4) {
-    th <- runif(nimix:::.nAngles(m), -0.5, 0.5)
+    th <- runif(Rnimix:::.nAngles(m), -0.5, 0.5)
     O <- orthogonalFactor(th, m)
     expect_lt(max(abs(crossprod(O) - diag(m))), 1e-10)
     expect_lt(abs(det(O) - (-1)^(m + 1)), 1e-10)
   }
   # m = 2 reduces to the bivariate helper used by skewnormal-mv-o
   for (t in seq(-1.2, 1.2, 0.2))
-    expect_lt(max(abs(orthogonalFactor(t, 2) - nimix:::.householderO(t))), 1e-10)
+    expect_lt(max(abs(orthogonalFactor(t, 2) - Rnimix:::.householderO(t))), 1e-10)
 })
 
 test_that("the FS angle box does NOT imply restriction (8)", {
@@ -20,10 +20,10 @@ test_that("the FS angle box does NOT imply restriction (8)", {
   # canonicalisation instead of a sampling constraint.
   set.seed(2)
   frac <- function(m, N = 600) {
-    box <- nimix:::.angleBox(m)
+    box <- Rnimix:::.angleBox(m)
     mean(vapply(seq_len(N), function(i) {
-      th <- runif(nimix:::.nAngles(m), box$lower, box$upper)
-      nimix:::.restriction8(orthogonalFactor(th, m))
+      th <- runif(Rnimix:::.nAngles(m), box$lower, box$upper)
+      Rnimix:::.restriction8(orthogonalFactor(th, m))
     }, logical(1)))
   }
   f2 <- frac(2); f3 <- frac(3)
@@ -43,20 +43,20 @@ test_that("canonicaliseO gives a unique representative and preserves density", {
   }
   set.seed(7)
   for (m in 2:4) {
-    SP <- nimix:::.signedPerms(m)
+    SP <- Rnimix:::.signedPerms(m)
     for (rep in 1:4) {
-      th <- runif(nimix:::.nAngles(m), -0.8, 0.8)
+      th <- runif(Rnimix:::.nAngles(m), -0.8, 0.8)
       O <- orthogonalFactor(th, m)
       A <- matrix(rnorm(m * m), m, m); Sg <- crossprod(A) + diag(m) * m
       g <- exp(rnorm(m, 0, .6)); mu <- rnorm(m)
       X <- matrix(rnorm(20 * m, 0, 2), 20, m)
       # exactly one signed permutation (|P| = +1) satisfies (8)
-      nOK <- sum(vapply(SP, function(P) nimix:::.restriction8(P %*% O),
+      nOK <- sum(vapply(SP, function(P) Rnimix:::.restriction8(P %*% O),
                         logical(1)))
       expect_equal(nOK, 1L)
       cn <- canonicaliseO(O, g)
       expect_true(cn$canonical)
-      expect_true(nimix:::.restriction8(cn$O))
+      expect_true(Rnimix:::.restriction8(cn$O))
       # the density is invariant under the canonicalisation
       expect_lt(max(abs(dgen(X, mu, Sg, g, O) -
                           dgen(X, mu, Sg, cn$gamma, cn$O))), 1e-9)
@@ -77,7 +77,7 @@ test_that("m = 2 canonical angles land in (-pi/8, pi/8)", {
 
 test_that("compiled dSkewMvNOG_k equals the R reference for m = 2, 3, 4", {
   skip_on_cran()
-  suppressMessages(nimix:::.nimixEnsureMSNBurr())
+  suppressMessages(Rnimix:::.nimixEnsureMSNBurr())
   cK <- nimble::compileNimble(get("dSkewMvNOG_k", envir = globalenv()))
   dgen <- function(x, mu, Sigma, gam, O) {
     m <- length(mu); U <- chol(Sigma); Ui <- backsolve(U, diag(m))
@@ -89,7 +89,7 @@ test_that("compiled dSkewMvNOG_k equals the R reference for m = 2, 3, 4", {
   for (m in 2:4) {
     err <- 0
     for (rep in 1:8) {
-      th <- runif(nimix:::.nAngles(m), -0.7, 0.7)
+      th <- runif(Rnimix:::.nAngles(m), -0.7, 0.7)
       O <- orthogonalFactor(th, m)
       A <- matrix(rnorm(m * m), m, m); Sg <- crossprod(A) + diag(m) * m
       g <- exp(rnorm(m, 0, .5)); mu <- rnorm(m); x <- rnorm(m, 0, 2)
@@ -143,7 +143,7 @@ test_that("canonicaliseO carries nu (permuted, never inverted)", {
   }
   set.seed(9)
   for (m in 2:4) for (rep in 1:3) {
-    th <- runif(nimix:::.nAngles(m), -0.8, 0.8)
+    th <- runif(Rnimix:::.nAngles(m), -0.8, 0.8)
     O <- orthogonalFactor(th, m)
     A <- matrix(rnorm(m * m), m, m); Sg <- crossprod(A) + diag(m) * m
     g <- exp(rnorm(m, 0, .6)); nu <- 3 + rexp(m, 0.2); mu <- rnorm(m)
@@ -158,7 +158,7 @@ test_that("canonicaliseO carries nu (permuted, never inverted)", {
 
 test_that("compiled dSkewMvITOG_k equals the R reference for m = 2, 3, 4", {
   skip_on_cran()
-  suppressMessages(nimix:::.nimixEnsureMSNBurr())
+  suppressMessages(Rnimix:::.nimixEnsureMSNBurr())
   cK <- nimble::compileNimble(get("dSkewMvITOG_k", envir = globalenv()))
   dgenT <- function(x, mu, Sigma, gam, nu, O) {
     m <- length(mu); U <- chol(Sigma); Ui <- backsolve(U, diag(m))
@@ -170,7 +170,7 @@ test_that("compiled dSkewMvITOG_k equals the R reference for m = 2, 3, 4", {
   for (m in 2:4) {
     err <- 0
     for (rep in 1:6) {
-      th <- runif(nimix:::.nAngles(m), -0.7, 0.7)
+      th <- runif(Rnimix:::.nAngles(m), -0.7, 0.7)
       O <- orthogonalFactor(th, m)
       A <- matrix(rnorm(m * m), m, m); Sg <- crossprod(A) + diag(m) * m
       g <- exp(rnorm(m, 0, .5)); nu <- 3 + rexp(m, 0.2)

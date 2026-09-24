@@ -77,7 +77,7 @@ NULL
 
 #' Clear the compiled-model cache
 #'
-#' nimix reuses compiled NIMBLE models across fits that share an identical model
+#' Rnimix reuses compiled NIMBLE models across fits that share an identical model
 #' structure (see the \code{reuse} entry of \code{mcmcControl} in
 #' \code{\link{nimixClust}}). Compiled models are large; this empties the cache
 #' and releases them.

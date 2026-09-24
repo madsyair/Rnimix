@@ -8,8 +8,8 @@ test_that("spread init separates by scale where k-means separates by location", 
   y <- c(rnorm(150, 0, 0.3), rnorm(150, 0, 3))
   acc <- function(a, b) { tab <- table(a, b); sum(apply(tab, 2, max)) / length(b) }
 
-  cl_spread <- nimix:::.initClusters(y, 2L, "spread")
-  cl_kmeans <- nimix:::.initClusters(y, 2L, "kmeans")
+  cl_spread <- Rnimix:::.initClusters(y, 2L, "spread")
+  cl_kmeans <- Rnimix:::.initClusters(y, 2L, "kmeans")
   # spread's initial allocation is markedly better on this case
   expect_gt(acc(cl_spread, z), acc(cl_kmeans, z))
   expect_gt(acc(cl_spread, z), 0.85)
@@ -26,7 +26,7 @@ test_that("spread is accepted end-to-end and falls back to k-means for mv", {
   # multivariate response: spread has no univariate analogue, so it must fall
   # back to k-means rather than erroring
   Y <- cbind(c(rnorm(80, -2), rnorm(80, 2)), rnorm(160))
-  cl <- nimix:::.initClusters(Y, 2L, "spread")
+  cl <- Rnimix:::.initClusters(Y, 2L, "spread")
   expect_false(is.null(cl))            # fell back, did not fail
   expect_length(cl, nrow(Y))
 })

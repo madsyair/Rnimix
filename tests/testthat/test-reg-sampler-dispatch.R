@@ -37,9 +37,9 @@ test_that("student-t regression installs no conjugate sampler on betaTilde", {
   y <- c(3, -3)[zc] + c(2, -2)[zc] * x + rt(n, 4) * 0.5
   X <- stats::model.matrix(~ x)
   spec <- getDistribution("student-t-reg")
-  pr <- nimix:::defaultPrior(spec, y, control = list(X = X))
-  mc <- nimix:::buildModelCode(spec, FixedKEngine(), n = n, L = 2, d = 1)
-  cn <- c(nimix:::buildConstants(spec, pr, n), list(K = 2, alphaVec = rep(1, 2)))
+  pr <- Rnimix:::defaultPrior(spec, y, control = list(X = X))
+  mc <- Rnimix:::buildModelCode(spec, FixedKEngine(), n = n, L = 2, d = 1)
+  cn <- c(Rnimix:::buildConstants(spec, pr, n), list(K = 2, alphaVec = rep(1, 2)))
   m <- nimble::nimbleModel(
     mc$code, constants = cn, data = list(y = y),
     inits = list(z = zc, weights = c(.5, .5),
@@ -47,7 +47,7 @@ test_that("student-t regression installs no conjugate sampler on betaTilde", {
     calculate = TRUE)
   conf <- nimble::configureMCMC(m, monitors = c("betaTilde", "s2Tilde"),
                                 print = FALSE)
-  nimix:::customizeSamplers(spec, conf, m)
+  Rnimix:::customizeSamplers(spec, conf, m)
   nm <- vapply(conf$getSamplers(), function(u) u$name, character(1))
   tg <- vapply(conf$getSamplers(), function(u) u$target[1], character(1))
   beta1 <- nm[grep("betaTilde\\[1", tg)]
