@@ -291,59 +291,47 @@ exportMethods(show)
 exportMethods(summary)
 exportMethods(validateParams)
 import(methods)
-importFrom(coda,
-  as.mcmc,
-  effectiveSize
-)
-importFrom(graphics,
-  abline,
-  barplot,
-  hist,
-  legend,
-  lines,
-  matplot,
-  plot.default
-)
-importFrom(label.switching,
-  ecr,
-  ecr.iterative.1
-)
-importFrom(nimble,
-  buildMCMC,
-  compileNimble,
-  configureMCMC,
-  nimbleCode,
-  nimbleFunction,
-  nimbleModel,
-  runMCMC
-)
-importFrom(stats,
-  cov,
-  delete.response,
-  dnorm,
-  dt,
-  kmeans,
-  model.frame,
-  model.matrix,
-  model.response,
-  na.pass,
-  pgamma,
-  pnorm,
-  predict,
-  pt,
-  qgamma,
-  qnorm,
-  qt,
-  quantile,
-  rWishart,
-  rgamma,
-  rnorm,
-  runif,
-  sd,
-  terms,
-  var
-)
-importFrom(utils,
-  globalVariables,
-  modifyList
-)
+importFrom(coda,as.mcmc)
+importFrom(coda,effectiveSize)
+importFrom(graphics,abline)
+importFrom(graphics,barplot)
+importFrom(graphics,hist)
+importFrom(graphics,legend)
+importFrom(graphics,lines)
+importFrom(graphics,matplot)
+importFrom(graphics,plot.default)
+importFrom(label.switching,ecr)
+importFrom(label.switching,ecr.iterative.1)
+importFrom(nimble,buildMCMC)
+importFrom(nimble,compileNimble)
+importFrom(nimble,configureMCMC)
+importFrom(nimble,nimbleCode)
+importFrom(nimble,nimbleFunction)
+importFrom(nimble,nimbleModel)
+importFrom(nimble,runMCMC)
+importFrom(stats,cov)
+importFrom(stats,delete.response)
+importFrom(stats,dnorm)
+importFrom(stats,dt)
+importFrom(stats,kmeans)
+importFrom(stats,model.frame)
+importFrom(stats,model.matrix)
+importFrom(stats,model.response)
+importFrom(stats,na.pass)
+importFrom(stats,pgamma)
+importFrom(stats,pnorm)
+importFrom(stats,predict)
+importFrom(stats,pt)
+importFrom(stats,qgamma)
+importFrom(stats,qnorm)
+importFrom(stats,qt)
+importFrom(stats,quantile)
+importFrom(stats,rWishart)
+importFrom(stats,rgamma)
+importFrom(stats,rnorm)
+importFrom(stats,runif)
+importFrom(stats,sd)
+importFrom(stats,terms)
+importFrom(stats,var)
+importFrom(utils,globalVariables)
+importFrom(utils,modifyList)
